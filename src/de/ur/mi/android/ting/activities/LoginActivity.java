@@ -1,10 +1,5 @@
 package de.ur.mi.android.ting.activities;
 
-import de.ur.mi.android.excercises.starter.R;
-import de.ur.mi.android.excercises.starter.R.id;
-import de.ur.mi.android.excercises.starter.R.layout;
-import de.ur.mi.android.excercises.starter.R.menu;
-import de.ur.mi.android.excercises.starter.R.string;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -24,7 +19,7 @@ import android.widget.TextView;
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.

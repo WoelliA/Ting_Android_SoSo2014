@@ -9,6 +9,8 @@ import android.app.Application;
 
 public class TingApp extends Application implements IInjector {
 
+	private boolean isReleaseApp = false;
+
 	private ObjectGraph applicationGraph;
 
 	@Override
@@ -19,9 +21,7 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object[] getModules() {
-		return new Object[]{
-			getModelModule(), new ActivityModule()
-		};
+		return new Object[] { getModelModule(), new ActivityModule() };
 	}
 
 	public void inject(Object obj) {
@@ -29,9 +29,9 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object getModelModule() {
-		return new DummyModelIocModule();
-		
-		// TODO: at production replace with:
-		// return new ProductionModelIocModule();
+		if (isReleaseApp)
+			return new ProductionModelIocModule();
+		else
+			return new DummyModelIocModule();
 	}
 }

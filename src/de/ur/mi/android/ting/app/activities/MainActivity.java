@@ -1,9 +1,13 @@
-package de.ur.mi.android.ting.activities;
+package de.ur.mi.android.ting.app.activities;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.R.layout;
+import de.ur.mi.android.ting.R.menu;
+import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.model.IArticleProvider;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
@@ -39,4 +43,5 @@ public class MainActivity extends BaseActivity implements ICategoryReceivedCallb
 	public void onCategoriesReceived(List<Category> categories) {
 		
 	}
+
 }

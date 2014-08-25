@@ -1,5 +1,10 @@
-package de.ur.mi.android.ting.activities;
+package de.ur.mi.android.ting.app.activities;
 
+import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.R.id;
+import de.ur.mi.android.ting.R.layout;
+import de.ur.mi.android.ting.R.menu;
+import de.ur.mi.android.ting.R.string;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;

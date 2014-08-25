@@ -1,5 +1,8 @@
-package de.ur.mi.android.excercises.starter;
+package de.ur.mi.android.ting.activities;
 
+import de.ur.mi.android.excercises.starter.R;
+import de.ur.mi.android.excercises.starter.R.layout;
+import de.ur.mi.android.excercises.starter.R.menu;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

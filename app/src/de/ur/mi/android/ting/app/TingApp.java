@@ -17,7 +17,7 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object[] getModules() {
-		return new Object[] { getModelModule(), new ActivityModule() };
+		return new Object[] { getModelModule(), new ActivityModule(), new FragmentsModule() };
 	}
 
 	@Override

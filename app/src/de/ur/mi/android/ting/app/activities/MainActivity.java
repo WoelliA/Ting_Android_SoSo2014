@@ -47,10 +47,6 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void initDrawer() {
-		
-		// TODO: use drawerFragment to fill list & set Adapter etc.
-		// using the categoryProvider there.
-		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerListener = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,

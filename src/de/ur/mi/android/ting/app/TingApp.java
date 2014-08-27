@@ -1,5 +1,9 @@
 package de.ur.mi.android.ting.app;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import dagger.ObjectGraph;
 import android.app.Application;
 
@@ -20,7 +24,6 @@ public class TingApp extends Application implements IInjector {
 		return new Object[] { getModelModule(), new ActivityModule() };
 	}
 
-	@Override
 	public void inject(Object obj) {
 		this.applicationGraph.inject(obj);
 	}

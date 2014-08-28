@@ -5,17 +5,18 @@
     android:layout_height="match_parent"
     tools:context="de.ur.mi.android.ting.app.activities.MainActivity">
 
-	<FrameLayout 
-    	android:id="@+id/container"
+	<ListView
+    	android:id="@+id/pin_list"
    		android:layout_width="match_parent"
-    	android:layout_height="match_parent" />
+    	android:layout_height="match_parent" >
+    </ListView>
 
     <ListView 
         android:background="#FFFFFF"
         android:id="@+id/drawer_list"
         android:layout_width="@dimen/max_drawer_width"
         android:layout_height="match_parent"
-        android:layout_gravity="left">
+        android:layout_gravity="start">
     </ListView>
 
 </android.support.v4.widget.DrawerLayout>

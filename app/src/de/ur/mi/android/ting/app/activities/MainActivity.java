@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.app.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,29 +22,42 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IInjector;
+import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.model.IArticleProvider;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
 import de.ur.mi.android.ting.model.Primitives.Category;
+import de.ur.mi.android.ting.model.Primitives.Pin;
 
 public class MainActivity extends ActionBarActivity implements
 		OnItemClickListener {
 
 	private DrawerLayout drawerLayout;
-	private ListView listView;
+	private ListView drawerList;
 	private String[] drawerItems;
 	private ActionBarDrawerToggle drawerListener;
+	
+	private ListView pinList;
+	private ArrayList<Pin> pinItems;
+	private PinListAdapter pinListAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
 
+			
+			initPinList();
 			initDrawer();
 		}
+	}
+
+	private void initPinList() {
+		pinList = (ListView)findViewById(R.id.pin_list);
+		pinItems = new ArrayList<Pin>();
+		pinListAdapter = new PinListAdapter(this, pinItems);
+		pinList.setAdapter(pinListAdapter);
 	}
 
 	private void initDrawer() {
@@ -52,9 +66,7 @@ public class MainActivity extends ActionBarActivity implements
 		// using the categoryProvider there.
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerListener = new ActionBarDrawerToggle(this, drawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close);
+		drawerListener = new ActionBarDrawerToggle(this, drawerLayout,R.drawable.ic_drawer, R.string.drawer_open,R.string.drawer_close);
 		drawerLayout.setDrawerListener(drawerListener);
 		drawerItems = getResources().getStringArray(R.array.drawer_categories); // Zu
 																				// ersetzen
@@ -64,10 +76,9 @@ public class MainActivity extends ActionBarActivity implements
 																				// Categories
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		listView = (ListView) findViewById(R.id.drawer_list);
-		listView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, drawerItems));
-		listView.setOnItemClickListener(this);
+		drawerList = (ListView) findViewById(R.id.drawer_list);
+		drawerList.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, drawerItems));
+		drawerList.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -90,7 +101,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void selectItem(int position) {
-		listView.setItemChecked(position, true);
+		drawerList.setItemChecked(position, true);
 		replaceFragment(position);
 	}
 
@@ -120,23 +131,6 @@ public class MainActivity extends ActionBarActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_pinlist,
-					container, false);
-			return rootView;
-		}
 	}
 
 }

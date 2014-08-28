@@ -30,35 +30,8 @@ public final class ProductionModelIocModule$$ModuleAdapter extends ModuleAdapter
    */
   @Override
   public void getBindings(BindingsGroup bindings, ProductionModelIocModule module) {
-    bindings.contributeProvidesBinding("de.ur.mi.android.ting.model.IArticleProvider", new ProvideIArticleProviderProvidesAdapter(module));
     bindings.contributeProvidesBinding("de.ur.mi.android.ting.model.ICategoryProvider", new ProvideICategoryProviderProvidesAdapter(module));
-  }
-
-  /**
-   * A {@code Binding<de.ur.mi.android.ting.model.IArticleProvider>} implementation which satisfies
-   * Dagger's infrastructure requirements including:
-   *
-   * Being a {@code Provider<de.ur.mi.android.ting.model.IArticleProvider>} and handling creation and
-   * preparation of object instances.
-   */
-  public static final class ProvideIArticleProviderProvidesAdapter extends ProvidesBinding<de.ur.mi.android.ting.model.IArticleProvider>
-      implements Provider<de.ur.mi.android.ting.model.IArticleProvider> {
-    private final ProductionModelIocModule module;
-
-    public ProvideIArticleProviderProvidesAdapter(ProductionModelIocModule module) {
-      super("de.ur.mi.android.ting.model.IArticleProvider", NOT_SINGLETON, "de.ur.mi.android.ting.app.ProductionModelIocModule", "provideIArticleProvider");
-      this.module = module;
-      setLibrary(true);
-    }
-
-    /**
-     * Returns the fully provisioned instance satisfying the contract for
-     * {@code Provider<de.ur.mi.android.ting.model.IArticleProvider>}.
-     */
-    @Override
-    public de.ur.mi.android.ting.model.IArticleProvider get() {
-      return module.provideIArticleProvider();
-    }
+    bindings.contributeProvidesBinding("de.ur.mi.android.ting.model.IArticleProvider", new ProvideIArticleProviderProvidesAdapter(module));
   }
 
   /**
@@ -85,6 +58,33 @@ public final class ProductionModelIocModule$$ModuleAdapter extends ModuleAdapter
     @Override
     public de.ur.mi.android.ting.model.ICategoryProvider get() {
       return module.provideICategoryProvider();
+    }
+  }
+
+  /**
+   * A {@code Binding<de.ur.mi.android.ting.model.IArticleProvider>} implementation which satisfies
+   * Dagger's infrastructure requirements including:
+   *
+   * Being a {@code Provider<de.ur.mi.android.ting.model.IArticleProvider>} and handling creation and
+   * preparation of object instances.
+   */
+  public static final class ProvideIArticleProviderProvidesAdapter extends ProvidesBinding<de.ur.mi.android.ting.model.IArticleProvider>
+      implements Provider<de.ur.mi.android.ting.model.IArticleProvider> {
+    private final ProductionModelIocModule module;
+
+    public ProvideIArticleProviderProvidesAdapter(ProductionModelIocModule module) {
+      super("de.ur.mi.android.ting.model.IArticleProvider", NOT_SINGLETON, "de.ur.mi.android.ting.app.ProductionModelIocModule", "provideIArticleProvider");
+      this.module = module;
+      setLibrary(true);
+    }
+
+    /**
+     * Returns the fully provisioned instance satisfying the contract for
+     * {@code Provider<de.ur.mi.android.ting.model.IArticleProvider>}.
+     */
+    @Override
+    public de.ur.mi.android.ting.model.IArticleProvider get() {
+      return module.provideIArticleProvider();
     }
   }
 }

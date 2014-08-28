@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pin_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <ImageView
@@ -10,16 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher" />
-
+    
+    <LinearLayout 
+        android:id="@+id/div"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:layout_margin="@dimen/pin_content_margin">
+    	
     <TextView
         android:id="@+id/pin_headline"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/pin_headline_text_color"
+        android:text="Los Campesinos! – “Little Mouth”"
+        android:textSize="@dimen/pin_healine_text_size"
+        android:layout_marginBottom="@dimen/pin_content_margin" />
+    
+    <TextView
+        android:id="@+id/pin_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pin_divider_height"
+        android:background="@color/pin_divider_background_color"/>
+        "
 
     <TextView
         android:id="@+id/pin_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Last year, the permanently fired-up Welsh indie-poppers released No Blues, their first album in a couple of years, a long stretch for a band as prolific as this" 
+        android:textSize="@dimen/pin_content_text_size"
+        android:layout_marginTop="@dimen/pin_text_margin_top_bottom"
+        android:layout_marginBottom="@dimen/pin_text_margin_top_bottom"/>
 
    	<LinearLayout
         android:id="@+id/buttons"
@@ -31,14 +53,22 @@
             android:id="@+id/button_like"
             android:layout_width="match_parent"
            	android:layout_height="wrap_content"
-           	android:layout_weight="1"/>
+           	android:layout_weight="1"
+           	android:background="@color/pin_button_background_color"
+           	android:textColor="@color/pin_button_text_color"
+           	android:text="@string/button_like"/>
 
        	<Button
            	android:id="@+id/button_reting"
            	android:layout_width="match_parent"
            	android:layout_height="wrap_content"
-           	android:layout_weight="1" />
+           	android:layout_weight="1"
+            android:background="@color/pin_button_background_color"
+           	android:textColor="@color/pin_button_text_color"
+           	android:text="@string/button_reting" />
            
     </LinearLayout>
+    
+   	</LinearLayout>
 
 </LinearLayout>

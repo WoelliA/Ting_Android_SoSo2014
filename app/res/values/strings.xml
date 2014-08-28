@@ -7,6 +7,8 @@
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
+    <string name="button_reting">re-ting</string>
+    <string name="button_like">like</string>
     
     <string-array name="drawer_categories">
 	    <item >category 1</item>

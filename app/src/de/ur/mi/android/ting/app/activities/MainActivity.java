@@ -1,5 +1,7 @@
 package de.ur.mi.android.ting.app.activities;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 import android.os.Bundle;
@@ -23,40 +25,41 @@ import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IStringArrayCallback;
+import de.ur.mi.android.ting.app.adapters.PinListAdapter;
+import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
+import de.ur.mi.android.ting.model.Primitives.Category;
+import de.ur.mi.android.ting.model.Primitives.Pin;
 
 public class MainActivity extends ActionBarActivityBase implements
 		OnItemClickListener {
 
 	private DrawerLayout drawerLayout;
-	private ListView listView;
+	private ListView categoryListView;
 	private ActionBarDrawerToggle drawerListener;
-	
+
 	@Inject
 	public ICategoryProvider categoryProvider;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		((IInjector)this.getApplication()).inject(this);		
 		setContentView(R.layout.activity_main);
-		
-			
-		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
 
-			this.categoryProvider.getAllCategoryNames(new IStringArrayCallback() {
-				
-				@Override
-				public void onStringArrayReceived(String[] strings) {
-					initDrawer(strings);					
-				}
-			});
+		if (savedInstanceState == null) {
+			this.categoryProvider
+					.getAllCategoryNames(new IStringArrayCallback() {
+
+						@Override
+						public void onStringArrayReceived(String[] strings) {
+							initDrawer(strings);
+						}
+					});
 		}
 	}
 
 	private void initDrawer(String[] categories) {
-				
+
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerListener = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -65,41 +68,42 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		listView = (ListView) findViewById(R.id.drawer_list);
-			
-		
-		listView.setAdapter(new ArrayAdapter<String>(this,
+		categoryListView = (ListView) findViewById(R.id.drawer_list);
+
+		categoryListView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, categories));
-		listView.setOnItemClickListener(this);
+		categoryListView.setOnItemClickListener(this);
+
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		String categoryName = (String) ((TextView)view).getText();
-		
+		String categoryName = (String) ((TextView) view).getText();
+
 		setSelectItem(position);
 		setCategory(categoryName);
 		drawerLayout.closeDrawers();
 	}
 
 	private void setSelectItem(int position) {
-		listView.setItemChecked(position, true);
+		categoryListView.setItemChecked(position, true);
 	}
 
 	private void setCategory(String categoryName) {
 		setTitle(categoryName);
 		setContent(categoryName);
-	}	
-
-	private void setContent(String	 categoryName) {		
-		PinListFragment fragment = new PinListFragment(categoryName);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.add(R.id.container, fragment);
-		transaction.commit();	
-		
 	}
-	
+
+	private void setContent(String categoryName) {
+		PinListFragment fragment = new PinListFragment(categoryName);
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		transaction.add(R.id.container, fragment);
+		transaction.commit();
+
+	}
+
 	private void setTitle(String title) {
 		getSupportActionBar().setTitle(title);
 	}
@@ -122,23 +126,6 @@ public class MainActivity extends ActionBarActivityBase implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_pinlist,
-					container, false);
-			return rootView;
-		}
 	}
 
 }

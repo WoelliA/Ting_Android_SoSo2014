@@ -1,7 +1,8 @@
 package de.ur.mi.android.ting.app;
 
-import dagger.ObjectGraph;
 import android.app.Application;
+import dagger.ObjectGraph;
+import de.ur.mi.android.ting.model.parse.ParseModelIocModule;
 
 public class TingApp extends Application implements IInjector {
 
@@ -27,7 +28,7 @@ public class TingApp extends Application implements IInjector {
 
 	private Object getModelModule() {
 		if (isReleaseApp)
-			return new ProductionModelIocModule();
+			return new ParseModelIocModule(this);
 		else
 			return new DummyModelIocModule();
 	}

@@ -1,10 +1,10 @@
 package de.ur.mi.android.ting.app.fragments;
 
-import de.ur.mi.android.ting.app.IInjector;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import de.ur.mi.android.ting.app.IInjector;
 
-public class BaseFragment extends Fragment{
+public class BaseFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

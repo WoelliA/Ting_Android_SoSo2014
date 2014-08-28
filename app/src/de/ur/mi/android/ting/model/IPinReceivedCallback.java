@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 import de.ur.mi.android.ting.model.Primitives.Pin;
 
-public interface IArticlesCallback {
-	public void onArticlesReceived(ArrayList<Pin> articles);
+public interface IPinReceivedCallback {
+	public void onPinsReceived(ArrayList<Pin> pins);
 }

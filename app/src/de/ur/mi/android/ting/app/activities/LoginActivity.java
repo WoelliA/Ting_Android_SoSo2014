@@ -1,10 +1,8 @@
 package de.ur.mi.android.ting.app.activities;
 
-import de.ur.mi.android.ting.R;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import de.ur.mi.android.ting.R;
 
 /**
  * Activity which displays a login screen to the user, offering registration as

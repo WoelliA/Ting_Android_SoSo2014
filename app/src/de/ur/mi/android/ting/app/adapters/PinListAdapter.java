@@ -32,7 +32,7 @@ public class PinListAdapter extends ArrayAdapter<Pin>{
 
 		if (v == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = inflater.inflate(R.layout.pin_layout, parent);
+			v = inflater.inflate(R.layout.pin_layout, parent, false);
 
 		}
 

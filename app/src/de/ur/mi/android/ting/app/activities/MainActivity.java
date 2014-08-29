@@ -37,6 +37,7 @@ public class MainActivity extends ActionBarActivityBase implements
 	private DrawerLayout drawerLayout;
 	private ListView categoryListView;
 	private ActionBarDrawerToggle drawerListener;
+	PinListFragment pinContent;
 
 	@Inject
 	public ICategoryProvider categoryProvider;
@@ -53,6 +54,7 @@ public class MainActivity extends ActionBarActivityBase implements
 						@Override
 						public void onStringArrayReceived(String[] strings) {
 							initDrawer(strings);
+							setCategory(strings[0]);
 						}
 					});
 		}
@@ -96,10 +98,13 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	private void setContent(String categoryName) {
-		PinListFragment fragment = new PinListFragment(categoryName);
+
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-		transaction.add(R.id.container, fragment);
+		if (this.pinContent != null)
+			transaction.detach(this.pinContent);
+		this.pinContent = new PinListFragment(categoryName);
+		transaction.add(R.id.container, this.pinContent);
 		transaction.commit();
 
 	}

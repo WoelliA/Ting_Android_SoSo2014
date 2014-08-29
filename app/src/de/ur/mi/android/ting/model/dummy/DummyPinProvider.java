@@ -15,7 +15,7 @@ public class DummyPinProvider implements IPinProvider {
 			IPinReceivedCallback callback) {
 		ArrayList<Pin> articles = new ArrayList<Pin>();
 		for (int i = 0; i < request.getCount(); i++) {
-			articles.add(new DummyPin(i));
+			articles.add(new DummyPin(request.getOffset() + i));
 		}
 		callback.onPinsReceived(articles);
 	}

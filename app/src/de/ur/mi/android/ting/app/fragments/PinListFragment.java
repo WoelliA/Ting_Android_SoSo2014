@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import ca.weixiao.widget.InfiniteScrollListPageListener;
+import ca.weixiao.widget.InfiniteScrollListView;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,11 +22,9 @@ import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.Primitives.Category;
 import de.ur.mi.android.ting.model.Primitives.Pin;
 
-public class PinListFragment extends BaseFragment {
-
-	private ArrayList<Pin> aList = null;
-	private PinListAdapter alAdapter;
-	private Context context;
+public class PinListFragment extends BaseFragment implements IPaging {
+	private PinListAdapter pinAdapter;
+	private ArrayList<Pin> pins;
 
 	@Inject
 	public IPinProvider pinProvider;
@@ -36,15 +36,7 @@ public class PinListFragment extends BaseFragment {
 
 	public PinListFragment(String categoryName) {
 		this.categoryName = categoryName;
-		aList = new ArrayList<Pin>();
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		this.category = this.categoryProvider
-				.resolveCategoryByName(categoryName);
+		pins = new ArrayList<Pin>();
 	}
 
 	@Override
@@ -57,21 +49,29 @@ public class PinListFragment extends BaseFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		context = getActivity();
+		this.category = this.categoryProvider
+				.resolveCategoryByName(categoryName);
+		
 		initPinListUI();
-
-		getPins(0, 10);
+		getPins();
 	}
 
-	private void getPins(int offset, int count) {
+	private void getPins() {
+		final int count = 10;
+		int offset = this.pins.size();
 		PinRequest request = new PinRequest(offset, count);
 		this.pinProvider.getPinsForCategory(category, request,
 				new IPinReceivedCallback() {
-
 					@Override
 					public void onPinsReceived(ArrayList<Pin> pins) {
-						aList.addAll(pins);
-						alAdapter.notifyDataSetChanged();
+						if(pins != null){
+							pinAdapter.addAll(pins);						
+						}
+						if(pins != null && pins.size() >= count){
+							pinAdapter.notifyHasMore();
+						} else{
+							pinAdapter.notifyEndOfList();
+						}
 					}
 				});
 	}
@@ -80,13 +80,13 @@ public class PinListFragment extends BaseFragment {
 		initPinList();
 		initLikeButton();
 		initRetingButton();
-		alAdapter.notifyDataSetChanged();
+		pinAdapter.notifyDataSetChanged();
 	}
 
 	private void initPinList() {
-		alAdapter = new PinListAdapter(context, aList);
-		ListView PinList = (ListView) getView().findViewById(R.id.list);
-		PinList.setAdapter(alAdapter);
+		pinAdapter = new PinListAdapter(this.getActivity(), pins, this);
+		InfiniteScrollListView PinList = (InfiniteScrollListView) getView().findViewById(R.id.list);
+		PinList.setAdapter(pinAdapter);
 	}
 
 	private void initLikeButton() {
@@ -95,6 +95,12 @@ public class PinListFragment extends BaseFragment {
 
 	private void initRetingButton() {
 		Button reting = (Button) getView().findViewById(R.id.button_reting);
+	}
+
+	@Override
+	public void loadNextPage() {
+		this.pinAdapter.lock();
+		this.getPins();		
 	}
 
 }

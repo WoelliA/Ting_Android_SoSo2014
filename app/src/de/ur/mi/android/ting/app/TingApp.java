@@ -3,9 +3,11 @@ package de.ur.mi.android.ting.app;
 import android.app.Application;
 import dagger.ObjectGraph;
 import de.ur.mi.android.ting.app.activities.ActivityModule;
+import de.ur.mi.android.ting.app.adapters.AdaptersModule;
 import de.ur.mi.android.ting.app.fragments.FragmentsModule;
 import de.ur.mi.android.ting.model.dummy.DummyModelIocModule;
 import de.ur.mi.android.ting.model.parse.ParseModelIocModule;
+import de.ur.mi.android.ting.utilities.UtilitiesModule;
 
 public class TingApp extends Application implements IInjector {
 
@@ -21,7 +23,9 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object[] getModules() {
-		return new Object[] { getModelModule(), new ActivityModule(), new FragmentsModule() };
+		return new Object[] { getModelModule(), new AndroidModule(this), new ActivityModule(),
+				new FragmentsModule(), new UtilitiesModule(),
+				new AdaptersModule() };
 	}
 
 	@Override

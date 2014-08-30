@@ -2,8 +2,12 @@ package de.ur.mi.android.ting.app.adapters;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import ca.weixiao.widget.InfiniteScrollListPageListener;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.utilities.IImageLoadedCallback;
+import de.ur.mi.android.ting.utilities.IImageLoader;
 
 public class PinListAdapter extends
 		ca.weixiao.widget.InfiniteScrollListAdapter<Pin> {
@@ -21,8 +28,12 @@ public class PinListAdapter extends
 	private Context context;
 	private IPaging paging;
 
+	@Inject
+	public IImageLoader imageLoader;
+
 	public PinListAdapter(Context context, ArrayList<Pin> Pins, IPaging paging) {
 		super(context, R.id.pin_layout, Pins);
+		((IInjector) context).inject(this);
 		this.paging = paging;
 		this.context = context;
 		this.PinList = Pins;
@@ -30,7 +41,7 @@ public class PinListAdapter extends
 
 	@Override
 	protected void onScrollNext() {
-		if(this.paging != null){
+		if (this.paging != null) {
 			this.paging.loadNextPage();
 		}
 	}
@@ -46,18 +57,17 @@ public class PinListAdapter extends
 			v = inflater.inflate(R.layout.pin_layout, parent, false);
 		}
 
-		Pin Pin = PinList.get(position);
+		Pin pin = PinList.get(position);
 
-		if (Pin != null) {
+		if (pin != null) {
 			TextView headline = (TextView) v.findViewById(R.id.pin_headline);
 			TextView content = (TextView) v.findViewById(R.id.pin_content);
 			ImageView picture = (ImageView) v.findViewById(R.id.pin_picture);
 
-			headline.setText(Pin.getTitle());
-			content.setText(Pin.getDescription());
-
-			// TODO: Uri to drawable
-			// picture.setImageDrawable(Pin.getImageUri());
+			headline.setText(pin.getTitle());
+			content.setText(pin.getDescription());
+			
+			this.imageLoader.loadImage(pin.getImageUri(), picture);
 		}
 
 		return v;

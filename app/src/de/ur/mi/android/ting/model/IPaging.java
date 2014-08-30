@@ -1,4 +1,4 @@
-package de.ur.mi.android.ting.app.fragments;
+package de.ur.mi.android.ting.model;
 
 public interface IPaging {
 	public void loadNextPage();

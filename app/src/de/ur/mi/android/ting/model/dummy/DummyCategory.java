@@ -1,6 +1,6 @@
 package de.ur.mi.android.ting.model.dummy;
 
-import de.ur.mi.android.ting.model.Primitives.Category;
+import de.ur.mi.android.ting.model.primitives.Category;
 
 public class DummyCategory extends Category {
 

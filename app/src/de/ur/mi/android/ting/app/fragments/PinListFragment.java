@@ -16,11 +16,12 @@ import android.widget.ListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
 import de.ur.mi.android.ting.model.PinRequest;
-import de.ur.mi.android.ting.model.Primitives.Category;
-import de.ur.mi.android.ting.model.Primitives.Pin;
+import de.ur.mi.android.ting.model.primitives.Category;
+import de.ur.mi.android.ting.model.primitives.Pin;
 
 public class PinListFragment extends BaseFragment implements IPaging {
 	private PinListAdapter pinAdapter;
@@ -57,6 +58,7 @@ public class PinListFragment extends BaseFragment implements IPaging {
 	}
 
 	private void getPins() {
+		this.pinAdapter.lock();
 		final int count = 10;
 		int offset = this.pins.size();
 		PinRequest request = new PinRequest(offset, count);
@@ -99,7 +101,6 @@ public class PinListFragment extends BaseFragment implements IPaging {
 
 	@Override
 	public void loadNextPage() {
-		this.pinAdapter.lock();
 		this.getPins();		
 	}
 

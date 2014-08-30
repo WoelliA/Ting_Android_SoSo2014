@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.fragments.IPaging;
-import de.ur.mi.android.ting.model.Primitives.Pin;
+import de.ur.mi.android.ting.model.IPaging;
+import de.ur.mi.android.ting.model.primitives.Pin;
 
 public class PinListAdapter extends
 		ca.weixiao.widget.InfiniteScrollListAdapter<Pin> {

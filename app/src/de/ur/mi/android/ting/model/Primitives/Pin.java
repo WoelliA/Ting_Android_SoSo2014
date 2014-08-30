@@ -1,4 +1,4 @@
-package de.ur.mi.android.ting.model.Primitives;
+package de.ur.mi.android.ting.model.primitives;
 
 public class Pin extends UniqueBase implements IHasCategory{
 
@@ -7,9 +7,10 @@ public class Pin extends UniqueBase implements IHasCategory{
 	private String imageUri;
 	private Board board;
 	private String linkUri;
+	private double aspectratio;
 	
 
-	public Pin(String id, String title, String description, String imageUri, Board board, String linkUri) {
+	public Pin(String id, String title, String description, String imageUri, Board board, String linkUri, double aspectratio) {
 		super(id);
 		
 		this.title = title;
@@ -17,6 +18,7 @@ public class Pin extends UniqueBase implements IHasCategory{
 		this.imageUri = imageUri;
 		this.board = board;
 		this.linkUri = linkUri;
+		this.aspectratio = aspectratio;
 	}
 
 
@@ -25,6 +27,10 @@ public class Pin extends UniqueBase implements IHasCategory{
 		return board.getCategory();
 	}
 
+	public double getAspectRatio(){
+		return this.aspectratio;
+	}
+	
 	public User getAuthor(){
 		return this.board.getOwner();
 	}

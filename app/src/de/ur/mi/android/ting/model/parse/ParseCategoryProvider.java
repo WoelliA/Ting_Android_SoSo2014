@@ -1,8 +1,11 @@
 package de.ur.mi.android.ting.model.parse;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Singleton;
 
 import android.util.Log;
 
@@ -10,31 +13,38 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseQuery.CachePolicy;
 
+import de.ur.mi.android.ting.model.CategoryProviderBase;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
 import de.ur.mi.android.ting.model.IStringArrayCallback;
-import de.ur.mi.android.ting.model.Primitives.Category;
+import de.ur.mi.android.ting.model.primitives.Category;
 
-public class ParseCategoryProvider implements ICategoryProvider {
-	
+@Singleton
+public class ParseCategoryProvider extends CategoryProviderBase implements
+		ICategoryProvider {
+
 	protected ArrayList<Category> categories;
 	protected HashMap<String, Category> categoriesMap = new HashMap<String, Category>();
 
 	@Override
 	public void getAllCategories(final ICategoryReceivedCallback callback) {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("category");
-
-		if(categories != null)
-			callback.onCategoriesReceived(categories);
 		
+		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+		query.setMaxCacheAge(604800000);
+		
+		if (categories != null)
+			callback.onCategoriesReceived(categories);
+
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> arg, ParseException ex) {
 				if (ex == null) {
 					categories = createCategories(arg);
-					callback.onCategoriesReceived(categories);
+					callback.onCategoriesReceived(categories);					
 
 				} else {
 					Log.e("Parse Categories Exception", ex.getMessage());
@@ -42,19 +52,19 @@ public class ParseCategoryProvider implements ICategoryProvider {
 			}
 		});
 	}
-	
 
 	@Override
 	public Category resolveCategoryByName(String name) {
-		if(this.categoriesMap != null && this.categoriesMap.containsKey(name)){
+		if (this.categoriesMap != null && this.categoriesMap.containsKey(name)) {
 			return this.categoriesMap.get(name);
 		}
 		return null;
 	}
 
-	protected Category createCategory(ParseObject po) {
-		Category category = new Category(po.getObjectId(),
-				po.getString("category_name"), po.getString("short"));
+	protected Category createCategory(ParseObject parseObject) {
+		Category category = new Category(parseObject.getObjectId(),
+				parseObject.getString("category_name"),
+				parseObject.getString("short"));
 		return category;
 	}
 
@@ -68,12 +78,16 @@ public class ParseCategoryProvider implements ICategoryProvider {
 		return categories;
 	}
 
-
 	@Override
-	public void getAllCategoryNames(IStringArrayCallback callback) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void getAllCategoryNames(final IStringArrayCallback callback) {
+		this.getAllCategories(new ICategoryReceivedCallback() {
 
+			@Override
+			public void onCategoriesReceived(List<Category> categories) {
+				callback.onStringArrayReceived(getCategoryNames(categories));
+			}
+		});
+
+	}
 
 }

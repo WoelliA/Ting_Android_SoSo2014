@@ -25,7 +25,7 @@ import android.widget.ListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
-import de.ur.mi.android.ting.model.Primitives.Category;
+import de.ur.mi.android.ting.model.primitives.Category;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation

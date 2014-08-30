@@ -1,6 +1,6 @@
 package de.ur.mi.android.ting.model.dummy;
 
-import de.ur.mi.android.ting.model.Primitives.User;
+import de.ur.mi.android.ting.model.primitives.User;
 
 public class DummyUser extends User {
 

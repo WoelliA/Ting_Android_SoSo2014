@@ -1,6 +1,6 @@
 package de.ur.mi.android.ting.model.dummy;
 
-import de.ur.mi.android.ting.model.Primitives.Board;
+import de.ur.mi.android.ting.model.primitives.Board;
 
 public class DummyBoard extends Board {
 

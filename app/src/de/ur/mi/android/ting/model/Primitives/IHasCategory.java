@@ -1,4 +1,4 @@
-package de.ur.mi.android.ting.model.Primitives;
+package de.ur.mi.android.ting.model.primitives;
 
 public interface IHasCategory {
 	public Category getCategory();

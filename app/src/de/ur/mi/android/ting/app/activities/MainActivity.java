@@ -2,6 +2,7 @@ package de.ur.mi.android.ting.app.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import android.os.Bundle;
@@ -28,8 +29,8 @@ import de.ur.mi.android.ting.model.IStringArrayCallback;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
-import de.ur.mi.android.ting.model.Primitives.Category;
-import de.ur.mi.android.ting.model.Primitives.Pin;
+import de.ur.mi.android.ting.model.primitives.Category;
+import de.ur.mi.android.ting.model.primitives.Pin;
 
 public class MainActivity extends ActionBarActivityBase implements
 		OnItemClickListener {
@@ -50,7 +51,6 @@ public class MainActivity extends ActionBarActivityBase implements
 		if (savedInstanceState == null) {
 			this.categoryProvider
 					.getAllCategoryNames(new IStringArrayCallback() {
-
 						@Override
 						public void onStringArrayReceived(String[] strings) {
 							initDrawer(strings);

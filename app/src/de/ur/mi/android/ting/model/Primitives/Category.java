@@ -1,4 +1,4 @@
-package de.ur.mi.android.ting.model.Primitives;
+package de.ur.mi.android.ting.model.primitives;
 
 public class Category extends UniqueBase {
 	public Category(String id, String name, String shortName) {

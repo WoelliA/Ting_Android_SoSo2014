@@ -11,7 +11,7 @@ import de.ur.mi.android.ting.utilities.UtilitiesModule;
 
 public class TingApp extends Application implements IInjector {
 
-	private boolean isReleaseApp = false;
+	private boolean isReleaseApp = true;
 
 	private ObjectGraph applicationGraph;
 

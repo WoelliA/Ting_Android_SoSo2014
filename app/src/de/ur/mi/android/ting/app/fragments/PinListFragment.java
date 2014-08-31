@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.model.ICategoryProvider;
@@ -24,6 +25,9 @@ import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
 
 public class PinListFragment extends BaseFragment implements IPaging {
+
+	private TextView header;
+	
 	private PinListAdapter pinAdapter;
 	private ArrayList<Pin> pins;
 
@@ -43,6 +47,7 @@ public class PinListFragment extends BaseFragment implements IPaging {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		this.header = (TextView) View.inflate(this.getActivity(), R.layout.pinlist_header_layout, null);
 		return inflater.inflate(R.layout.fragment_pinlist, container, false);
 	}
 
@@ -52,7 +57,7 @@ public class PinListFragment extends BaseFragment implements IPaging {
 
 		this.category = this.categoryProvider
 				.resolveCategoryByName(categoryName);
-		
+
 		initPinListUI();
 		getPins();
 	}
@@ -66,12 +71,12 @@ public class PinListFragment extends BaseFragment implements IPaging {
 				new IPinReceivedCallback() {
 					@Override
 					public void onPinsReceived(ArrayList<Pin> pins) {
-						if(pins != null){
-							pinAdapter.addAll(pins);						
+						if (pins != null) {
+							pinAdapter.addAll(pins);
 						}
-						if(pins != null && pins.size() >= count){
+						if (pins != null && pins.size() >= count) {
 							pinAdapter.notifyHasMore();
-						} else{
+						} else {
 							pinAdapter.notifyEndOfList();
 						}
 					}
@@ -87,8 +92,16 @@ public class PinListFragment extends BaseFragment implements IPaging {
 
 	private void initPinList() {
 		pinAdapter = new PinListAdapter(this.getActivity(), pins, this);
-		InfiniteScrollListView PinList = (InfiniteScrollListView) getView().findViewById(R.id.list);
-		PinList.setAdapter(pinAdapter);
+		InfiniteScrollListView pinList = (InfiniteScrollListView) getView()
+				.findViewById(R.id.list);
+		pinList.setAdapter(pinAdapter);
+
+		initHeader(pinList);
+	}
+
+	private void initHeader(ListView listView) {
+		this.header.setText(this.categoryName);
+		listView.addHeaderView(this.header);
 	}
 
 	private void initLikeButton() {
@@ -101,7 +114,7 @@ public class PinListFragment extends BaseFragment implements IPaging {
 
 	@Override
 	public void loadNextPage() {
-		this.getPins();		
+		this.getPins();
 	}
 
 }

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -50,7 +52,7 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		getActionBar().show();
 		setContentView(R.layout.activity_main);
-		
+
 		if (savedInstanceState == null) {
 			this.categoryProvider
 					.getAllCategoryNames(new IStringArrayCallback() {
@@ -96,18 +98,19 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	private void setCategory(String categoryName) {
-		setTitle(categoryName);
+//		setTitle(categoryName);
 		setContent(categoryName);
 	}
 
 	private void setContent(String categoryName) {
-
+	
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
 		if (this.pinContent != null)
 			transaction.detach(this.pinContent);
 		this.pinContent = new PinListFragment(categoryName);
 		transaction.add(R.id.container, this.pinContent);
+		transaction.addToBackStack(categoryName);
 		transaction.commit();
 
 	}

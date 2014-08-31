@@ -7,6 +7,7 @@
     <string name="action_login">Login</string>
     <string name="action_profile">Profile</string>
     <string name="action_search">Search</string>
+    <string name="action_search_hint">Search Ting</string>
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
     <string name="button_reting">re-ting</string>

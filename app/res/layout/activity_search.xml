@@ -3,5 +3,5 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.ur.mi.android.ting.app.activities.SearchActivity" />
+    tools:context="de.ur.mi.android.ting.app.activities.MainActivity" />
 

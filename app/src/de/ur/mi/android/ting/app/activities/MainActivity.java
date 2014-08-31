@@ -2,11 +2,14 @@ package de.ur.mi.android.ting.app.activities;
 
 import javax.inject.Inject;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,6 +126,14 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.menu = menu;
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.adjustOptionsMenu();
+		
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+		
+		
 		return true;
 	}
 

@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivityBase implements
 	private DrawerLayout drawerLayout;
 	private ListView categoryListView;
 	private ActionBarDrawerToggle drawerListener;
+	private Menu menu;
 
 	PinListFragment pinContent;
 
@@ -35,7 +36,6 @@ public class MainActivity extends ActionBarActivityBase implements
 	public ICategoryProvider categoryProvider;
 	@Inject
 	public IUser user;
-	private Menu menu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

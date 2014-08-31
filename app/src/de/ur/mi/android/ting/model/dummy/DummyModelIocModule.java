@@ -23,23 +23,6 @@ public class DummyModelIocModule implements IModelIocModule {
 		return new DummyCategoryProvider();
 	}
 
-	@Override
-	@Provides
-	public IPinProvider provideIPinProvider() {
-		return new DummyPinProvider();
-	}
-
-	@Override
-	@Provides
-	public IBoardsProvider provideIBoardsProvider() {
-		return null;
-	}
-
-	@Override
-	@Provides
-	public IUserService provideIUserService() {
-		return new DummyUserService(this.provideIUser());
-	}
 
 	@Override
 	@Provides
@@ -52,5 +35,25 @@ public class DummyModelIocModule implements IModelIocModule {
 	@Provides
 	public ISearchService provideISearchService() {
 		return new DummySearchService();
+	}
+
+	@Override
+	@Provides
+	public IPinProvider provideIPinProvider(IUser user) {
+
+		return new DummyPinProvider();
+	}
+
+	@Override
+	@Provides
+	public IBoardsProvider provideIBoardsProvider(IUser user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@Provides
+	public IUserService provideIUserService(IUser user) {
+		return new DummyUserService(user);
 	}
 }

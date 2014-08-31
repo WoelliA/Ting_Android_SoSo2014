@@ -30,9 +30,9 @@ public class ParseModelIocModule implements IModelIocModule {
 
 	@Override
 	@Provides
-	public IPinProvider provideIPinProvider() {
+	public IPinProvider provideIPinProvider(IUser user) {
 		return new ParsePinProvider(
-				(ParseBoardsProvider) this.provideIBoardsProvider());
+				(ParseBoardsProvider) this.provideIBoardsProvider(user));
 	}
 
 	@Override
@@ -44,16 +44,16 @@ public class ParseModelIocModule implements IModelIocModule {
 
 	@Override
 	@Provides
-	public IBoardsProvider provideIBoardsProvider() {
+	public IBoardsProvider provideIBoardsProvider(IUser user) {
 		return new ParseBoardsProvider(
 				(ParseCategoryProvider) this.provideICategoryProvider(),
-				(ParseUserService) this.provideIUserService());
+				(ParseUserService) this.provideIUserService(user));
 	}
 
 	@Override
 	@Provides
-	public IUserService provideIUserService() {
-		return new ParseUserService(this.provideIUser());
+	public IUserService provideIUserService(IUser user) {
+		return new ParseUserService(user);
 	}
 
 	@Override

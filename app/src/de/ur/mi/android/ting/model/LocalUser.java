@@ -8,6 +8,10 @@ public class LocalUser implements IUser {
 	private boolean isLoggedIn;
 	private String name;
 	private String id;
+	
+	public LocalUser() {
+		
+	}
 
 	@Override
 	public boolean getIsLogedIn() {

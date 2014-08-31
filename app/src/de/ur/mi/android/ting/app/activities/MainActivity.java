@@ -84,6 +84,12 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerListener.syncState();
+	}
+	
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		String categoryName = (String) ((TextView) view).getText();
@@ -145,6 +151,9 @@ public class MainActivity extends ActionBarActivityBase implements
 		menu.findItem(R.id.action_profile).setVisible(visible);
 	}
 
+	
+	
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (drawerListener.onOptionsItemSelected(item)) {

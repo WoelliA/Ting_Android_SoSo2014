@@ -20,8 +20,8 @@
     </string-array>
 
     <string name="title_activity_search">SearchActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">user</string>
+    <string name="title_section2">pins</string>
+    <string name="title_section3">boards</string>
 
 </resources>

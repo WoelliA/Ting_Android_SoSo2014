@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivityBase implements
 					});
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -127,11 +127,11 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	private void adjustOptionsMenu() {
-		if(menu == null)
+		if (menu == null)
 			return;
 		boolean visible = this.user.getIsLogedIn();
 		menu.findItem(R.id.action_login).setVisible(!visible);
-		menu.findItem(R.id.action_profile).setVisible(visible);		
+		menu.findItem(R.id.action_profile).setVisible(visible);
 	}
 
 	@Override
@@ -139,32 +139,21 @@ public class MainActivity extends ActionBarActivityBase implements
 		if (drawerListener.onOptionsItemSelected(item)) {
 			return true;
 		}
-		
+
 		Intent intent;
-		
+
 		switch (item.getItemId()) {
-<<<<<<< HEAD
 		case R.id.action_settings:
 			return true;
 		case R.id.action_login:
-			Intent intent = new Intent(this, LoginActivity.class);
+			intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
 			return true;
+		case R.id.action_search:
+			intent = new Intent(this, SearchActivity.class);
+			startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);
-=======
-		case R.id.action_search:
-			intent = new Intent (this, SearchActivity.class);
-			startActivity(intent);
-	    case R.id.action_settings:
-	        return true;
-	    case R.id.action_login:
-	    	intent = new Intent(this, LoginActivity.class);
-	    	startActivity(intent);
-	        return true;
-	    default:
-	        return super.onOptionsItemSelected(item);
->>>>>>> origin/master
 		}
 	}
 

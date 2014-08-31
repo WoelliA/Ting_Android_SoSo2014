@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-      <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk
@@ -18,8 +18,11 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="de.ur.mi.android.ting.app.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:name="de.ur.mi.android.ting.app.activities.SplashScreenActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +31,11 @@
         </activity>
         <activity
             android:name="de.ur.mi.android.ting.app.activities.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="de.ur.mi.android.ting.app.activities.MainActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>

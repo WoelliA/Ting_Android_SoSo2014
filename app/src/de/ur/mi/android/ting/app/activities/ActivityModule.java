@@ -4,7 +4,8 @@ import dagger.Module;
 
 @Module(injects = { 
 		MainActivity.class, 		
-		LoginActivity.class,		
+		LoginActivity.class,
+		SplashScreenActivity.class
 }, 
 		complete = false)
 public class ActivityModule {

@@ -19,6 +19,9 @@ import android.content.Context;
 import android.location.LocationManager;
 import dagger.Module;
 import dagger.Provides;
+import de.ur.mi.android.ting.app.activities.MainActivity;
+import de.ur.mi.android.ting.utilities.IAppStart;
+
 import javax.inject.Singleton;
 
 import static android.content.Context.LOCATION_SERVICE;

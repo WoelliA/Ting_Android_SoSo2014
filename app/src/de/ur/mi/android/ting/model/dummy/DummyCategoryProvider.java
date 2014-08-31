@@ -11,6 +11,7 @@ import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
 import de.ur.mi.android.ting.model.IStringArrayCallback;
 import de.ur.mi.android.ting.model.primitives.Category;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class DummyCategoryProvider extends CategoryProviderBase implements
 		ICategoryProvider {
@@ -60,5 +61,6 @@ public class DummyCategoryProvider extends CategoryProviderBase implements
 
 		});
 	}
+
 
 }

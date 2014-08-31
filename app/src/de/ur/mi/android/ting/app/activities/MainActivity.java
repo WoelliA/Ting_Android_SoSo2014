@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -46,8 +47,10 @@ public class MainActivity extends ActionBarActivityBase implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 
+		getActionBar().show();
+		setContentView(R.layout.activity_main);
+		
 		if (savedInstanceState == null) {
 			this.categoryProvider
 					.getAllCategoryNames(new IStringArrayCallback() {

@@ -114,9 +114,9 @@ public class MainActivity extends ActionBarActivityBase implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		
 		getMenuInflater().inflate(R.menu.main, menu);
-		int visibility = this.user.getIsLogedIn()?View.INVISIBLE:View.VISIBLE;
-		findViewById(R.id.action_login).setVisibility(visibility);
-		
+		boolean visible = this.user.getIsLogedIn();
+		menu.findItem(R.id.action_login).setVisible(!visible);
+		menu.findItem(R.id.action_profile).setVisible(visible);
 		return true;
 	}
 

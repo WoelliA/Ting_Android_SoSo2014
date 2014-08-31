@@ -125,12 +125,17 @@ public class MainActivity extends ActionBarActivityBase implements
 		if (drawerListener.onOptionsItemSelected(item)) {
 			return true;
 		}
-
+		
+		Intent intent;
+		
 		switch (item.getItemId()) {
+		case R.id.action_search:
+			intent = new Intent (this, SearchActivity.class);
+			startActivity(intent);
 	    case R.id.action_settings:
 	        return true;
 	    case R.id.action_login:
-	    	Intent intent = new Intent(this, LoginActivity.class);
+	    	intent = new Intent(this, LoginActivity.class);
 	    	startActivity(intent);
 	        return true;
 	    default:

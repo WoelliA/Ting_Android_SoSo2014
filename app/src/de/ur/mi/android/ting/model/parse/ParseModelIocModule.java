@@ -15,6 +15,7 @@ import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.IUser;
 import de.ur.mi.android.ting.model.IUserService;
+import de.ur.mi.android.ting.model.LocalUser;
 
 @Module(complete = true, library = true)
 public class ParseModelIocModule implements IModelIocModule {
@@ -52,16 +53,18 @@ public class ParseModelIocModule implements IModelIocModule {
 	@Override
 	@Provides
 	public IUserService provideIUserService() {
-		return new ParseUserService();
+		return new ParseUserService(this.provideIUser());
 	}
 
 	@Override
+	@Provides
+	@Singleton
 	public IUser provideIUser() {
-		// TODO Auto-generated method stub
-		return null;
+		return new LocalUser();
 	}
 
 	@Override
+	@Provides
 	public ISearchService provideISearchService() {
 		// TODO Auto-generated method stub
 		return null;

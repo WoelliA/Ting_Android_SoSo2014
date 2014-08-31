@@ -34,7 +34,7 @@ public class LoginActivity extends BaseActivity {
 	public IUserService service;
 
 	// Values for email and password at the time of the login attempt.
-	private String mEmail;
+	private String mUserName;
 	private String mPassword;
 
 	// UI references.
@@ -51,9 +51,9 @@ public class LoginActivity extends BaseActivity {
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+		mUserName = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
+		mEmailView.setText(mUserName);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -101,7 +101,7 @@ public class LoginActivity extends BaseActivity {
 		mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
+		mUserName = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 
 		boolean cancel = false;
@@ -119,15 +119,11 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
+		if (TextUtils.isEmpty(mUserName)) {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
-		}
+		} 
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -138,7 +134,7 @@ public class LoginActivity extends BaseActivity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			service.login(this.mEmail, this.mPassword, new IDoneCallback<LoginResult>() {
+			service.login(this.mUserName, this.mPassword, new IDoneCallback<LoginResult>() {
 				
 				@Override
 				public void done(LoginResult result) {

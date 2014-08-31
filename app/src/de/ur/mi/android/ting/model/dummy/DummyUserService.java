@@ -1,12 +1,19 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import android.os.AsyncTask;
+import de.ur.mi.android.ting.model.IUser;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class DummyUserService implements IUserService {
 
+	private IUser user;
+	public DummyUserService(IUser user) {
+		this.user = user;		
+	}
+	
+	
 	boolean isRightLogin ;
 	@Override
 	public void login(String userName, String password,
@@ -27,9 +34,15 @@ public class DummyUserService implements IUserService {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
+				user.setIsLoggedIn(isRightLogin);
+				user.setInfo("12355uuu", "Dummy Local User");
 				callback.done(new LoginResult(isRightLogin));
 			}
 		};
 		loginTask.execute();
+	}
+	@Override
+	public boolean checkIsLoggedIn() {
+		return this.user.getIsLogedIn();
 	}
 }

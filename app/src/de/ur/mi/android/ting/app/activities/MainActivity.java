@@ -28,14 +28,15 @@ public class MainActivity extends ActionBarActivityBase implements
 	private DrawerLayout drawerLayout;
 	private ListView categoryListView;
 	private ActionBarDrawerToggle drawerListener;
-	
+
 	PinListFragment pinContent;
-	
 
 	@Inject
 	public ICategoryProvider categoryProvider;
 	@Inject
 	public IUser user;
+	private Menu menu;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +54,12 @@ public class MainActivity extends ActionBarActivityBase implements
 						}
 					});
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.adjustOptionsMenu();
 	}
 
 	private void initDrawer(String[] categories) {
@@ -88,12 +95,12 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	private void setCategory(String categoryName) {
-//		setTitle(categoryName);
+		// setTitle(categoryName);
 		setContent(categoryName);
 	}
 
 	private void setContent(String categoryName) {
-	
+
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
 		if (this.pinContent != null)
@@ -108,16 +115,23 @@ public class MainActivity extends ActionBarActivityBase implements
 	private void setTitle(String title) {
 		getSupportActionBar().setTitle(title);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		
+
+		this.menu = menu;
 		getMenuInflater().inflate(R.menu.main, menu);
+		this.adjustOptionsMenu();
+		return true;
+	}
+
+	private void adjustOptionsMenu() {
+		if(menu == null)
+			return;
 		boolean visible = this.user.getIsLogedIn();
 		menu.findItem(R.id.action_login).setVisible(!visible);
-		menu.findItem(R.id.action_profile).setVisible(visible);
-		return true;
+		menu.findItem(R.id.action_profile).setVisible(visible);		
 	}
 
 	@Override
@@ -127,14 +141,14 @@ public class MainActivity extends ActionBarActivityBase implements
 		}
 
 		switch (item.getItemId()) {
-	    case R.id.action_settings:
-	        return true;
-	    case R.id.action_login:
-	    	Intent intent = new Intent(this, LoginActivity.class);
-	    	startActivity(intent);
-	        return true;
-	    default:
-	        return super.onOptionsItemSelected(item);
+		case R.id.action_settings:
+			return true;
+		case R.id.action_login:
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 

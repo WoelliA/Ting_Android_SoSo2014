@@ -1,6 +1,8 @@
-package de.ur.mi.android.ting.utilities;
+package de.ur.mi.android.ting.utilities.initialization;
 
 import java.util.List;
+
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class CompositeInitializeable implements IInitializeable {
 

@@ -1,4 +1,4 @@
-package de.ur.mi.android.ting.utilities;
+package de.ur.mi.android.ting.utilities.initialization;
 
 import java.util.ArrayList;
 import java.util.List;

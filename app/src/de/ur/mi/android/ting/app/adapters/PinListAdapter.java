@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import ca.weixiao.widget.InfiniteScrollListPageListener;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -19,7 +16,6 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.primitives.Pin;
-import de.ur.mi.android.ting.utilities.IImageLoadedCallback;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.views.Loading;
 

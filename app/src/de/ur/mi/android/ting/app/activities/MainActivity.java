@@ -1,39 +1,26 @@
 package de.ur.mi.android.ting.app.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IStringArrayCallback;
-import de.ur.mi.android.ting.app.adapters.PinListAdapter;
-import de.ur.mi.android.ting.model.ICategoryProvider;
-import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
-import de.ur.mi.android.ting.model.primitives.Category;
-import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.model.IUser;
+import de.ur.mi.android.ting.model.IUserService;
 
 public class MainActivity extends ActionBarActivityBase implements
 		OnItemClickListener {
@@ -41,11 +28,14 @@ public class MainActivity extends ActionBarActivityBase implements
 	private DrawerLayout drawerLayout;
 	private ListView categoryListView;
 	private ActionBarDrawerToggle drawerListener;
+	
 	PinListFragment pinContent;
+	
 
 	@Inject
 	public ICategoryProvider categoryProvider;
-
+	@Inject
+	public IUser user;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,11 +108,15 @@ public class MainActivity extends ActionBarActivityBase implements
 	private void setTitle(String title) {
 		getSupportActionBar().setTitle(title);
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
+		
 		getMenuInflater().inflate(R.menu.main, menu);
+		int visibility = this.user.getIsLogedIn()?View.INVISIBLE:View.VISIBLE;
+		findViewById(R.id.action_login).setVisibility(visibility);
+		
 		return true;
 	}
 
@@ -132,11 +126,16 @@ public class MainActivity extends ActionBarActivityBase implements
 			return true;
 		}
 
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (item.getItemId()) {
+	    case R.id.action_settings:
+	        return true;
+	    case R.id.action_login:
+	    	Intent intent = new Intent(this, LoginActivity.class);
+	    	startActivity(intent);
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 }

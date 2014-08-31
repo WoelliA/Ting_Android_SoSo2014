@@ -2,10 +2,8 @@ package de.ur.mi.android.ting.utilities;
 
 import android.graphics.Bitmap;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 

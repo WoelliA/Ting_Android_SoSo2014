@@ -1,6 +1,5 @@
 package de.ur.mi.android.ting.model.parse;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +12,11 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseQuery.CachePolicy;
-
 import de.ur.mi.android.ting.model.CategoryProviderBase;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
 import de.ur.mi.android.ting.model.IStringArrayCallback;
 import de.ur.mi.android.ting.model.primitives.Category;
-import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 @Singleton
 public class ParseCategoryProvider extends CategoryProviderBase implements

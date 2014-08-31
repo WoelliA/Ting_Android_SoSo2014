@@ -6,6 +6,7 @@ import dagger.Module;
 		MainActivity.class, 		
 		LoginActivity.class,
 		SplashScreenActivity.class
+		
 }, 
 		complete = false)
 public class ActivityModule {

@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import ca.weixiao.widget.InfiniteScrollListPageListener;
 import ca.weixiao.widget.InfiniteScrollListView;
-import android.content.Context;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

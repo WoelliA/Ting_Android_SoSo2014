@@ -1,9 +1,10 @@
 package de.ur.mi.android.ting.app.activities;
 
+import javax.inject.Inject;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,28 +15,23 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.model.IUserService;
+import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 public class LoginActivity extends BaseActivity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
 	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserLoginTask mAuthTask = null;
+	@Inject
+	public IUserService service;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -99,10 +95,7 @@ public class LoginActivity extends BaseActivity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
-
+		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -145,8 +138,21 @@ public class LoginActivity extends BaseActivity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			service.login(this.mEmail, this.mPassword, new IDoneCallback<LoginResult>() {
+				
+				@Override
+				public void done(LoginResult result) {
+					showProgress(false);
+					boolean success = result.getIsRightLogin();
+					if (success) {
+						finish();
+					} else {
+						mPasswordView
+								.setError(getString(R.string.error_incorrect_password));
+						mPasswordView.requestFocus();
+					}
+				}
+			});
 		}
 	}
 
@@ -191,52 +197,4 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				finish();
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
-		}
-	}
 }

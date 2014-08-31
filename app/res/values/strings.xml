@@ -4,16 +4,22 @@
     <string name="app_name">StarterProjekt</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="action_login">Login</string>
+    <string name="action_profile">Profile</string>
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
     <string name="button_reting">re-ting</string>
     <string name="button_like">like</string>
-    
+
     <string-array name="drawer_categories">
-	    <item >category 1</item>
-	    <item >category 2</item>
-	    <item >category 3</item>
-	</string-array>
+        <item>category 1</item>
+        <item>category 2</item>
+        <item>category 3</item>
+    </string-array>
+
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

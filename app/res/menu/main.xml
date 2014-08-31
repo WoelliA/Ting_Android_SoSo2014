@@ -2,10 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.ur.mi.android.excercises.walkthrough.PageOne" >
 
+     
+    <item
+        android:id="@+id/action_profile"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_profile"/>
+    	
+    <item
+        android:id="@+id/action_login"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_login"/>
+    
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
+   
 
 </menu>

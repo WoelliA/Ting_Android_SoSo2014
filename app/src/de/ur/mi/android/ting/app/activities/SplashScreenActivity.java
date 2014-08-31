@@ -8,7 +8,6 @@ import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.initialization.IInitializeable;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
 
 public class SplashScreenActivity extends BaseActivity {
 

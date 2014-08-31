@@ -6,4 +6,6 @@ public interface IModelIocModule {
 	public ICategoryProvider provideICategoryProvider();
 	public IBoardsProvider provideIBoardsProvider();
 	public IUserService provideIUserService();
+	public IUser provideIUser();
+	public ISearchService provideISearchService();
 }

@@ -1,6 +1,5 @@
 package de.ur.mi.android.ting.model.parse;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import android.content.Context;
@@ -13,6 +12,8 @@ import de.ur.mi.android.ting.model.IBoardsProvider;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IModelIocModule;
 import de.ur.mi.android.ting.model.IPinProvider;
+import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.IUser;
 import de.ur.mi.android.ting.model.IUserService;
 
 @Module(complete = true, library = true)
@@ -26,18 +27,21 @@ public class ParseModelIocModule implements IModelIocModule {
 		Parse.initialize(context, applicationId, clientKey);
 	}
 
+	@Override
 	@Provides
 	public IPinProvider provideIPinProvider() {
 		return new ParsePinProvider(
 				(ParseBoardsProvider) this.provideIBoardsProvider());
 	}
 
+	@Override
 	@Provides
 	@Singleton
 	public ICategoryProvider provideICategoryProvider() {
 		return new ParseCategoryProvider();
 	}
 
+	@Override
 	@Provides
 	public IBoardsProvider provideIBoardsProvider() {
 		return new ParseBoardsProvider(
@@ -45,9 +49,22 @@ public class ParseModelIocModule implements IModelIocModule {
 				(ParseUserService) this.provideIUserService());
 	}
 
+	@Override
 	@Provides
 	public IUserService provideIUserService() {
 		return new ParseUserService();
+	}
+
+	@Override
+	public IUser provideIUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ISearchService provideISearchService() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

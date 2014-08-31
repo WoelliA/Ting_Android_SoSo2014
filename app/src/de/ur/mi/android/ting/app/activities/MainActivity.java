@@ -139,8 +139,11 @@ public class MainActivity extends ActionBarActivityBase implements
 		if (drawerListener.onOptionsItemSelected(item)) {
 			return true;
 		}
-
+		
+		Intent intent;
+		
 		switch (item.getItemId()) {
+<<<<<<< HEAD
 		case R.id.action_settings:
 			return true;
 		case R.id.action_login:
@@ -149,6 +152,19 @@ public class MainActivity extends ActionBarActivityBase implements
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+=======
+		case R.id.action_search:
+			intent = new Intent (this, SearchActivity.class);
+			startActivity(intent);
+	    case R.id.action_settings:
+	        return true;
+	    case R.id.action_login:
+	    	intent = new Intent(this, LoginActivity.class);
+	    	startActivity(intent);
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+>>>>>>> origin/master
 		}
 	}
 

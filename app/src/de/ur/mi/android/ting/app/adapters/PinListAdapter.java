@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoadedCallback;
 import de.ur.mi.android.ting.utilities.IImageLoader;
+import de.ur.mi.android.ting.views.Loading;
 
 public class PinListAdapter extends
 		ca.weixiao.widget.InfiniteScrollListAdapter<Pin> {
@@ -66,11 +68,28 @@ public class PinListAdapter extends
 
 			headline.setText(pin.getTitle());
 			content.setText(pin.getDescription());
-			
-			this.imageLoader.loadImage(pin.getImageUri(), picture);
+
+			ViewSwitcher switcher = (ViewSwitcher) v
+					.findViewById(R.id.pin_loading_switcher);
+
+			String imageUri = pin.getImageUri();
+			if (switcher.getChildCount() < 2 && !isSameImage(picture, imageUri)) {
+				picture.setTag(imageUri);
+				this.imageLoader.loadImage(imageUri, picture, switcher,
+						Loading.getView(context, ""));
+			} else {
+			}
 		}
 
 		return v;
 	}
 
+	private boolean isSameImage(View view, String imageUri) {
+		Object tag = view.getTag();
+		boolean isSame = tag != null && tag.equals(imageUri);
+		if (isSame) {
+			Log.i("image", "is same");
+		}
+		return isSame;
+	}
 }

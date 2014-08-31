@@ -8,12 +8,14 @@ import ca.weixiao.widget.InfiniteScrollListPageListener;
 import ca.weixiao.widget.InfiniteScrollListView;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.model.ICategoryProvider;
@@ -23,11 +25,12 @@ import de.ur.mi.android.ting.model.IPinReceivedCallback;
 import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.views.Loading;
 
 public class PinListFragment extends BaseFragment implements IPaging {
 
 	private TextView header;
-	
+
 	private PinListAdapter pinAdapter;
 	private ArrayList<Pin> pins;
 
@@ -39,6 +42,10 @@ public class PinListFragment extends BaseFragment implements IPaging {
 	private String categoryName;
 	private Category category;
 
+	private ViewSwitcher switcher;
+
+	private boolean loading;
+
 	public PinListFragment(String categoryName) {
 		this.categoryName = categoryName;
 		pins = new ArrayList<Pin>();
@@ -47,7 +54,8 @@ public class PinListFragment extends BaseFragment implements IPaging {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		this.header = (TextView) View.inflate(this.getActivity(), R.layout.pinlist_header_layout, null);
+		this.header = (TextView) View.inflate(this.getActivity(),
+				R.layout.pinlist_header_layout, null);
 		return inflater.inflate(R.layout.fragment_pinlist, container, false);
 	}
 
@@ -58,8 +66,17 @@ public class PinListFragment extends BaseFragment implements IPaging {
 		this.category = this.categoryProvider
 				.resolveCategoryByName(categoryName);
 
+		initViewSwitcher();
 		initPinListUI();
+		setLoading(true);
 		getPins();
+	}
+
+	private void initViewSwitcher() {
+		View loadingView = Loading.getView(this.getActivity(), "Loading");
+		this.switcher = (ViewSwitcher) this.getView().findViewById(
+				R.id.fragment_pinlist_viewswitcher);
+		this.switcher.addView(loadingView);
 	}
 
 	private void getPins() {
@@ -71,6 +88,7 @@ public class PinListFragment extends BaseFragment implements IPaging {
 				new IPinReceivedCallback() {
 					@Override
 					public void onPinsReceived(ArrayList<Pin> pins) {
+						setLoading(false);
 						if (pins != null) {
 							pinAdapter.addAll(pins);
 						}
@@ -80,7 +98,14 @@ public class PinListFragment extends BaseFragment implements IPaging {
 							pinAdapter.notifyEndOfList();
 						}
 					}
+
 				});
+	}
+
+	private void setLoading(boolean loading) {
+		if (this.loading != loading)
+			this.switcher.showNext();
+		this.loading = loading;
 	}
 
 	private void initPinListUI() {

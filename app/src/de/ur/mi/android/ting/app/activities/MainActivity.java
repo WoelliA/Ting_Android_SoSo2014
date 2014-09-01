@@ -80,14 +80,11 @@ public class MainActivity extends ActionBarActivityBase implements
 		categoryListView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, categories));
 		categoryListView.setOnItemClickListener(this);
-
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
 		drawerListener.syncState();
+
 	}
+
+
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,

@@ -6,6 +6,9 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.fragments.SearchFragmentBoards;
+import de.ur.mi.android.ting.app.fragments.SearchFragmentPins;
+import de.ur.mi.android.ting.app.fragments.SearchFragmentUser;
 import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
@@ -140,7 +143,23 @@ public class SearchActivity extends BaseActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class
 			// below).
-			return PlaceholderFragment.newInstance(position + 1);
+			Fragment fragment;
+			
+			switch (position) {
+			case 0:
+				fragment = new SearchFragmentUser();
+				return fragment;
+			case 1:
+				fragment = new SearchFragmentPins();
+				return fragment;
+			case 2:
+				fragment = new SearchFragmentBoards();
+				return fragment;	
+				
+			default:
+				return PlaceholderFragment.newInstance(position + 1);
+			}
+			
 		}
 
 		@Override

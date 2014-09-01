@@ -3,20 +3,21 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.ur.mi.android.ting.app.activities.MainActivity">
+    tools:context="de.ur.mi.android.ting.app.activities.MainActivity" >
 
-	<FrameLayout
-    	android:id="@+id/container"
-   		android:layout_width="match_parent"
-    	android:layout_height="match_parent" >
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
     </FrameLayout>
 
-    <ListView 
-        android:background="#FFFFFF"
-        android:id="@+id/drawer_list"
+    <fragment
+        android:id="@+id/categories_fragment"
+        android:name="de.ur.mi.android.ting.app.fragments.CategoriesFragment"
         android:layout_width="@dimen/max_drawer_width"
         android:layout_height="match_parent"
-        android:layout_gravity="start">
-    </ListView>
+        android:layout_gravity="start"
+        android:background="#FFFFFF" >
+    </fragment>
 
 </android.support.v4.widget.DrawerLayout>

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import de.ur.mi.android.ting.app.IInjector;
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends android.support.v4.app.Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

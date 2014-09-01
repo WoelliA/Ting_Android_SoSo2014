@@ -13,7 +13,6 @@ import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IModelIocModule;
 import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.ISearchService;
-import de.ur.mi.android.ting.model.IUser;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 
@@ -30,37 +29,27 @@ public class ParseModelIocModule implements IModelIocModule {
 
 	@Override
 	@Provides
-	public IPinProvider provideIPinProvider(IUser user) {
-		return new ParsePinProvider(
-				(ParseBoardsProvider) this.provideIBoardsProvider(user));
+	public IPinProvider provideIPinProvider() {
+		return new ParsePinProvider();
 	}
 
 	@Override
 	@Provides
 	@Singleton
-	public ICategoryProvider provideICategoryProvider() {
-		return new ParseCategoryProvider();
+	public ICategoryProvider provideICategoryProvider(LocalUser user) {
+		return new ParseCategoryProvider(user);
 	}
 
 	@Override
 	@Provides
-	public IBoardsProvider provideIBoardsProvider(IUser user) {
-		return new ParseBoardsProvider(
-				(ParseCategoryProvider) this.provideICategoryProvider(),
-				(ParseUserService) this.provideIUserService(user));
+	public IBoardsProvider provideIBoardsProvider(LocalUser user) {
+		return new ParseBoardsProvider(user);
 	}
 
 	@Override
 	@Provides
-	public IUserService provideIUserService(IUser user) {
+	public IUserService provideIUserService(LocalUser user, ICategoryProvider categoryProvider) {
 		return new ParseUserService(user);
-	}
-
-	@Override
-	@Provides
-	@Singleton
-	public IUser provideIUser() {
-		return new LocalUser();
 	}
 
 	@Override
@@ -68,6 +57,14 @@ public class ParseModelIocModule implements IModelIocModule {
 	public ISearchService provideISearchService() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Provides
+	@Singleton
+	public LocalUser provideLocalUser() {
+
+		return new LocalUser();
 	}
 
 }

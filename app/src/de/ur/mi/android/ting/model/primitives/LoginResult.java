@@ -6,10 +6,10 @@ public class LoginResult {
 
 	public LoginResult(boolean isRightLogin) {
 		this.isRightLogin = isRightLogin;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean getIsRightLogin(){
 		return isRightLogin;
 	}
+
 }

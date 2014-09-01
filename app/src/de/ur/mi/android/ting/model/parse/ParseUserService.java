@@ -6,23 +6,21 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import de.ur.mi.android.ting.model.IUser;
 import de.ur.mi.android.ting.model.IUserService;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class ParseUserService implements IUserService {
 
-	private IUser user;
+	private LocalUser user;
 
-	public ParseUserService(IUser user) {
+	public ParseUserService(LocalUser user) {
 		this.user = user;
 		
 	}
-	public User createUser(ParseObject parseObject){
-		return null;
-	}
+
 
 	@Override
 	public void login(String userName, String password,
@@ -52,5 +50,7 @@ public class ParseUserService implements IUserService {
 		 this.user.setIsLoggedIn(isLoggedIn);
 		 return isLoggedIn;
 	}
+	
+	
 	
 }

@@ -11,6 +11,7 @@ import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IAppStart;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import de.ur.mi.android.ting.utilities.initialization.CompositeInitializeable;
 import de.ur.mi.android.ting.utilities.initialization.IInitializeable;
 import de.ur.mi.android.ting.utilities.initialization.InitializeableProvider;
@@ -31,7 +32,8 @@ public class AppModule {
 
 	@Provides
 	IInitializeable provideIInitializeable(
-			final ICategoryProvider categoryProvider, final IUserService userService) {
+			final ICategoryProvider categoryProvider,
+			final IUserService userService) {
 		InitializeableProvider provider = new InitializeableProvider();
 
 		// category initializeable
@@ -40,33 +42,18 @@ public class AppModule {
 			@Override
 			public void initialize(final IDoneCallback<Void> callback) {
 				categoryProvider
-						.getAllCategories(new ICategoryReceivedCallback() {
+						.getAllCategories(new SimpleDoneCallback<List<Category>>() {
 
 							@Override
-							public void onCategoriesReceived(
-									List<Category> categories) {
+							public void done(List<Category> result) {
+								userService.checkIsLoggedIn();
 								callback.done(null);
 							}
 						});
-
 			}
-		});			
+		});
 		// end category initializeable
 
-		
-		// user initialize
-		provider.addInitializeable(new IInitializeable() {
-			
-			@Override
-			public void initialize(IDoneCallback<Void> callback) {
-				if(userService.checkIsLoggedIn()){
-					
-				}
-				callback.done(null);
-			}
-			
-		});
-		
 		return new CompositeInitializeable(provider);
 	}
 }

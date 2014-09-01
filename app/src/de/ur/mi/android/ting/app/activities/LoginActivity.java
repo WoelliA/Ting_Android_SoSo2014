@@ -18,6 +18,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -134,7 +135,7 @@ public class LoginActivity extends BaseActivity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			service.login(this.mUserName, this.mPassword, new IDoneCallback<LoginResult>() {
+			service.login(this.mUserName, this.mPassword, new SimpleDoneCallback<LoginResult>() {
 				
 				@Override
 				public void done(LoginResult result) {

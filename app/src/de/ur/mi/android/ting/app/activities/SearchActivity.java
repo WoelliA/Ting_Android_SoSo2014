@@ -12,6 +12,7 @@ import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.SearchType;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -73,7 +74,7 @@ public class SearchActivity extends BaseActivity implements
 				});
 
 		this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
-				"query"), new IDoneCallback<SearchResult<Pin>>() {
+				"query"), new SimpleDoneCallback<SearchResult<Pin>>() {
 
 			@Override
 			public void done(SearchResult<Pin> result) {

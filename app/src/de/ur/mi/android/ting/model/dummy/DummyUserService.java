@@ -1,24 +1,27 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import android.os.AsyncTask;
-import de.ur.mi.android.ting.model.IUser;
+import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class DummyUserService implements IUserService {
 
-	private IUser user;
-	public DummyUserService(IUser user) {
-		this.user = user;		
+	private LocalUser user;
+	boolean isRightLogin;
+	private ICategoryProvider categoryProvider;
+
+	public DummyUserService(LocalUser user, ICategoryProvider categoryProvider) {
+		this.user = user;
+		this.categoryProvider = categoryProvider;
 	}
-	
-	
-	boolean isRightLogin ;
+
 	@Override
 	public void login(String userName, String password,
 			final IDoneCallback<LoginResult> callback) {
-		isRightLogin= userName == "right@right.de" && password == "right";
+		isRightLogin = userName == "right@right.de" && password == "right";
 		AsyncTask<Void, Void, Void> loginTask = new AsyncTask<Void, Void, Void>() {
 
 			@Override
@@ -41,8 +44,10 @@ public class DummyUserService implements IUserService {
 		};
 		loginTask.execute();
 	}
+
 	@Override
 	public boolean checkIsLoggedIn() {
+		this.user.setIsLoggedIn(DummyConfig.IS_USER_LOGGED_DEFAULT);
 		return this.user.getIsLogedIn();
 	}
 }

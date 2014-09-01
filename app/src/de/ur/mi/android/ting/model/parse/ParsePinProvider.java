@@ -19,13 +19,6 @@ import de.ur.mi.android.ting.model.primitives.Pin;
 
 public class ParsePinProvider implements IPinProvider {
 
-	private ParseBoardsProvider boardsProvider;
-
-	public ParsePinProvider(ParseBoardsProvider boardsProvider) {
-		this.boardsProvider = boardsProvider;
-
-	}
-
 	@Override
 	public void getPinsForCategory(Category category, PinRequest request,
 			final IPinReceivedCallback callback) {
@@ -73,7 +66,7 @@ public class ParsePinProvider implements IPinProvider {
 				object.getString("title"),
 				object.getString("description"),
 				object.getString("image"),
-				this.boardsProvider.createBoard(object.getParseObject("board")),
+				ParseHelper.createBoard(object.getParseObject("board")),
 				object.getString("url"), object.getDouble("aspectratio"));
 	}
 

@@ -3,7 +3,8 @@
     android:id="@+id/fragment_pinlist_viewswitcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@android:color/background_light">
 
     <ca.weixiao.widget.InfiniteScrollListView
         android:id="@+id/list"

@@ -25,43 +25,32 @@ import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.views.Loading;
 
 public class PinListFragment extends BaseFragment implements IPaging {
-
-	private TextView header;
-
 	private PinListAdapter pinAdapter;
 	private ArrayList<Pin> pins;
 
 	@Inject
 	public IPinProvider pinProvider;
-	@Inject
-	public ICategoryProvider categoryProvider;
 
-	private String categoryName;
 	private Category category;
 
 	private ViewSwitcher switcher;
 
 	private boolean loading;
 
-	public PinListFragment(String categoryName) {
-		this.categoryName = categoryName;
+	public PinListFragment(Category category) {
+		this.category = category;
 		pins = new ArrayList<Pin>();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		this.header = (TextView) View.inflate(this.getActivity(),
-				R.layout.pinlist_header_layout, null);
 		return inflater.inflate(R.layout.fragment_pinlist, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		this.category = this.categoryProvider
-				.resolveCategoryByName(categoryName);
 
 		initViewSwitcher();
 		initPinListUI();
@@ -117,13 +106,6 @@ public class PinListFragment extends BaseFragment implements IPaging {
 		InfiniteScrollListView pinList = (InfiniteScrollListView) getView()
 				.findViewById(R.id.list);
 		pinList.setAdapter(pinAdapter);
-
-		initHeader(pinList);
-	}
-
-	private void initHeader(ListView listView) {
-		this.header.setText(this.categoryName);
-		listView.addHeaderView(this.header);
 	}
 
 	private void initLikeButton() {

@@ -10,6 +10,8 @@ public class Category extends UniqueBase {
 	private String name;
 	
 	private String shortName;
+
+	private boolean isFavorite;
 	
 	public String getName() {
 		return name;
@@ -25,5 +27,18 @@ public class Category extends UniqueBase {
 
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+
+	public void setIsFavorite(boolean isFavorite){
+		this.isFavorite = isFavorite;
+	}
+	
+	public boolean getIsFavorite() {
+		return this.isFavorite;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getId().hashCode();
 	}
 }

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
@@ -19,14 +21,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.ISelectedListener;
+import de.ur.mi.android.ting.app.fragments.CategoriesFragment;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IStringArrayCallback;
-import de.ur.mi.android.ting.model.IUser;
 import de.ur.mi.android.ting.model.IUserService;
+import de.ur.mi.android.ting.model.LocalUser;
+import de.ur.mi.android.ting.model.primitives.Category;
 
 public class MainActivity extends ActionBarActivityBase implements
-		OnItemClickListener {
+		ISelectedListener<Category> {
 
 	private DrawerLayout drawerLayout;
 	private ListView categoryListView;
@@ -36,27 +41,32 @@ public class MainActivity extends ActionBarActivityBase implements
 	PinListFragment pinContent;
 
 	@Inject
-	public ICategoryProvider categoryProvider;
-	@Inject
-	public IUser user;
+	public LocalUser user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		getActionBar().show();
 		setContentView(R.layout.activity_main);
-
-		if (savedInstanceState == null) {
-			this.categoryProvider
-					.getAllCategoryNames(new IStringArrayCallback() {
-						@Override
-						public void onStringArrayReceived(String[] strings) {
-							initDrawer(strings);
-							setCategory(strings[0]);
+		CategoriesFragment f = (CategoriesFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.categories_fragment);
+		f.setCategorySelectedListener(this);
+		this.getSupportFragmentManager().addOnBackStackChangedListener(
+				new OnBackStackChangedListener() {
+					@Override
+					public void onBackStackChanged() {
+						if (getSupportFragmentManager()
+								.getBackStackEntryCount() == 0) {
+							return;
 						}
-					});
-		}
+
+						FragmentManager manager = getSupportFragmentManager();
+						String name = manager.getBackStackEntryAt(
+								getSupportFragmentManager()
+										.getBackStackEntryCount() - 1)
+								.getName();
+						setTitle(name);
+					}
+				});
 	}
 
 	@Override
@@ -65,8 +75,13 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.adjustOptionsMenu();
 	}
 
-	private void initDrawer(String[] categories) {
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		initDrawer();
+	}
 
+	private void initDrawer() {
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerListener = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -75,50 +90,34 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		categoryListView = (ListView) findViewById(R.id.drawer_list);
 
-		categoryListView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, categories));
-		categoryListView.setOnItemClickListener(this);
-
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
 		drawerListener.syncState();
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		String categoryName = (String) ((TextView) view).getText();
-
-		setSelectItem(position);
-		setCategory(categoryName);
-		drawerLayout.closeDrawers();
 	}
 
 	private void setSelectItem(int position) {
 		categoryListView.setItemChecked(position, true);
 	}
 
-	private void setCategory(String categoryName) {
+	private void setCategory(Category selectedCategory) {
 		// setTitle(categoryName);
-		setContent(categoryName);
+		setContent(selectedCategory);
 	}
 
-	private void setContent(String categoryName) {
+	private void setContent(Category category) {
+		this.setTitle(category.getName());
+		FragmentManager manager = getSupportFragmentManager();
+		boolean isFirst = this.pinContent == null;
 
-		FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
-		if (this.pinContent != null)
-			transaction.detach(this.pinContent);
-		this.pinContent = new PinListFragment(categoryName);
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		this.pinContent = new PinListFragment(category);
 		transaction.add(R.id.container, this.pinContent);
-		transaction.addToBackStack(categoryName);
+		transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+		
+		if(!isFirst)
+			transaction.addToBackStack(category.getName());
+		
 		transaction.commit();
-
 	}
 
 	private void setTitle(String title) {
@@ -132,14 +131,14 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.menu = menu;
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.adjustOptionsMenu();
-		
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-		
-		
+
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		searchView.setSubmitButtonEnabled(true);
+
 		return true;
 	}
 
@@ -151,9 +150,6 @@ public class MainActivity extends ActionBarActivityBase implements
 		menu.findItem(R.id.action_profile).setVisible(visible);
 	}
 
-	
-	
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (drawerListener.onOptionsItemSelected(item)) {
@@ -174,6 +170,15 @@ public class MainActivity extends ActionBarActivityBase implements
 			startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onSelected(Category selectedCategory) {
+		setCategory(selectedCategory);
+		if (drawerLayout != null) {
+			drawerLayout.closeDrawers();
+
 		}
 	}
 

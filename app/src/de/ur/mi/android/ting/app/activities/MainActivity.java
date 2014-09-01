@@ -99,6 +99,9 @@ public class MainActivity extends ActionBarActivityBase implements
 	protected void onResume() {
 		super.onResume();
 		this.adjustOptionsMenu();
+		if (checkInternetConnection() == false) {
+			showAlertNoInternetConnection();
+		}
 	}
 
 	private void initDrawer(String[] categories) {

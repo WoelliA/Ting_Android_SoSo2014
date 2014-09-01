@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.app.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,6 +50,8 @@ public class SearchActivity extends BaseActivity implements
 	@Inject
 	public ISearchService searchService;
 
+	private ArrayList<Fragment> fragments;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,9 +77,13 @@ public class SearchActivity extends BaseActivity implements
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
+						mViewPager.setCurrentItem(position);
 					}
 				});
 
+		initFragments();
+		
+		
 		this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
 				"query"), new IDoneCallback<SearchResult<Pin>>() {
 
@@ -97,6 +104,14 @@ public class SearchActivity extends BaseActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+	}
+
+	private void initFragments() {
+		fragments = new ArrayList<>();
+		fragments.add(new SearchFragmentUser());
+		fragments.add(new SearchFragmentPins());
+		fragments.add(new SearchFragmentBoards());
+		
 	}
 
 	@Override
@@ -134,6 +149,8 @@ public class SearchActivity extends BaseActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
+		
+		
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -143,28 +160,12 @@ public class SearchActivity extends BaseActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class
 			// below).
-			Fragment fragment;
 			
-			switch (position) {
-			case 0:
-				fragment = new SearchFragmentUser();
-				return fragment;
-			case 1:
-				fragment = new SearchFragmentPins();
-				return fragment;
-			case 2:
-				fragment = new SearchFragmentBoards();
-				return fragment;	
-				
-			default:
-				return PlaceholderFragment.newInstance(position + 1);
+			return fragments.get(position);
 			}
-			
-		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			return 3;
 		}
 

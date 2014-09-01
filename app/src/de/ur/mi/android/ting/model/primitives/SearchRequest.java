@@ -11,6 +11,21 @@ public class SearchRequest {
 		this.offset = offset;
 		this.count = count;
 		this.query = query;
-		
+	}
+
+	public SearchType getType() {
+		return type;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public int getCount() {
+		return count;
 	}
 }

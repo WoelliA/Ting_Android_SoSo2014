@@ -26,8 +26,8 @@
     </string-array>
 
     <string name="title_activity_search">SearchActivity</string>
-    <string name="title_section1">user</string>
-    <string name="title_section2">pins</string>
-    <string name="title_section3">boards</string>
+    <string name="search_user_header">user</string>
+    <string name="search_pins_header">pins</string>
+    <string name="search_boards_header">boards</string>
 
 </resources>

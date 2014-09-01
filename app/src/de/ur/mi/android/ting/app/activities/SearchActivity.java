@@ -7,34 +7,33 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.fragments.SearchFragmentBoards;
-import de.ur.mi.android.ting.app.fragments.SearchFragmentPins;
-import de.ur.mi.android.ting.app.fragments.SearchFragmentUser;
+import de.ur.mi.android.ting.app.IInjector;
+import de.ur.mi.android.ting.app.fragments.SearchResultFragment;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.SearchType;
+import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v13.app.FragmentStatePagerAdapter;
-
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class SearchActivity extends FragmentActivity implements
+public class SearchActivity extends ActionBarActivityBase implements
 		ActionBar.TabListener {
 
 	/**
@@ -54,20 +53,20 @@ public class SearchActivity extends FragmentActivity implements
 	@Inject
 	public ISearchService searchService;
 
-	private ArrayList<Fragment> fragments;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 
 		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+		List<SearchResultFragment> fragments = initFragments();
+		mSectionsPagerAdapter = new SectionsPagerAdapter(
+				getSupportFragmentManager(), fragments);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -85,18 +84,6 @@ public class SearchActivity extends FragmentActivity implements
 					}
 				});
 
-
-		initFragments();
-		/*this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
-				"query"), new IDoneCallback<SearchResult<Pin>>() {
-
-			@Override
-			public void done(SearchResult<Pin> result) {
-				@SuppressWarnings("unused")
-				List<Pin> pins = result.getResults();
-			}
-		});*/
-
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 			// Create a tab with text corresponding to the page title defined by
@@ -109,12 +96,18 @@ public class SearchActivity extends FragmentActivity implements
 		}
 	}
 
-	private void initFragments() {
-		fragments = new ArrayList<>();
-		fragments.add(new SearchFragmentUser());
-		fragments.add(new SearchFragmentPins());
-		fragments.add(new SearchFragmentBoards());
-		
+	private List<SearchResultFragment> initFragments() {
+		ArrayList<SearchResultFragment> fragments = new ArrayList<>();
+		fragments.add(new SearchResultFragment<Pin>(
+				getString(R.string.search_pins_header), SearchType.PIN, this,
+				new ViewResolver.PinViewResolver()));
+		fragments.add(new SearchResultFragment<User>(
+				getString(R.string.search_user_header), SearchType.USER, this,
+				new ViewResolver.UserViewResolver()));
+		fragments.add(new SearchResultFragment<Board>(
+				getString(R.string.search_boards_header), SearchType.BOARD,
+				this, new ViewResolver.BoardViewResolver()));
+		return fragments;
 	}
 
 	@Override
@@ -152,82 +145,32 @@ public class SearchActivity extends FragmentActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-		
-		
-		public SectionsPagerAdapter(FragmentManager fm) {
+		private List<SearchResultFragment> fragments;
+
+		public SectionsPagerAdapter(FragmentManager fm,
+				List<SearchResultFragment> fragments) {
 			super(fm);
+			this.fragments = fragments;
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a PlaceholderFragment (defined as a static inner class
-			// below).
-			
 			return fragments.get(position);
-			}
+		}
 
 		@Override
 		public int getCount() {
-			return 3;
+			if (fragments == null)
+				return -1;
+			return fragments.size();
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
-			}
-			return null;
+			String title = ((SearchResultFragment) this.getItem(position))
+					.getTitle();
+			return title.toUpperCase(l);
 		}
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		private static final String ARG_SECTION_NUMBER = "section_number";
-		private static String marker;
-
-		/**
-		 * Returns a new instance of this fragment for the given section number.
-		 */
-		public static PlaceholderFragment newInstance(int sectionNumber) {
-			PlaceholderFragment fragment = new PlaceholderFragment();
-			marker = String.valueOf(sectionNumber);
-			Bundle args = new Bundle();
-			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_search,
-					container, false);
-			return rootView;
-		}
-		
-		@Override
-		public void onViewCreated(View view, Bundle savedInstanceState) {
-			super.onViewCreated(view, savedInstanceState);
-			TextView textView = (TextView)getActivity().findViewById(R.id.section_label);
-			textView.setText("Fragment" + marker);
-			
-		}
-	}
-
 }

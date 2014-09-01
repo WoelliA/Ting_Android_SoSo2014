@@ -22,7 +22,7 @@ import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
-public class CategoriesFragment extends BaseFragment implements
+public class CategoriesFragment extends FragmentBase implements
 IChangeListener<Category> {
 
 	@Inject

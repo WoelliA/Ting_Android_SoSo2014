@@ -24,7 +24,7 @@ import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.views.Loading;
 
-public class PinListFragment extends BaseFragment implements IPaging {
+public class PinListFragment extends FragmentBase implements IPaging {
 	private PinListAdapter pinAdapter;
 	private ArrayList<Pin> pins;
 

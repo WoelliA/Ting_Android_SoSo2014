@@ -1,11 +1,15 @@
 package de.ur.mi.android.ting.app.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.fragments.SearchFragmentBoards;
+import de.ur.mi.android.ting.app.fragments.SearchFragmentPins;
+import de.ur.mi.android.ting.app.fragments.SearchFragmentUser;
 import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
@@ -17,15 +21,20 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-public class SearchActivity extends BaseActivity implements
+public class SearchActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	/**
@@ -45,6 +54,8 @@ public class SearchActivity extends BaseActivity implements
 	@Inject
 	public ISearchService searchService;
 
+	private ArrayList<Fragment> fragments;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,18 +81,21 @@ public class SearchActivity extends BaseActivity implements
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
+						mViewPager.setCurrentItem(position);
 					}
 				});
 
-		this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
-				"query"), new SimpleDoneCallback<SearchResult<Pin>>() {
+
+		initFragments();
+		/*this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
+				"query"), new IDoneCallback<SearchResult<Pin>>() {
 
 			@Override
 			public void done(SearchResult<Pin> result) {
 				@SuppressWarnings("unused")
 				List<Pin> pins = result.getResults();
 			}
-		});
+		});*/
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -93,6 +107,14 @@ public class SearchActivity extends BaseActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+	}
+
+	private void initFragments() {
+		fragments = new ArrayList<>();
+		fragments.add(new SearchFragmentUser());
+		fragments.add(new SearchFragmentPins());
+		fragments.add(new SearchFragmentBoards());
+		
 	}
 
 	@Override
@@ -128,8 +150,10 @@ public class SearchActivity extends BaseActivity implements
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
+		
+		
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -139,12 +163,12 @@ public class SearchActivity extends BaseActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class
 			// below).
-			return PlaceholderFragment.newInstance(position + 1);
-		}
+			
+			return fragments.get(position);
+			}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			return 3;
 		}
 
@@ -172,12 +196,14 @@ public class SearchActivity extends BaseActivity implements
 		 * fragment.
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
+		private static String marker;
 
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
 		public static PlaceholderFragment newInstance(int sectionNumber) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
+			marker = String.valueOf(sectionNumber);
 			Bundle args = new Bundle();
 			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 			fragment.setArguments(args);
@@ -193,6 +219,14 @@ public class SearchActivity extends BaseActivity implements
 			View rootView = inflater.inflate(R.layout.fragment_search,
 					container, false);
 			return rootView;
+		}
+		
+		@Override
+		public void onViewCreated(View view, Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+			TextView textView = (TextView)getActivity().findViewById(R.id.section_label);
+			textView.setText("Fragment" + marker);
+			
 		}
 	}
 

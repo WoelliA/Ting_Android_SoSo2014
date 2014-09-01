@@ -18,11 +18,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class SearchActivity extends BaseActivity implements
 		ActionBar.TabListener {
@@ -127,7 +129,7 @@ public class SearchActivity extends BaseActivity implements
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -171,12 +173,14 @@ public class SearchActivity extends BaseActivity implements
 		 * fragment.
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
+		private static String marker;
 
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
 		public static PlaceholderFragment newInstance(int sectionNumber) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
+			marker = String.valueOf(sectionNumber);
 			Bundle args = new Bundle();
 			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 			fragment.setArguments(args);
@@ -192,6 +196,14 @@ public class SearchActivity extends BaseActivity implements
 			View rootView = inflater.inflate(R.layout.fragment_search,
 					container, false);
 			return rootView;
+		}
+		
+		@Override
+		public void onViewCreated(View view, Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+			TextView textView = (TextView)getActivity().findViewById(R.id.section_label);
+			textView.setText("Fragment" + marker);
+			
 		}
 	}
 

@@ -12,6 +12,12 @@
     <string name="drawer_close">Close Navigation Drawer</string>
     <string name="button_reting">re-ting</string>
     <string name="button_like">like</string>
+    <string name="connection_error_title">No Internet Connection</string>
+    <string name="connection_error_content">For Ting to work properly, please enable your Internet Connection.</string>
+    <string name="login_error_title">Login Error</string>
+    <string name="login_error_content">Your Internet Connection has to be enabled, if you want to log in.</string>
+    <string name="button_back">Back</string>
+    <string name="button_dismiss">OK</string>
 
     <string-array name="drawer_categories">
         <item>category 1</item>

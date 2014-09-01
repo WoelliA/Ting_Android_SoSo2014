@@ -5,6 +5,12 @@ import javax.inject.Inject;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -80,6 +86,37 @@ public class LoginActivity extends BaseActivity {
 						attemptLogin();
 					}
 				});
+		
+		if (checkInternetConnection() == false) {
+			showAlertNoInternetConnection();
+		}
+	}
+	
+	
+	private void showAlertNoInternetConnection() {
+		AlertDialog.Builder connectionDialog = new AlertDialog.Builder(this);
+		connectionDialog.setTitle(getString(R.string.login_error_title));
+		connectionDialog.setMessage(getString(R.string.login_error_content));
+		connectionDialog.setNeutralButton(R.string.button_back, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+				}
+		});
+		connectionDialog.setCancelable(true);
+		connectionDialog.setIcon(android.R.drawable.ic_dialog_alert);
+		connectionDialog.show();
+	}
+	
+	private boolean checkInternetConnection() {
+		
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;	
 	}
 
 	@Override

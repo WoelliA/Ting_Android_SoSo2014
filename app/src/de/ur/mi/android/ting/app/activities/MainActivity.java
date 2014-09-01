@@ -2,9 +2,14 @@ package de.ur.mi.android.ting.app.activities;
 
 import javax.inject.Inject;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
@@ -47,6 +52,10 @@ public class MainActivity extends ActionBarActivityBase implements
 		getActionBar().show();
 		setContentView(R.layout.activity_main);
 
+		if (checkInternetConnection() == false) {
+			showAlertNoInternetConnection();
+		}
+		
 		if (savedInstanceState == null) {
 			this.categoryProvider
 					.getAllCategoryNames(new IStringArrayCallback() {
@@ -59,6 +68,33 @@ public class MainActivity extends ActionBarActivityBase implements
 		}
 	}
 
+	private void showAlertNoInternetConnection() {
+		AlertDialog.Builder connectionDialog = new AlertDialog.Builder(this);
+		connectionDialog.setTitle(getString(R.string.connection_error_title));
+		connectionDialog.setMessage(getString(R.string.connection_error_content));
+		connectionDialog.setNeutralButton(R.string.button_dismiss, new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				
+			}
+		});
+		connectionDialog.setCancelable(true);
+		connectionDialog.setIcon(android.R.drawable.ic_dialog_alert);
+		connectionDialog.show();
+	}
+
+	private boolean checkInternetConnection() {
+		
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;	
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();

@@ -20,17 +20,20 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v13.app.FragmentStatePagerAdapter;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class SearchActivity extends BaseActivity implements
+public class SearchActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	/**
@@ -82,9 +85,7 @@ public class SearchActivity extends BaseActivity implements
 				});
 
 		initFragments();
-		
-		
-		this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
+		/*this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
 				"query"), new IDoneCallback<SearchResult<Pin>>() {
 
 			@Override
@@ -92,7 +93,7 @@ public class SearchActivity extends BaseActivity implements
 				@SuppressWarnings("unused")
 				List<Pin> pins = result.getResults();
 			}
-		});
+		});*/
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {

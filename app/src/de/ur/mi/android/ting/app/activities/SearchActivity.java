@@ -1,16 +1,17 @@
 package de.ur.mi.android.ting.app.activities;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.R.id;
-import de.ur.mi.android.ting.R.layout;
-import de.ur.mi.android.ting.R.menu;
-import de.ur.mi.android.ting.R.string;
 import de.ur.mi.android.ting.model.ISearchService;
-import android.app.Activity;
+import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.model.primitives.SearchRequest;
+import de.ur.mi.android.ting.model.primitives.SearchResult;
+import de.ur.mi.android.ting.model.primitives.SearchType;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -19,15 +20,12 @@ import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-public class SearchActivity extends BaseActivity implements ActionBar.TabListener {
+public class SearchActivity extends BaseActivity implements
+		ActionBar.TabListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -42,7 +40,7 @@ public class SearchActivity extends BaseActivity implements ActionBar.TabListene
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	
+
 	@Inject
 	public ISearchService searchService;
 
@@ -74,6 +72,16 @@ public class SearchActivity extends BaseActivity implements ActionBar.TabListene
 					}
 				});
 
+		this.searchService.search(new SearchRequest(SearchType.PIN, 10, 20,
+				"query"), new IDoneCallback<SearchResult<Pin>>() {
+
+			@Override
+			public void done(SearchResult<Pin> result) {
+				@SuppressWarnings("unused")
+				List<Pin> pins = result.getResults();
+			}
+		});
+
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 			// Create a tab with text corresponding to the page title defined by
@@ -85,35 +93,16 @@ public class SearchActivity extends BaseActivity implements ActionBar.TabListene
 					.setTabListener(this));
 		}
 	}
-	
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
-    }
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		setIntent(intent);
+		handleIntent(intent);
+	}
 
 	private void handleIntent(Intent intent) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

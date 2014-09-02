@@ -97,7 +97,7 @@ public class SearchActivity extends ActionBarActivityBase implements
 	}
 
 	private List<SearchResultFragment> initFragments() {
-		ArrayList<SearchResultFragment> fragments = new ArrayList<>();
+		ArrayList<SearchResultFragment> fragments = new ArrayList<SearchResultFragment>();
 		fragments.add(new SearchResultFragment<Pin>(
 				getString(R.string.search_pins_header), SearchType.PIN, this,
 				new ViewResolver.PinViewResolver()));

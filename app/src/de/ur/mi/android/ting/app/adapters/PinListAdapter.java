@@ -19,29 +19,17 @@ import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.views.Loading;
 
-public class PinListAdapter extends
-		ca.weixiao.widget.InfiniteScrollListAdapter<Pin> {
+public class PinListAdapter extends PagingListAdapterBase<Pin> {
 
-	private ArrayList<Pin> PinList;
 	private Context context;
-	private IPaging paging;
 
 	@Inject
 	public IImageLoader imageLoader;
 
-	public PinListAdapter(Context context, ArrayList<Pin> Pins, IPaging paging) {
-		super(context, R.id.pin_layout, Pins);
+	public PinListAdapter(Context context, ArrayList<Pin> Pins, IPaging<Pin> paging) {
+		super(context, R.id.pin_layout, Pins, paging);
 		((IInjector) context).inject(this);
-		this.paging = paging;
 		this.context = context;
-		this.PinList = Pins;
-	}
-
-	@Override
-	protected void onScrollNext() {
-		if (this.paging != null) {
-			this.paging.loadNextPage();
-		}
 	}
 
 	@Override
@@ -55,7 +43,7 @@ public class PinListAdapter extends
 			v = inflater.inflate(R.layout.pin_layout, parent, false);
 		}
 
-		Pin pin = PinList.get(position);
+		Pin pin = this.getItem(position);
 
 		if (pin != null) {
 			TextView headline = (TextView) v.findViewById(R.id.pin_headline);

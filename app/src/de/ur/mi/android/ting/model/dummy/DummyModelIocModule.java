@@ -12,17 +12,15 @@ import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 
-@Module(complete=true,
-		library=true)
+@Module(complete = true, library = true)
 public class DummyModelIocModule implements IModelIocModule {
-	
+
 	@Override
 	@Provides
 	@Singleton
 	public ICategoryProvider provideICategoryProvider(LocalUser user) {
 		return new DummyCategoryProvider(user);
 	}
-
 
 	@Override
 	@Provides
@@ -46,13 +44,13 @@ public class DummyModelIocModule implements IModelIocModule {
 	@Override
 	@Provides
 	public IBoardsProvider provideIBoardsProvider(LocalUser user) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	@Provides
-	public IUserService provideIUserService(LocalUser user, ICategoryProvider categoryProvider) {
-		return new DummyUserService(user,categoryProvider);
+	public IUserService provideIUserService(LocalUser user,
+			ICategoryProvider categoryProvider) {
+		return new DummyUserService(user, categoryProvider);
 	}
 }

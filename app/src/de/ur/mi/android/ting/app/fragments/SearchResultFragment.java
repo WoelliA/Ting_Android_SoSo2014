@@ -5,6 +5,8 @@ import javax.inject.Inject;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.activities.ViewResolver;
 import de.ur.mi.android.ting.app.activities.ViewResolver.PinViewResolver;
+import de.ur.mi.android.ting.app.adapters.SearchResultsAdapter;
+import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchType;
@@ -18,23 +20,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class SearchResultFragment<TResult> extends FragmentBase {
+public class SearchResultFragment<TResult> extends FragmentBase  {
 	private String title;
 
 	@Inject
 	public ISearchService searchService;
 
-	private SearchResultFragment<TResult>.SearchResultAdapter<TResult> resultAdapter;
-
+	private SearchResultsAdapter<TResult> resultAdapter;
 	
 	public SearchResultFragment(String title, SearchType type, Context context,ViewResolver<TResult> viewResolver) {
 		this.title = title;
-		this.resultAdapter = new SearchResultAdapter<TResult>(type, context, viewResolver);
+		this.resultAdapter = new SearchResultsAdapter<TResult>(type, context, viewResolver);
 	}
 
 	public String getTitle() {
 		return this.title;
-
 	}
 
 	@Override
@@ -45,22 +45,5 @@ public class SearchResultFragment<TResult> extends FragmentBase {
 		label.setText(this.getTitle());
 		return view;
 	}
-	
-	private class SearchResultAdapter<TResult> extends ArrayAdapter<TResult>{
 
-		private ViewResolver<TResult> viewResolver;
-		private SearchType type;
-
-		public SearchResultAdapter(SearchType type, Context context, ViewResolver<TResult> viewResolver) {
-			super(context, 0);
-			this.type = type;
-			this.viewResolver = viewResolver;
-		}
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			
-			TResult data = this.getItem(position);
-			return this.viewResolver.resolveView(data);
-		}
-	}
 }

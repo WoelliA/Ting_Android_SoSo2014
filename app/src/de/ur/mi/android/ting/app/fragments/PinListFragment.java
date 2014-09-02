@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,9 +23,10 @@ import de.ur.mi.android.ting.model.IPinReceivedCallback;
 import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.views.Loading;
 
-public class PinListFragment extends FragmentBase implements IPaging {
+public class PinListFragment extends FragmentBase implements IPaging<Pin> {
 	private PinListAdapter pinAdapter;
 	private ArrayList<Pin> pins;
 
@@ -36,6 +38,7 @@ public class PinListFragment extends FragmentBase implements IPaging {
 	private ViewSwitcher switcher;
 
 	private boolean loading;
+	private int requestCount = 10;
 
 	public PinListFragment(Category category) {
 		this.category = category;
@@ -51,11 +54,9 @@ public class PinListFragment extends FragmentBase implements IPaging {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		initViewSwitcher();
+		setLoading(loading);
 		initPinListUI();
-		setLoading(true);
-		getPins();
 	}
 
 	private void initViewSwitcher() {
@@ -65,26 +66,18 @@ public class PinListFragment extends FragmentBase implements IPaging {
 		this.switcher.addView(loadingView);
 	}
 
-	private void getPins() {
-		this.pinAdapter.lock();
-		final int count = 10;
-		int offset = this.pins.size();
-		PinRequest request = new PinRequest(offset, count);
+	private void getPins(int offset, final IDoneCallback<List<Pin>> doneCallback) {
+		PinRequest request = new PinRequest(offset, this.requestCount);
 		this.pinProvider.getPinsForCategory(category, request,
 				new IPinReceivedCallback() {
 					@Override
 					public void onPinsReceived(ArrayList<Pin> pins) {
 						setLoading(false);
-						if (pins != null) {
-							pinAdapter.addAll(pins);
-						}
-						if (pins != null && pins.size() >= count) {
-							pinAdapter.notifyHasMore();
-						} else {
-							pinAdapter.notifyEndOfList();
+						if(doneCallback != null)
+						{
+							doneCallback.done(pins);
 						}
 					}
-
 				});
 	}
 
@@ -98,7 +91,6 @@ public class PinListFragment extends FragmentBase implements IPaging {
 		initPinList();
 		initLikeButton();
 		initRetingButton();
-		pinAdapter.notifyDataSetChanged();
 	}
 
 	private void initPinList() {
@@ -117,8 +109,12 @@ public class PinListFragment extends FragmentBase implements IPaging {
 	}
 
 	@Override
-	public void loadNextPage() {
-		this.getPins();
+	public void loadNextPage(int offset, IDoneCallback<List<Pin>> doneCallback) {
+		this.getPins(offset, doneCallback);
 	}
 
+	@Override
+	public int getPageSize() {
+		return this.requestCount;
+	}
 }

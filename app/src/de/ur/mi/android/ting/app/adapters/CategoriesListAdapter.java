@@ -120,5 +120,6 @@ public class CategoriesListAdapter extends ArrayAdapter<Category> implements
 		for (Category category : changed) {
 			this.setIsFavoriteState(category);
 		}
+		this.notifyDataSetChanged();
 	}
 }

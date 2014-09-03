@@ -24,7 +24,7 @@ public class Pin extends UniqueBase implements IHasCategory{
 
 	@Override
 	public Category getCategory() {
-		return board.getCategory();
+		return this.board.getCategory();
 	}
 
 	public double getAspectRatio(){
@@ -36,22 +36,22 @@ public class Pin extends UniqueBase implements IHasCategory{
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 
 	public String getImageUri() {
-		return imageUri;
+		return this.imageUri;
 	}
 
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 
 	public String getLinkUri() {
-		return linkUri;
+		return this.linkUri;
 	}
 
 }

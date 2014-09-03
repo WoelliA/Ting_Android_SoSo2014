@@ -6,7 +6,6 @@ import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.activities.MainActivity;
 import de.ur.mi.android.ting.model.ICategoryProvider;
-import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IAppStart;
@@ -43,7 +42,6 @@ public class AppModule {
 			public void initialize(final IDoneCallback<Void> callback) {
 				categoryProvider
 						.getAllCategories(new SimpleDoneCallback<List<Category>>() {
-
 							@Override
 							public void done(List<Category> result) {
 								userService.checkIsLoggedIn();

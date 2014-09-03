@@ -1,12 +1,10 @@
 package de.ur.mi.android.ting.app.adapters;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IChangeListener;
-import de.ur.mi.android.ting.app.fragments.CategoriesFragment;
 import de.ur.mi.android.ting.model.primitives.Category;
 import android.content.Context;
 import android.util.Log;
@@ -40,14 +38,14 @@ public class CategoriesListAdapter extends ArrayAdapter<Category> implements
 
 		Category category = this.getItem(position);
 
-		entries.put(category, itemView);
+		this.entries.put(category, itemView);
 
 		ToggleButton favoriteToggleButton = (ToggleButton) itemView
 				.findViewById(R.id.category_favorite_button);
 		TextView categoryNameTextView = (TextView) itemView
 				.findViewById(R.id.category_fragment_category_name);
 
-		setIsFavoriteState(category, favoriteToggleButton);
+		this.setIsFavoriteState(category, favoriteToggleButton);
 
 		favoriteToggleButton
 				.setOnCheckedChangeListener(new CategoryFavoriteChangeListener(
@@ -60,16 +58,19 @@ public class CategoriesListAdapter extends ArrayAdapter<Category> implements
 
 	private void setIsFavoriteState(Category category,
 			ToggleButton favoriteToggleButton) {
-		if (favoriteToggleButton.isChecked() != category.getIsFavorite())
+		if (favoriteToggleButton.isChecked() != category.getIsFavorite()) {
 			favoriteToggleButton.setChecked(category.getIsFavorite());
-		if (category.getIsFavorite())
-			adjustPosition(category, true);
+		}
+		if (category.getIsFavorite()) {
+			this.adjustPosition(category, true);
+		}
 	}
 
 	private void setIsFavoriteState(Category category) {
-		View row = entries.get(category);
-		if (row == null)
+		View row = this.entries.get(category);
+		if (row == null) {
 			return;
+		}
 
 		ToggleButton button = (ToggleButton) row
 				.findViewById(R.id.category_favorite_button);
@@ -77,18 +78,18 @@ public class CategoriesListAdapter extends ArrayAdapter<Category> implements
 	}
 
 	private void adjustPosition(Category category, boolean isChecked) {
-		remove(category);
+		this.remove(category);
 
 		if (isChecked) {
-			insert(category, 0);
+			this.insert(category, 0);
 		} else {
 
-			for (int i = 0; i < categories.size(); i++) {
-				Category c = categories.get(i);
+			for (int i = 0; i < this.categories.size(); i++) {
+				Category c = this.categories.get(i);
 				if (c.getIsFavorite()) {
 					continue;
 				}
-				insert(category, i);
+				this.insert(category, i);
 				break;
 			}
 		}
@@ -108,9 +109,9 @@ public class CategoriesListAdapter extends ArrayAdapter<Category> implements
 				boolean isChecked) {
 			Log.i("category favorite", this.category.getName() + " "
 					+ isChecked);
-			category.setIsFavorite(isChecked);
-			adjustPosition(category, isChecked);
-			categoryFavorisedChangedListener.onChange(category);
+			this.category.setIsFavorite(isChecked);
+			CategoriesListAdapter.this.adjustPosition(this.category, isChecked);
+			CategoriesListAdapter.this.categoryFavorisedChangedListener.onChange(this.category);
 		}
 
 	}

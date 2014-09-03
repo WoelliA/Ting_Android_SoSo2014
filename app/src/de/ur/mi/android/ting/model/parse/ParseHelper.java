@@ -18,7 +18,8 @@ public class ParseHelper {
 				ParseHelper.createCategory(parseObject),
 				parseObject.getString("name"),
 				parseObject.getString("description"),
-				ParseHelper.createUser(parseObject));
+				ParseHelper.createUser(parseObject),
+				null);
 	}
 	
 

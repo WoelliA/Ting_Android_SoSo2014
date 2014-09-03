@@ -12,21 +12,21 @@ public class CompositeInitializeable implements IInitializeable {
 
 	public CompositeInitializeable(IInitializeableProvider provider) {
 		this.provider = provider;
-		initializedCount = 0;
+		this.initializedCount = 0;
 	}
 
 	@Override
 	public void initialize(final IDoneCallback<Void> callback) {
 
-		final List<IInitializeable> initializeables = provider
+		final List<IInitializeable> initializeables = this.provider
 				.getInitializeables();
 		for (IInitializeable initializeable : initializeables) {
 			initializeable.initialize(new SimpleDoneCallback<Void>() {
 
 				@Override
 				public void done(Void result) {
-					initializedCount += 1;
-					if (initializedCount == initializeables.size()) {
+					CompositeInitializeable.this.initializedCount += 1;
+					if (CompositeInitializeable.this.initializedCount == initializeables.size()) {
 						callback.done(null);
 					}
 				}

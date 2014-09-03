@@ -1,24 +1,31 @@
 package de.ur.mi.android.ting.model.primitives;
 
+import java.util.List;
+
 
 public class Board extends UniqueBase implements IHasCategory{
 	private String title;
 	private String description;
-
+	protected List<User> contributors;
 	private Category category;
 	private User owner;
 
-	public Board(String id, Category category, String title, String description, User owner) {
+	public Board(String id, Category category, String title, String description, User owner, List<User> contributors) {
 		super(id);
 		this.category = category;
 		this.title = title;
 		this.description = description;
 		this.owner =owner;
+		this.contributors = contributors;
 	}
 
 	@Override
 	public Category getCategory() {
-		return category;
+		return this.category;
+	}
+	
+	public List<User> getContributors(){
+		return this.contributors;
 	}
 
 	public void setCategory(Category category) {
@@ -34,7 +41,7 @@ public class Board extends UniqueBase implements IHasCategory{
 	}
 
 	public User getOwner() {
-		return owner;
+		return this.owner;
 	}
 
 }

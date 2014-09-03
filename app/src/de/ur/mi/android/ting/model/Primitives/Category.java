@@ -14,7 +14,7 @@ public class Category extends UniqueBase {
 	private boolean isFavorite;
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -22,7 +22,7 @@ public class Category extends UniqueBase {
 	}
 
 	public String getShortName() {
-		return shortName;
+		return this.shortName;
 	}
 
 	public void setShortName(String shortName) {

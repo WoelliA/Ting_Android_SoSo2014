@@ -45,12 +45,12 @@ public class AndroidModule {
 	@Singleton
 	@ForApplication
 	Context provideApplicationContext() {
-		return application;
+		return this.application;
 	}
 
 	@Provides
 	@Singleton
 	LocationManager provideLocationManager() {
-		return (LocationManager) application.getSystemService(LOCATION_SERVICE);
+		return (LocationManager) this.application.getSystemService(LOCATION_SERVICE);
 	}
 }

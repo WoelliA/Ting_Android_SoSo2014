@@ -21,8 +21,8 @@ public class ViewSwitchingImageLoadingListener extends
 	@Override
 	public void onLoadingStarted(String imageUri, View view) {
 		super.onLoadingStarted(imageUri, view);
-		switcher.addView(loadingView);
-		switcher.showNext();
+		this.switcher.addView(this.loadingView);
+		this.switcher.showNext();
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class ViewSwitchingImageLoadingListener extends
 	}
 
 	private void resetSwitcher() {
-		switcher.showPrevious();
-		switcher.removeView(loadingView);
+		this.switcher.showPrevious();
+		this.switcher.removeView(this.loadingView);
 	}
 
 }

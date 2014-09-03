@@ -14,18 +14,18 @@ public class SearchRequest {
 	}
 
 	public SearchType getType() {
-		return type;
+		return this.type;
 	}
 
 	public String getQuery() {
-		return query;
+		return this.query;
 	}
 
 	public int getOffset() {
-		return offset;
+		return this.offset;
 	}
 
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 }

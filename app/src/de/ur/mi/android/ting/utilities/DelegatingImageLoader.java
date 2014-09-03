@@ -22,7 +22,7 @@ public class DelegatingImageLoader implements IImageLoader {
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).build();
 		this.loader = ImageLoader.getInstance();
-		loader.init(config);
+		this.loader.init(config);
 	}
 
 	@Override
@@ -45,6 +45,6 @@ public class DelegatingImageLoader implements IImageLoader {
 		ImageLoadRequest request = new ImageLoadRequest(imageUri, picture,
 				switcher, loadingView);
 		DisplayImageOptions options = this.buildOptions().build();
-		request.execute(loader, options);
+		request.execute(this.loader, options);
 	}
 }

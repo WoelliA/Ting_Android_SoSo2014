@@ -25,7 +25,7 @@ public class DummyPinProvider implements IPinProvider {
 					e.printStackTrace();
 				}
 				
-				return createCategories(request);
+				return DummyPinProvider.this.createCategories(request);
 			}
 
 			@Override

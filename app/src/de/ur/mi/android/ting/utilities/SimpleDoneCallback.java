@@ -6,7 +6,7 @@ public abstract class SimpleDoneCallback<T> implements IDoneCallback<T> {
 
 	@Override
 	public boolean getIsDone() {
-		return isDone;
+		return this.isDone;
 	}
 
 	@Override

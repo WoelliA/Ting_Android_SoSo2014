@@ -1,7 +1,6 @@
 package de.ur.mi.android.ting.model.parse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -15,8 +14,6 @@ import com.parse.ParseQuery;
 
 import de.ur.mi.android.ting.model.CategoryProviderBase;
 import de.ur.mi.android.ting.model.ICategoryProvider;
-import de.ur.mi.android.ting.model.ICategoryReceivedCallback;
-import de.ur.mi.android.ting.model.IStringArrayCallback;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
@@ -33,8 +30,9 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 	@Override
 	public void getAllCategories(final IDoneCallback<List<Category>> callback) {
 		super.getAllCategories(callback);
-		if(callback == null || callback.getIsDone())
+		if(callback == null || callback.getIsDone()) {
 			return;
+		}
 		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("category");
 		
@@ -47,8 +45,8 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 			@Override
 			public void done(List<ParseObject> arg, ParseException ex) {
 				if (ex == null) {
-					categories = createCategories(arg);
-					callback.done(categories);					
+					ParseCategoryProvider.this.categories = ParseCategoryProvider.this.createCategories(arg);
+					callback.done(ParseCategoryProvider.this.categories);					
 
 				} else {
 					Log.e("Parse Categories Exception", ex.getMessage());
@@ -76,8 +74,9 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 
 	@Override
 	public void saveIsFavoriteCategory(Category category, boolean isChecked) {
-		if(!this.user.getIsLogedIn())
+		if(!this.user.getIsLogedIn()) {
 			return;
+		}
 		
 	}
 

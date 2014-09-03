@@ -7,31 +7,27 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.IInjector;
+import de.ur.mi.android.ting.app.controllers.SearchController;
 import de.ur.mi.android.ting.app.fragments.SearchResultFragment;
-import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.app.viewResolvers.SearchResultResolvers;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Pin;
-import de.ur.mi.android.ting.model.primitives.SearchRequest;
-import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.SearchType;
 import de.ur.mi.android.ting.model.primitives.User;
-import de.ur.mi.android.ting.utilities.IDoneCallback;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class SearchActivity extends ActionBarActivityBase implements
 		ActionBar.TabListener {
@@ -45,88 +41,105 @@ public class SearchActivity extends ActionBarActivityBase implements
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
 	ViewPager mViewPager;
 
 	@Inject
-	public ISearchService searchService;
+	public SearchController searchController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search);
+		this.setContentView(R.layout.activity_search);
+		this.initUi();
+		this.initData(this.getIntent());
+	}
 
+	private void initUi() {
 		// Set up the action bar.
-		final ActionBar actionBar = getSupportActionBar();
+		final ActionBar actionBar = this.getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
-		List<SearchResultFragment> fragments = initFragments();
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager(), fragments);
+		List<SearchResultFragment<?>> fragments = this.initFragments();
+		this.mSectionsPagerAdapter = new SectionsPagerAdapter(
+				this.getSupportFragmentManager(), fragments);
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		this.mViewPager = (ViewPager) this.findViewById(R.id.pager);
+		this.mViewPager.setAdapter(this.mSectionsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
+		this.mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
-						mViewPager.setCurrentItem(position);
+						SearchActivity.this.mViewPager.setCurrentItem(position);
 					}
 				});
 
 		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
+		for (int i = 0; i < this.mSectionsPagerAdapter.getCount(); i++) {
 			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					.setText(this.mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+
 	}
 
-	private List<SearchResultFragment> initFragments() {
-		ArrayList<SearchResultFragment> fragments = new ArrayList<SearchResultFragment>();
-		fragments.add(new SearchResultFragment<Pin>(
-				getString(R.string.search_pins_header), SearchType.PIN, this,
-				new ViewResolver.PinViewResolver()));
-		fragments.add(new SearchResultFragment<User>(
-				getString(R.string.search_user_header), SearchType.USER, this,
-				new ViewResolver.UserViewResolver()));
-		fragments.add(new SearchResultFragment<Board>(
-				getString(R.string.search_boards_header), SearchType.BOARD,
-				this, new ViewResolver.BoardViewResolver()));
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		this.getMenuInflater().inflate(R.menu.search, menu);
+		MenuItem searchItem = menu.findItem(R.id.search_action_search);
+		SearchView searchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+		searchView.setIconifiedByDefault(false);
+		searchView.setSubmitButtonEnabled(true);
+		searchView.setQuery(this.searchController.getQuery(), false);
+		SearchManager searchManager = (SearchManager) this
+				.getSystemService(Context.SEARCH_SERVICE);
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(this
+				.getComponentName()));
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	private List<SearchResultFragment<?>> initFragments() {
+		ArrayList<SearchResultFragment<?>> fragments = new ArrayList<SearchResultFragment<?>>();
+		fragments.add(new SearchResultFragment<Pin>(this
+				.getString(R.string.search_pins_header), SearchType.PIN,
+				new SearchResultResolvers.PinResolver(this)));
+		fragments.add(new SearchResultFragment<User>(this
+				.getString(R.string.search_user_header), SearchType.USER,
+				new SearchResultResolvers.UserResolver(this)));
+		fragments.add(new SearchResultFragment<Board>(this
+				.getString(R.string.search_boards_header), SearchType.BOARD,
+				new SearchResultResolvers.BoardResolver(this)));
+		for (SearchResultFragment<?> searchResultFragment : fragments) {
+			this.searchController.addQueryChangeListener(searchResultFragment);
+		}
 		return fragments;
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		setIntent(intent);
-		handleIntent(intent);
+		this.setIntent(intent);
+		this.initData(intent);
 	}
 
-	private void handleIntent(Intent intent) {
-		// TODO Auto-generated method stub
-
+	private void initData(Intent intent) {
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			this.searchController.onNewQuery(query);
+		}
 	}
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
+		this.mViewPager.setCurrentItem(tab.getPosition());
 	}
 
 	@Override
@@ -145,30 +158,31 @@ public class SearchActivity extends ActionBarActivityBase implements
 	 */
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-		private List<SearchResultFragment> fragments;
+		private List<SearchResultFragment<?>> fragments;
 
 		public SectionsPagerAdapter(FragmentManager fm,
-				List<SearchResultFragment> fragments) {
+				List<SearchResultFragment<?>> fragments) {
 			super(fm);
 			this.fragments = fragments;
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return fragments.get(position);
+			return this.fragments.get(position);
 		}
 
 		@Override
 		public int getCount() {
-			if (fragments == null)
+			if (this.fragments == null) {
 				return -1;
-			return fragments.size();
+			}
+			return this.fragments.size();
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
-			String title = ((SearchResultFragment) this.getItem(position))
+			String title = ((SearchResultFragment<?>) this.getItem(position))
 					.getTitle();
 			return title.toUpperCase(l);
 		}

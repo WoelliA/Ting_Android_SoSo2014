@@ -4,14 +4,16 @@ import android.app.Application;
 import dagger.ObjectGraph;
 import de.ur.mi.android.ting.app.activities.ActivityModule;
 import de.ur.mi.android.ting.app.adapters.AdaptersModule;
+import de.ur.mi.android.ting.app.controllers.ControllersModule;
 import de.ur.mi.android.ting.app.fragments.FragmentsModule;
+import de.ur.mi.android.ting.app.viewResolvers.ResolverModule;
 import de.ur.mi.android.ting.model.dummy.DummyModelIocModule;
 import de.ur.mi.android.ting.model.parse.ParseModelIocModule;
 import de.ur.mi.android.ting.utilities.UtilitiesModule;
 
 public class TingApp extends Application implements IInjector {
 
-	private boolean isReleaseApp = true;
+	private boolean isReleaseApp = false;
 
 	private ObjectGraph applicationGraph;
 
@@ -23,9 +25,10 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object[] getModules() {
-		return new Object[] { getModelModule(), new AndroidModule(this),
+		return new Object[] { this.getModelModule(), new AndroidModule(this),
 				new ActivityModule(), new FragmentsModule(),
-				new UtilitiesModule(), new AdaptersModule(), new AppModule() };
+				new UtilitiesModule(), new AdaptersModule(), new AppModule(),
+				new ResolverModule(), new ControllersModule() };
 	}
 
 	@Override
@@ -34,9 +37,10 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object getModelModule() {
-		if (isReleaseApp)
+		if (this.isReleaseApp) {
 			return new ParseModelIocModule(this);
-		else
+		} else {
 			return new DummyModelIocModule();
+		}
 	}
 }

@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.utilities.IAppStart;
-import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import de.ur.mi.android.ting.utilities.initialization.IInitializeable;
 import android.content.Intent;
@@ -22,19 +21,19 @@ public class SplashScreenActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_splashscreen);
+		this.setContentView(R.layout.activity_splashscreen);
 		
 		this.initializeable.initialize(new SimpleDoneCallback<Void>() {
 
 			@Override
 			public void done(Void result) {
-				proceed();
+				SplashScreenActivity.this.proceed();
 			}
 		});
 	}
 
 	protected void proceed() {
-		Intent intent = new Intent(this, appStart.getStartActivityClass());
+		Intent intent = new Intent(this, this.appStart.getStartActivityClass());
 		this.startActivity(intent);
 	}
 }

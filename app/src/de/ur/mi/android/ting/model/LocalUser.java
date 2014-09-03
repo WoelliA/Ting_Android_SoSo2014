@@ -19,7 +19,7 @@ public class LocalUser {
 	private List<IChangeListener<LoginResult>> listeners;
 
 	public LocalUser() {
-		listeners = new ArrayList<IChangeListener<LoginResult>>();
+		this.listeners = new ArrayList<IChangeListener<LoginResult>>();
 	}
 
 	public boolean getIsLogedIn() {
@@ -37,7 +37,7 @@ public class LocalUser {
 	}
 
 	private void notifyLoginChangeListeners(LoginResult loginResult) {
-		for (IChangeListener<LoginResult> iLoginChangeListener : listeners) {
+		for (IChangeListener<LoginResult> iLoginChangeListener : this.listeners) {
 			iLoginChangeListener.onChange(loginResult);
 		}
 	}

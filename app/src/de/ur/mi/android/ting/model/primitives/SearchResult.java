@@ -10,6 +10,6 @@ public class SearchResult<T> {
 	
 	}
 	public List<T> getResults(){
-		return results;
+		return this.results;
 	}
 }

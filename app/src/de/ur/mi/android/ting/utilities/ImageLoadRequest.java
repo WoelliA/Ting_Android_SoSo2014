@@ -22,8 +22,8 @@ public class ImageLoadRequest {
 	}
 
 	public void execute(ImageLoader loader, DisplayImageOptions options) {	
-		loader.displayImage(imageUri, picture, options,
-				new ViewSwitchingImageLoadingListener(loadingView, switcher));
+		loader.displayImage(this.imageUri, this.picture, options,
+				new ViewSwitchingImageLoadingListener(this.loadingView, this.switcher));
 	}
 
 }

@@ -3,34 +3,44 @@ package de.ur.mi.android.ting.app.fragments;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.activities.ViewResolver;
-import de.ur.mi.android.ting.app.activities.ViewResolver.PinViewResolver;
-import de.ur.mi.android.ting.app.adapters.SearchResultsAdapter;
+import de.ur.mi.android.ting.app.IChangeListener;
+import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingPagingListAdapter;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.ISearchService;
-import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.model.PagingResult;
+import de.ur.mi.android.ting.model.primitives.SearchRequest;
+import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.SearchType;
-import android.app.Activity;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
+import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.ListView;
 
-public class SearchResultFragment<TResult> extends FragmentBase  {
+public class SearchResultFragment<T> extends FragmentBase implements
+		IPaging<T>, IChangeListener<String> {
+
 	private String title;
 
 	@Inject
 	public ISearchService searchService;
 
-	private SearchResultsAdapter<TResult> resultAdapter;
-	
-	public SearchResultFragment(String title, SearchType type, Context context,ViewResolver<TResult> viewResolver) {
+	private SearchType type;
+
+	private String query;
+
+	private ViewResolver<T> viewResolver;
+
+	public SearchResultFragment(String title, SearchType type,
+			ViewResolver<T> viewResolver) {
 		this.title = title;
-		this.resultAdapter = new SearchResultsAdapter<TResult>(type, context, viewResolver);
+		this.type = type;
+		this.viewResolver = viewResolver;
 	}
 
 	public String getTitle() {
@@ -40,10 +50,58 @@ public class SearchResultFragment<TResult> extends FragmentBase  {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view =  inflater.inflate(R.layout.fragment_search, container, false);
-		TextView label = (TextView) view.findViewById(R.id.section_label);
-		label.setText(this.getTitle());
+		View view = inflater
+				.inflate(R.layout.fragment_search, container, false);
 		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		this.initResults(this.getActivity());
+	}
+
+	private void initResults(Context context) {
+		if(context == null) {
+			return;
+		}
+		
+		ArrayAdapter<T> resultAdapter = new ViewCreationDelegatingPagingListAdapter<T>(
+				context, this, this.viewResolver);
+		ListView listView = (ListView) this.getView().findViewById(
+				R.id.search_result_list);
+		listView.setAdapter(resultAdapter);
+	}
+
+	@Override
+	public void loadNextPage(int offset,
+			final IDoneCallback<PagingResult<T>> doneCallback) {
+		if (this.query == null) {
+			return;
+		}
+
+		final int count = 10;
+		SearchRequest request = new SearchRequest(this.type, offset, count, this.query);
+		this.searchService.search(request,
+				new SimpleDoneCallback<SearchResult<T>>() {
+
+					@Override
+					public void done(SearchResult<T> result) {
+						doneCallback.done(new PagingResult<T>(count, result
+								.getResults()));
+					}
+
+				});
+
+	}
+
+	@Override
+	public void onChange(String newQuery) {
+		if (this.query == newQuery) {
+			return;
+		}
+		this.query = newQuery;
+		this.initResults(this.getActivity());
 	}
 
 }

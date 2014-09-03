@@ -1,8 +1,6 @@
 package de.ur.mi.android.ting.app.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import ca.weixiao.widget.InfiniteScrollListView;
@@ -11,15 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
-import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
+import de.ur.mi.android.ting.model.PagingResult;
 import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
@@ -28,8 +24,6 @@ import de.ur.mi.android.ting.views.Loading;
 
 public class PinListFragment extends FragmentBase implements IPaging<Pin> {
 	private PinListAdapter pinAdapter;
-	private ArrayList<Pin> pins;
-
 	@Inject
 	public IPinProvider pinProvider;
 
@@ -42,7 +36,6 @@ public class PinListFragment extends FragmentBase implements IPaging<Pin> {
 
 	public PinListFragment(Category category) {
 		this.category = category;
-		pins = new ArrayList<Pin>();
 	}
 
 	@Override
@@ -54,9 +47,9 @@ public class PinListFragment extends FragmentBase implements IPaging<Pin> {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		initViewSwitcher();
-		setLoading(loading);
-		initPinListUI();
+		this.initViewSwitcher();
+		this.setLoading(this.loading);
+		this.initPinListUI();
 	}
 
 	private void initViewSwitcher() {
@@ -66,55 +59,54 @@ public class PinListFragment extends FragmentBase implements IPaging<Pin> {
 		this.switcher.addView(loadingView);
 	}
 
-	private void getPins(int offset, final IDoneCallback<List<Pin>> doneCallback) {
+	private void getPins(int offset,
+			final IDoneCallback<PagingResult<Pin>> doneCallback) {
 		PinRequest request = new PinRequest(offset, this.requestCount);
-		this.pinProvider.getPinsForCategory(category, request,
+		this.pinProvider.getPinsForCategory(this.category, request,
 				new IPinReceivedCallback() {
 					@Override
 					public void onPinsReceived(ArrayList<Pin> pins) {
-						setLoading(false);
-						if(doneCallback != null)
-						{
-							doneCallback.done(pins);
+						PinListFragment.this.setLoading(false);
+						if (doneCallback != null) {
+							doneCallback.done(new PagingResult<Pin>(
+									PinListFragment.this.requestCount, pins));
 						}
 					}
 				});
 	}
 
 	private void setLoading(boolean loading) {
-		if (this.loading != loading)
+		if (this.loading != loading) {
 			this.switcher.showNext();
+		}
 		this.loading = loading;
 	}
 
 	private void initPinListUI() {
-		initPinList();
-		initLikeButton();
-		initRetingButton();
+		this.initPinList();
+		this.initLikeButton();
+		this.initRetingButton();
 	}
 
 	private void initPinList() {
-		pinAdapter = new PinListAdapter(this.getActivity(), pins, this);
-		InfiniteScrollListView pinList = (InfiniteScrollListView) getView()
+		this.pinAdapter = new PinListAdapter(this.getActivity(), this);
+		InfiniteScrollListView pinList = (InfiniteScrollListView) this.getView()
 				.findViewById(R.id.list);
-		pinList.setAdapter(pinAdapter);
+		pinList.setAdapter(this.pinAdapter);
 	}
 
 	private void initLikeButton() {
-		Button like = (Button) getView().findViewById(R.id.button_like);
+		Button like = (Button) this.getView().findViewById(R.id.button_like);
 	}
 
 	private void initRetingButton() {
-		Button reting = (Button) getView().findViewById(R.id.button_reting);
+		Button reting = (Button) this.getView().findViewById(R.id.button_reting);
 	}
 
 	@Override
-	public void loadNextPage(int offset, IDoneCallback<List<Pin>> doneCallback) {
+	public void loadNextPage(int offset,
+			IDoneCallback<PagingResult<Pin>> doneCallback) {
 		this.getPins(offset, doneCallback);
-	}
 
-	@Override
-	public int getPageSize() {
-		return this.requestCount;
 	}
 }

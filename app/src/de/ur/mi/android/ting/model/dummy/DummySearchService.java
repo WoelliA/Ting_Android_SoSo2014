@@ -43,10 +43,10 @@ public class DummySearchService implements ISearchService {
 
 		public SearchResult<T> execute() {
 			ArrayList<T> list = new ArrayList<T>();
-			for (int i = 0; i < request.getCount(); i++) {
+			for (int i = 0; i < this.request.getCount(); i++) {
 				int num = i + this.request.getOffset();
 				
-				T item = (T)createItem(num);
+				T item = (T)this.createItem(num);
 				list.add(item);
 			}
 

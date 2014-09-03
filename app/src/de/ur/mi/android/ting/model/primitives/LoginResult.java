@@ -9,7 +9,7 @@ public class LoginResult {
 	}
 	
 	public boolean getIsRightLogin(){
-		return isRightLogin;
+		return this.isRightLogin;
 	}
 
 }

@@ -43,7 +43,7 @@ public class ParsePinProvider implements IPinProvider {
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {
-					callback.onPinsReceived(createPins(objects));
+					callback.onPinsReceived(ParsePinProvider.this.createPins(objects));
 				} else {
 					Log.e("parse query pin", e.getMessage());
 				}
@@ -55,7 +55,7 @@ public class ParsePinProvider implements IPinProvider {
 	protected ArrayList<Pin> createPins(List<ParseObject> objects) {
 		ArrayList<Pin> pins = new ArrayList<Pin>();
 		for (ParseObject object : objects) {
-			pins.add(createPin(object));
+			pins.add(this.createPin(object));
 		}
 		return pins;
 	}

@@ -6,9 +6,9 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="libs/dagger-1.2.2.jar"/>
-	<classpathentry kind="lib" path="libs/javax.inject-1.jar"/>
-	<classpathentry kind="lib" path="libs/Parse-1.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/dagger-1.2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/javax.inject-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/Parse-1.5.1.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>

@@ -7,6 +7,6 @@ import dagger.Module;
 		SearchResultResolvers.PinResolver.class,
 		SearchResultResolvers.UserResolver.class }
 ,complete = false)
-public class ResolverModule {
+public class _ResolverModule {
 
 }

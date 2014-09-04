@@ -7,6 +7,6 @@ import dagger.Module;
 		CategoriesFragment.class,
 		SearchResultFragment.class }, 
 		complete = false)
-public class FragmentsModule {
+public class _FragmentsModule {
 
 }

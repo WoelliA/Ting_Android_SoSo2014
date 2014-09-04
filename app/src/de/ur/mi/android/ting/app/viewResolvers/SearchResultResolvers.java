@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.primitives.Board;
-import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
@@ -73,14 +72,14 @@ public class SearchResultResolvers {
 				ImageView image = (ImageView) inflater.inflate(
 						R.layout.contributor_small_layout, parent, false);
 				if (contributorsLayout.getChildCount() == 0) {
-					imageLoader.loadImage(board.getOwner()
+					this.imageLoader.loadImage(board.getOwner()
 							.getProfilePictureUri(), image);
 				} else {
 					int contributorNumber = contributorsLayout.getChildCount() - 1;
 					if (contributors.size() >= 0
 							&& contributorNumber < contributors.size()) {
 						User contributor = contributors.get(contributorNumber);
-						imageLoader.loadImage(
+						this.imageLoader.loadImage(
 								contributor.getProfilePictureUri(), image);
 					}
 				}
@@ -105,7 +104,7 @@ public class SearchResultResolvers {
 			TextView profileName = (TextView) this.findViewById(view,
 					R.id.user_profile_name);
 
-			imageLoader.loadImage(user.getProfilePictureUri(), profileImage);
+			this.imageLoader.loadImage(user.getProfilePictureUri(), profileImage);
 			profileName.setText(user.getName());
 		}
 

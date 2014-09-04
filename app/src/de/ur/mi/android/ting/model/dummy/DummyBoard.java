@@ -12,7 +12,7 @@ public class DummyBoard extends Board {
 				"Lorem ipsum swagum a lotso fotso gonzo hipsterum hitleri goi",
 				new DummyUser(i), new ArrayList<User>());
 		for (int j = 0; j < 10; j++) {
-			contributors.add(new DummyUser(j));
+			this.contributors.add(new DummyUser(j));
 		}
 	}
 

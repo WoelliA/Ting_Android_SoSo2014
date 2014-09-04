@@ -3,6 +3,7 @@ package de.ur.mi.android.ting.app.activities;
 import dagger.Module;
 
 @Module(injects = { 
+		ShareActivity.class,
 		MainActivity.class, 		
 		LoginActivity.class,
 		SearchActivity.class,
@@ -10,6 +11,6 @@ import dagger.Module;
 		
 }, 
 		complete = false)
-public class ActivityModule {
+public class _ActivityModule {
 
 }

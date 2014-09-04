@@ -2,12 +2,18 @@ package de.ur.mi.android.ting.app.viewResolvers;
 
 import javax.inject.Inject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.primitives.Pin;
@@ -20,6 +26,8 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 	@Inject
 	public IImageLoader imageLoader;
 
+	private String linkUri;
+	
 	public PinListViewResolver(Context context) {
 		super(R.layout.pin_layout, context);
 	}
@@ -47,8 +55,34 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 		} else {
 		}
 
-	}
+		Button reTing =  (Button) this.findViewById(view, R.id.button_reting);
+		linkUri = pin.getLinkUri();
+		reTing.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+		        String shareText = linkUri;
+
+		        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+		        textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+		        textShareIntent.setType("text/plain");
+		        getContext().startActivity(Intent.createChooser(textShareIntent, "Share Link with..."));
+				
+			}
+		});
+		
+		Button like = (Button) this.findViewById(view, R.id.button_like);
+		like.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getContext(), "like clicked", Toast.LENGTH_SHORT).show();
+				
+			}
+		});
+		
+	}
+	
 	private boolean isSameImage(View view, String imageUri) {
 		Object tag = view.getTag();
 		boolean isSame = tag != null && tag.equals(imageUri);

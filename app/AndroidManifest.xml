@@ -37,6 +37,12 @@
             android:name=".app.activities.MainActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+            <intent-filter >
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+            
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".app.activities.SearchActivity" />

@@ -10,10 +10,9 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.controllers.SearchController;
 import de.ur.mi.android.ting.app.fragments.SearchResultFragment;
 import de.ur.mi.android.ting.app.viewResolvers.SearchResultResolvers;
-import de.ur.mi.android.ting.model.primitives.Board;
-import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.primitives.SearchType;
-import de.ur.mi.android.ting.model.primitives.User;
+import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -108,19 +107,25 @@ public class SearchActivity extends ActionBarActivityBase implements
 
 	private List<SearchResultFragment<?>> initFragments() {
 		ArrayList<SearchResultFragment<?>> fragments = new ArrayList<SearchResultFragment<?>>();
-		fragments.add(new SearchResultFragment<Pin>(this
-				.getString(R.string.search_pins_header), SearchType.PIN,
-				new SearchResultResolvers.PinResolver(this)));
-		fragments.add(new SearchResultFragment<User>(this
-				.getString(R.string.search_user_header), SearchType.USER,
-				new SearchResultResolvers.UserResolver(this)));
-		fragments.add(new SearchResultFragment<Board>(this
-				.getString(R.string.search_boards_header), SearchType.BOARD,
-				new SearchResultResolvers.BoardResolver(this)));
-		for (SearchResultFragment<?> searchResultFragment : fragments) {
-			this.searchController.addQueryChangeListener(searchResultFragment);
-		}
+
+		fragments.add(this.createFragment(R.string.search_pins_header,
+				SearchType.PIN, new SearchResultResolvers.PinResolver(this)));
+		fragments.add(this.createFragment(R.string.search_user_header,
+				SearchType.USER, new SearchResultResolvers.UserResolver(this)));
+		fragments.add(this
+				.createFragment(R.string.search_boards_header,
+						SearchType.BOARD,
+						new SearchResultResolvers.BoardResolver(this)));
+
 		return fragments;
+	}
+
+	private <T> SearchResultFragment<T> createFragment(int titleStringId,
+			SearchType type, ViewResolver<T> viewResolver) {
+		IPaging<T> pagingController = this.searchController
+				.getPagingController(type);
+		return new SearchResultFragment<T>(this.getString(titleStringId),
+				viewResolver, pagingController);
 	}
 
 	@Override

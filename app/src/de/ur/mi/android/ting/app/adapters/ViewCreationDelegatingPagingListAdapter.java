@@ -11,8 +11,7 @@ public class ViewCreationDelegatingPagingListAdapter<T> extends
 
 	private ViewResolver<T> viewResolver;
 
-	public ViewCreationDelegatingPagingListAdapter(Context context,
-			IPaging<T> paging, ViewResolver<T> viewResolver) {
+	public ViewCreationDelegatingPagingListAdapter(Context context, ViewResolver<T> viewResolver, IPaging<T> paging) {
 		super(context, paging);
 		this.viewResolver = viewResolver;
 	}

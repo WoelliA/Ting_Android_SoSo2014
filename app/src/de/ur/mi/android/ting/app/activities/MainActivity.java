@@ -22,8 +22,10 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.ISelectedListener;
+import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.app.fragments.CategoriesFragment;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
+import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 
@@ -38,6 +40,9 @@ public class MainActivity extends ActionBarActivityBase implements
 	PinListFragment pinContent;
 
 	@Inject
+	public IPinProvider pinProvider;
+
+	@Inject
 	public LocalUser user;
 
 	@Override
@@ -45,8 +50,9 @@ public class MainActivity extends ActionBarActivityBase implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
-		CategoriesFragment f = (CategoriesFragment) this.getSupportFragmentManager()
-				.findFragmentById(R.id.categories_fragment);
+		CategoriesFragment f = (CategoriesFragment) this
+				.getSupportFragmentManager().findFragmentById(
+						R.id.categories_fragment);
 		f.setCategorySelectedListener(this);
 
 		if (this.checkInternetConnection() == false) {
@@ -57,7 +63,8 @@ public class MainActivity extends ActionBarActivityBase implements
 				new OnBackStackChangedListener() {
 					@Override
 					public void onBackStackChanged() {
-						FragmentManager manager = MainActivity.this.getSupportFragmentManager();
+						FragmentManager manager = MainActivity.this
+								.getSupportFragmentManager();
 						int backstackCount = manager.getBackStackEntryCount();
 						if (backstackCount > 0) {
 							String name = manager.getBackStackEntryAt(
@@ -70,9 +77,10 @@ public class MainActivity extends ActionBarActivityBase implements
 
 	private void showAlertNoInternetConnection() {
 		AlertDialog.Builder connectionDialog = new AlertDialog.Builder(this);
-		connectionDialog.setTitle(this.getString(R.string.connection_error_title));
-		connectionDialog
-				.setMessage(this.getString(R.string.connection_error_content));
+		connectionDialog.setTitle(this
+				.getString(R.string.connection_error_title));
+		connectionDialog.setMessage(this
+				.getString(R.string.connection_error_content));
 		connectionDialog.setNeutralButton(R.string.button_dismiss,
 				new OnClickListener() {
 
@@ -89,7 +97,8 @@ public class MainActivity extends ActionBarActivityBase implements
 
 	private boolean checkInternetConnection() {
 
-		ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager cm = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
 			return true;
@@ -113,9 +122,10 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	private void initDrawer() {
-		this.drawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
-		this.drawerListener = new ActionBarDrawerToggle(this, this.drawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+		this.drawerLayout = (DrawerLayout) this
+				.findViewById(R.id.drawer_layout);
+		this.drawerListener = new ActionBarDrawerToggle(this,
+				this.drawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close);
 		this.drawerLayout.setDrawerListener(this.drawerListener);
 
@@ -140,7 +150,9 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		FragmentTransaction transaction = manager.beginTransaction();
 
-		this.pinContent = new PinListFragment(category);
+		PinListController controller = new PinListController(category,
+				this.pinProvider);
+		this.pinContent = new PinListFragment(controller);
 		transaction.add(R.id.container, this.pinContent);
 		transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
 
@@ -165,9 +177,10 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
-		SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(this.getComponentName()));
+		SearchManager searchManager = (SearchManager) this
+				.getSystemService(Context.SEARCH_SERVICE);
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(this
+				.getComponentName()));
 		searchView.setSubmitButtonEnabled(true);
 
 		return true;

@@ -23,6 +23,7 @@ public class DummySearchService implements ISearchService {
 				}
 				return null;
 			}
+
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
@@ -45,12 +46,12 @@ public class DummySearchService implements ISearchService {
 			ArrayList<T> list = new ArrayList<T>();
 			for (int i = 0; i < this.request.getCount(); i++) {
 				int num = i + this.request.getOffset();
-				
-				T item = (T)this.createItem(num);
+
+				T item = (T) this.createItem(num);
 				list.add(item);
 			}
 
-			return new SearchResult<T>(list);
+			return new SearchResult<T>(list, this.request.getCount());
 		}
 
 		private Object createItem(int num) {

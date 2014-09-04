@@ -9,7 +9,7 @@ public class PinListAdapter extends
 		ViewCreationDelegatingPagingListAdapter<Pin> {
 
 	public PinListAdapter(Context context, IPaging<Pin> paging) {
-		super(context, paging, new PinListViewResolver(context));
+		super(context, new PinListViewResolver(context), paging);
 	}
 
 }

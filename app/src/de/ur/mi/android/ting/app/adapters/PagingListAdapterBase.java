@@ -15,28 +15,28 @@ public abstract class PagingListAdapterBase<T> extends
 	public PagingListAdapterBase(Context context, IPaging<T> paging) {
 		super(context, 0, new ArrayList<T>());
 		this.paging = paging;
+		this.paging.setAdapter(this);
 		this.onScrollNext();
 	}
 
 	@Override
 	protected void onScrollNext() {
 		this.lock();
-		this.paging.loadNextPage(this.getCount(),
-				new SimpleDoneCallback<PagingResult<T>>() {
+		if(this.paging == null) {
+			return;
+		}
+		
+		this.paging.loadNextPage(new SimpleDoneCallback<PagingResult<T>>() {
 
-					@Override
-					public void done(PagingResult<T> result) {
-						PagingListAdapterBase.this.unlock();
-						if (result != null) {
-							PagingListAdapterBase.this.addAll(result.getResults());
-						}
-						if (result != null && result.isCompletePage()) {
-							PagingListAdapterBase.this.notifyHasMore();
-						} else {
-							PagingListAdapterBase.this.notifyEndOfList();
-						}
-
-					}
-				});
+			@Override
+			public void done(PagingResult<T> result) {
+				PagingListAdapterBase.this.unlock();
+				if (result != null && result.isCompletePage()) {
+					PagingListAdapterBase.this.notifyHasMore();
+				} else {
+					PagingListAdapterBase.this.notifyEndOfList();
+				}
+			}
+		});
 	}
 }

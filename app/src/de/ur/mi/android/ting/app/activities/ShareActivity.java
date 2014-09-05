@@ -48,13 +48,19 @@ public class ShareActivity extends BaseActivity {
 	void handleSendText(Intent intent) {
 		String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
 		if (sharedText != null) {
-			TextView tv = (TextView) this.findViewById(R.id.share_text_view);
 			String extension = MimeTypeMap.getFileExtensionFromUrl(sharedText);
 			String mimeType = MimeTypeMap.getSingleton()
 					.getMimeTypeFromExtension(extension);
-			if (mimeType.startsWith("image")) {
+			if (mimeType != null && mimeType.startsWith("image")) {
 				this.displayImage(sharedText);
 			}
+			
+			// check if it's an URI
+			Uri uri = Uri.parse(Uri.encode(sharedText));
+			if(uri != null){
+				
+			}
+			TextView tv = (TextView) this.findViewById(R.id.share_text_view);
 			tv.setText(sharedText);
 		}
 	}

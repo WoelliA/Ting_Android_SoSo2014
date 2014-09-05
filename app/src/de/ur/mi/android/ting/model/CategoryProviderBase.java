@@ -19,7 +19,7 @@ public abstract class CategoryProviderBase implements
 	public CategoryProviderBase(LocalUser user) {
 		this.user = user;
 		this.user.addLoginChangeListener(this);
-	}
+	} 
 
 	@Override
 	public void getAllCategories(IDoneCallback<List<Category>> callback) {

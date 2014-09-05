@@ -13,6 +13,7 @@ public abstract class PagingController<T> implements IPaging<T> {
 
 	private ArrayAdapter<T> adapter;
 
+	
 	@Override
 	public void loadNextPage(final IDoneCallback<PagingResult<T>> doneCallback) {
 		this.loadNextPage(this.adapter.getCount(),

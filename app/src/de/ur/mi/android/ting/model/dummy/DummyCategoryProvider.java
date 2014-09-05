@@ -31,9 +31,11 @@ public class DummyCategoryProvider extends CategoryProviderBase implements
 		DelayTask task = new DelayTask() {
 			@Override
 			protected void onPostExecute(Void result) {
+				ArrayList<Category> cats = new ArrayList<Category>();
 				for (int i = 0; i < 20; i++) {
-					DummyCategoryProvider.this.categories.add(new DummyCategory(i));
+					cats.add(new DummyCategory(i));
 				}
+				categories = cats;
 				callback.done(DummyCategoryProvider.this.categories);
 			}
 		};

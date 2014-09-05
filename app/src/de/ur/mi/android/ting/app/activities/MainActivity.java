@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.ISelectedListener;
+import de.ur.mi.android.ting.app.controllers.CategoriesController;
 import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.app.fragments.CategoriesFragment;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
@@ -44,16 +45,16 @@ public class MainActivity extends ActionBarActivityBase implements
 
 	@Inject
 	public LocalUser user;
+	
+	@Inject 
+	public CategoriesController categoryChangedEmitter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
-		CategoriesFragment f = (CategoriesFragment) this
-				.getSupportFragmentManager().findFragmentById(
-						R.id.categories_fragment);
-		f.setCategorySelectedListener(this);
+		categoryChangedEmitter.setSelectedCategoryChangeListener(this);
 
 		if (this.checkInternetConnection() == false) {
 			this.showAlertNoInternetConnection();

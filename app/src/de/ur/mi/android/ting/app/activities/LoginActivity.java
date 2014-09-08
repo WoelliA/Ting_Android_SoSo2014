@@ -21,6 +21,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
@@ -37,7 +38,7 @@ public class LoginActivity extends BaseActivity {
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
 	@Inject
-	public IUserService service;
+	public LoginController controller;
 
 	// Values for email and password at the time of the login attempt.
 	private String mUserName;
@@ -86,10 +87,6 @@ public class LoginActivity extends BaseActivity {
 						LoginActivity.this.attemptLogin();
 					}
 				});
-		
-		if (this.checkInternetConnection() == false) {
-			this.showAlertNoInternetConnection();
-		}
 	}
 	
 	
@@ -171,7 +168,7 @@ public class LoginActivity extends BaseActivity {
 			// perform the user login attempt.
 			this.mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			this.showProgress(true);
-			this.service.login(this.mUserName, this.mPassword, new SimpleDoneCallback<LoginResult>() {
+			this.controller.login(this.mUserName, this.mPassword, new SimpleDoneCallback<LoginResult>() {
 				
 				@Override
 				public void done(LoginResult result) {

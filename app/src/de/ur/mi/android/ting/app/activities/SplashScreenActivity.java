@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.utilities.IAppStart;
+import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import de.ur.mi.android.ting.utilities.initialization.IInitializeable;
 import android.content.Intent;
@@ -15,14 +16,23 @@ public class SplashScreenActivity extends BaseActivity {
 	public IInitializeable initializeable;
 
 	@Inject
+	public IConnectivity connectivity;
+
+	@Inject
 	public IAppStart appStart;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		this.setContentView(R.layout.activity_splashscreen);
-		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (!this.connectivity.hasWebAccess(true)) {
+			return;
+		}
 		this.initializeable.initialize(new SimpleDoneCallback<Void>() {
 
 			@Override

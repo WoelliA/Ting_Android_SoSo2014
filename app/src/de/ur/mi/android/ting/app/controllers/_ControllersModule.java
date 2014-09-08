@@ -5,10 +5,14 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
+import de.ur.mi.android.ting.model.IBoardsProvider;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.utilities.IConnectivity;
+import de.ur.mi.android.ting.utilities.IImageLoader;
+import de.ur.mi.android.ting.utilities.html.PinDataParser;
 
-@Module(injects = { PinListAdapter.class }, complete = false, library = true)
+@Module(injects = { PinListAdapter.class, PinListController.class }, complete = false, library = true)
 public class _ControllersModule {
 
 	private CategoriesController categoryController;
@@ -19,11 +23,24 @@ public class _ControllersModule {
 	}
 
 	@Provides
-	@Singleton
 	public CategoriesController provideCategoriesController(
-			ICategoryProvider categoryProvider) {
-		if (this.categoryController == null)
-			this.categoryController = new CategoriesController(categoryProvider);
-		return categoryController;
+			ICategoryProvider categoryProvider, IConnectivity connectivity) {
+		if (this.categoryController == null) {
+			this.categoryController = new CategoriesController(
+					categoryProvider, connectivity);
+		}
+		return this.categoryController;
+	}
+
+	@Provides
+	public ShareController provideShareController(PinDataParser pindataParser,
+			IImageLoader imageLoader) {
+		return new ShareController(pindataParser, imageLoader);
+	}
+
+	@Provides
+	public UserBoardsController provideUserBoardsController(
+			IBoardsProvider boardsProvider) {
+		return new UserBoardsController(boardsProvider);
 	}
 }

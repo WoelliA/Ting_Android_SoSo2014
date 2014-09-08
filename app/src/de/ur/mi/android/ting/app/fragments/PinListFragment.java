@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
@@ -55,8 +54,6 @@ public class PinListFragment extends FragmentBase {
 
 	private void initPinListUI() {
 		this.initPinList();
-		this.initLikeButton();
-		this.initRetingButton();
 	}
 
 	private void initPinList() {
@@ -67,15 +64,6 @@ public class PinListFragment extends FragmentBase {
 				.getView().findViewById(R.id.list);
 		pinList.setLoadingView(Loading.getView(this.getActivity(), "Loading..."));
 		pinList.setAdapter(this.pinAdapter);
+		this.controller.setAdapter(this.pinAdapter);
 	}
-
-	private void initLikeButton() {
-		Button like = (Button) this.getView().findViewById(R.id.button_like);
-	}
-
-	private void initRetingButton() {
-		Button reting = (Button) this.getView()
-				.findViewById(R.id.button_reting);
-	}
-
 }

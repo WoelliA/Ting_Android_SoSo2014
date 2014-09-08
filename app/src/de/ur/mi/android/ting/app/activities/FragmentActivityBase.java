@@ -1,14 +1,13 @@
 package de.ur.mi.android.ting.app.activities;
 
-import android.app.Activity;
-import android.os.Bundle;
 import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.app.IMainInjector;
-import de.ur.mi.android.ting.app.controllers._ControllersModule;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
-public abstract class BaseActivity extends Activity implements IInjector {
+public class FragmentActivityBase extends FragmentActivity implements IInjector{
 	private IInjector activityInjector;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

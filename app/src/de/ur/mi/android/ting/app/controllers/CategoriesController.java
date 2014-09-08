@@ -1,20 +1,19 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
-import de.ur.mi.android.ting.app.fragments.CategoriesFragment;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
+import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.widget.ArrayAdapter;
 
-@Singleton
 public class CategoriesController implements
 		IBiChangeListener<Category, Boolean> {
 
@@ -26,67 +25,77 @@ public class CategoriesController implements
 
 	protected List<Category> categories;
 
-	public CategoriesController(ICategoryProvider categoryProvider) {
+	private IConnectivity connectivity;
+
+	public CategoriesController(ICategoryProvider categoryProvider,
+			IConnectivity connectivity) {
 		this.categoryProvider = categoryProvider;
+		this.connectivity = connectivity;
 		this.categoryProvider
 				.setCategoryFavoriteChangeListener(new IChangeListener<List<Category>>() {
-
 					@Override
 					public void onChange(List<Category> changed) {
-						initAdapter();
+						CategoriesController.this.initAdapter();
 					}
 				});
-		this.initCategories();
 	}
 
 	public void initCategories() {
+		if (!this.connectivity.hasWebAccess(true)) {
+			return;
+		}
 		this.categoryProvider
 				.getAllCategories(new SimpleDoneCallback<List<Category>>() {
 					@Override
 					public void done(List<Category> result) {
-						categories = result;
-						initAdapter();
-						onCategorySelected(categories.get(0));
+						CategoriesController.this.categories = result;
+						CategoriesController.this.initAdapter();
+						CategoriesController.this
+								.onCategorySelected(CategoriesController.this.categories
+										.get(0));
 					}
 				});
 	}
 
 	protected void initAdapter() {
-		if (this.adapter == null || this.categories == null)
+		if (this.adapter == null || this.categories == null) {
 			return;
-		sortFavoritesUp();
+		}
+		this.sortFavoritesUp();
 
 		this.adapter.clear();
-		this.adapter.addAll(categories);
+		this.adapter.addAll(this.categories);
 	}
 
 	private void sortFavoritesUp() {
-		for (int i = 0; i < categories.size(); i++) {
-			Category category = categories.get(i);
+		for (int i = 0; i < this.categories.size(); i++) {
+			Category category = this.categories.get(i);
 			if (category.getIsFavorite()) {
-				categories.remove(category);
-				categories.add(0, category);
+				this.categories.remove(category);
+				this.categories.add(0, category);
 			}
 		}
 	}
 
 	public void onCategoryIsFavoriteChanged(Category category,
 			boolean isFavorite) {
-		if (category.getIsFavorite() == isFavorite)
+		if (category.getIsFavorite() == isFavorite) {
 			return;
+		}
 		this.categoryProvider.saveIsFavoriteCategory(category,
 				category.getIsFavorite());
-		adjustPosition(category, category.getIsFavorite());
+		this.adjustPosition(category, category.getIsFavorite());
 	}
 
 	public void setAdapter(ArrayAdapter<Category> adapter) {
 		this.adapter = adapter;
-		initAdapter();
+		this.initAdapter();
 	}
 
 	private void adjustPosition(Category category, boolean isChecked) {
-		if (this.adapter == null)
+		if (this.adapter == null) {
 			return;
+		}
 
 		this.adapter.remove(category);
 
@@ -110,8 +119,9 @@ public class CategoriesController implements
 	}
 
 	public void onCategorySelected(Category selectedCategory) {
-		if (this.selectedCategoryChangedListener != null)
+		if (this.selectedCategoryChangedListener != null) {
 			this.selectedCategoryChangedListener.onSelected(selectedCategory);
+		}
 
 	}
 
@@ -120,7 +130,7 @@ public class CategoriesController implements
 
 		this.categoryProvider.saveIsFavoriteCategory(category,
 				category.getIsFavorite());
-		adjustPosition(category, u);
+		this.adjustPosition(category, u);
 	}
 
 }

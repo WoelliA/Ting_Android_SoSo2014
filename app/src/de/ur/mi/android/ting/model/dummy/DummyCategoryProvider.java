@@ -35,7 +35,7 @@ public class DummyCategoryProvider extends CategoryProviderBase implements
 				for (int i = 0; i < 20; i++) {
 					cats.add(new DummyCategory(i));
 				}
-				categories = cats;
+				DummyCategoryProvider.this.categories = cats;
 				callback.done(DummyCategoryProvider.this.categories);
 			}
 		};

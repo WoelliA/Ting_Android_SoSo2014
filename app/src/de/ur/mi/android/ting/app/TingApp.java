@@ -9,9 +9,9 @@ import de.ur.mi.android.ting.app.fragments._FragmentsModule;
 import de.ur.mi.android.ting.app.viewResolvers._ResolverModule;
 import de.ur.mi.android.ting.model.dummy._DummyModelModule;
 import de.ur.mi.android.ting.model.parse._ParseModelModule;
-import de.ur.mi.android.ting.utilities.UtilitiesModule;
+import de.ur.mi.android.ting.utilities._UtilitiesModule;
 
-public class TingApp extends Application implements IInjector {
+public class TingApp extends Application implements IMainInjector {
 
 	private boolean isReleaseApp = false;
 
@@ -25,10 +25,15 @@ public class TingApp extends Application implements IInjector {
 	}
 
 	private Object[] getModules() {
-		return new Object[] { this.getModelModule(), new AndroidModule(this),
-				new _ActivityModule(), new _FragmentsModule(),
-				new UtilitiesModule(), new _AdaptersModule(), new AppModule(),
-				new _ResolverModule(), new _ControllersModule() };
+		return new Object[] { 
+				this.getModelModule(), 
+				new _AndroidModule(this),
+				new _FragmentsModule(), 
+				new _UtilitiesModule(),
+				new _AdaptersModule(), 
+				new _AppModule(), 
+				new _ResolverModule(),
+				new _ControllersModule() };
 	}
 
 	@Override
@@ -42,5 +47,12 @@ public class TingApp extends Application implements IInjector {
 		} else {
 			return new _DummyModelModule();
 		}
+	}
+
+	@Override
+	public IInjector plus(Object... params) {
+		Object[] extras = params;
+		ObjectGraph graph = this.applicationGraph.plus(extras);
+		return new GraphInjector(graph);
 	}
 }

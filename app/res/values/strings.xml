@@ -18,16 +18,12 @@
     <string name="login_error_content">Your Internet Connection has to be enabled, if you want to log in.</string>
     <string name="button_back">Back</string>
     <string name="button_dismiss">OK</string>
-
-    <string-array name="drawer_categories">
-        <item>category 1</item>
-        <item>category 2</item>
-        <item>category 3</item>
-    </string-array>
-
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_user_header">user</string>
     <string name="search_pins_header">pins</string>
     <string name="search_boards_header">boards</string>
+    <string name="share_selectpin_title">Select an image to pin</string>
+    <string name="select_board_title">Select one of your boards</string>
+    <string name="selectpinimage_title">Select an image you want to pin.</string>
 
 </resources>

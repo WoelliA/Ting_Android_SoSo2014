@@ -24,7 +24,6 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.controllers.CategoriesController;
 import de.ur.mi.android.ting.app.controllers.PinListController;
-import de.ur.mi.android.ting.app.fragments.CategoriesFragment;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -41,24 +40,17 @@ public class MainActivity extends ActionBarActivityBase implements
 	PinListFragment pinContent;
 
 	@Inject
-	public IPinProvider pinProvider;
-
-	@Inject
 	public LocalUser user;
 	
 	@Inject 
-	public CategoriesController categoryChangedEmitter;
+	public CategoriesController categoryController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
-		categoryChangedEmitter.setSelectedCategoryChangeListener(this);
-
-		if (this.checkInternetConnection() == false) {
-			this.showAlertNoInternetConnection();
-		}
+		this.categoryController.setSelectedCategoryChangeListener(this);
 
 		this.getSupportFragmentManager().addOnBackStackChangedListener(
 				new OnBackStackChangedListener() {
@@ -76,44 +68,12 @@ public class MainActivity extends ActionBarActivityBase implements
 				});
 	}
 
-	private void showAlertNoInternetConnection() {
-		AlertDialog.Builder connectionDialog = new AlertDialog.Builder(this);
-		connectionDialog.setTitle(this
-				.getString(R.string.connection_error_title));
-		connectionDialog.setMessage(this
-				.getString(R.string.connection_error_content));
-		connectionDialog.setNeutralButton(R.string.button_dismiss,
-				new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-
-					}
-				});
-		connectionDialog.setCancelable(true);
-		connectionDialog.setIcon(android.R.drawable.ic_dialog_alert);
-		connectionDialog.show();
-	}
-
-	private boolean checkInternetConnection() {
-
-		ConnectivityManager cm = (ConnectivityManager) this
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-			return true;
-		}
-		return false;
-	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		this.categoryController.initCategories();
 		this.adjustOptionsMenu();
-		if (this.checkInternetConnection() == false) {
-			this.showAlertNoInternetConnection();
-		}
 	}
 
 	@Override
@@ -152,7 +112,7 @@ public class MainActivity extends ActionBarActivityBase implements
 		FragmentTransaction transaction = manager.beginTransaction();
 
 		PinListController controller = new PinListController(category,
-				this.pinProvider);
+				this);
 		this.pinContent = new PinListFragment(controller);
 		transaction.add(R.id.container, this.pinContent);
 		transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);

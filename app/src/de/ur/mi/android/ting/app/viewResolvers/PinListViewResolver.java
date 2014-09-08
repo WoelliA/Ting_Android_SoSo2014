@@ -2,9 +2,7 @@ package de.ur.mi.android.ting.app.viewResolvers;
 
 import javax.inject.Inject;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -56,17 +54,17 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 		}
 
 		Button reTing =  (Button) this.findViewById(view, R.id.button_reting);
-		linkUri = pin.getLinkUri();
+		this.linkUri = pin.getLinkUri();
 		reTing.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-		        String shareText = linkUri;
+		        String shareText = PinListViewResolver.this.linkUri;
 
 		        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
 		        textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
 		        textShareIntent.setType("text/plain");
-		        getContext().startActivity(Intent.createChooser(textShareIntent, "Share Link with..."));
+		        PinListViewResolver.this.getContext().startActivity(Intent.createChooser(textShareIntent, "Share Link with..."));
 				
 			}
 		});
@@ -76,7 +74,7 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), "like clicked", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PinListViewResolver.this.getContext(), "like clicked", Toast.LENGTH_SHORT).show();
 				
 			}
 		});

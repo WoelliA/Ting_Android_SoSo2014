@@ -1,12 +1,14 @@
 package de.ur.mi.android.ting.utilities.view;
 
+import de.ur.mi.android.ting.app.IInjectable;
 import de.ur.mi.android.ting.app.IInjector;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 
-public abstract class ViewResolver<T> {
+public abstract class ViewResolver<T> implements IInjectable {
 	private int resourceId;
 	protected Context context;
 
@@ -15,17 +17,20 @@ public abstract class ViewResolver<T> {
 		this.context = context;
 		((IInjector) context).inject(this);
 	}
-	
-	protected Context getContext(){
+
+	protected Context getContext() {
 		return this.context;
 	}
-	
+
 	public View resolveView(T dataItem, View view, ViewGroup parent) {
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater) this.context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(this.resourceId, parent, false);
 		}
+		LayoutParams lp = view.getLayoutParams();
+		lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+		view.setLayoutParams(lp);
 		this.decorateView(view, dataItem, parent);
 		return view;
 	}
@@ -48,6 +53,8 @@ public abstract class ViewResolver<T> {
 
 	protected abstract void decorateView(View view, T dataItem, ViewGroup parent);
 
-
-
+	@Override
+	public boolean skipInject() {
+		return false;
+	}
 }

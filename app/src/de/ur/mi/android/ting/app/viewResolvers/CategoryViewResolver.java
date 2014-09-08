@@ -1,11 +1,5 @@
 package de.ur.mi.android.ting.app.viewResolvers;
 
-import java.util.HashMap;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
-import java.util.function.Predicate;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +9,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.adapters.CategoriesListAdapter;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
@@ -74,7 +67,7 @@ public class CategoryViewResolver extends ViewResolver<Category> {
 			Log.i("category favorite", this.category.getName() + " "
 					+ isChecked);
 			this.category.setIsFavorite(isChecked);
-			callback.onChange(category, isChecked);
+			this.callback.onChange(this.category, isChecked);
 		}
 
 	}

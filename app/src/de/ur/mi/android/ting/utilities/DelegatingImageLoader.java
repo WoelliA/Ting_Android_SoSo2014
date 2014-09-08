@@ -12,7 +12,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.DisplayImageOptions.Builder;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 @Singleton
 public class DelegatingImageLoader implements IImageLoader {
@@ -46,5 +48,36 @@ public class DelegatingImageLoader implements IImageLoader {
 				switcher, loadingView);
 		DisplayImageOptions options = this.buildOptions().build();
 		request.execute(this.loader, options);
+	}
+
+	@Override
+	public void loadImage(String imageUri,
+			final IDoneCallback<Bitmap> doneCallback) {
+
+		DisplayImageOptions options = this.buildOptions().imageScaleType(ImageScaleType.NONE).build();
+		this.loader.loadImage(imageUri, options,
+				new SimpleImageLoadingListener() {
+					@Override
+					public void onLoadingComplete(String imageUri, View view,
+							Bitmap loadedImage) {
+						doneCallback.done(loadedImage);
+						super.onLoadingComplete(imageUri, view, loadedImage);
+					}
+
+					@Override
+					public void onLoadingFailed(String imageUri, View view,
+							FailReason failReason) {
+						doneCallback.done(null);
+						super.onLoadingFailed(imageUri, view, failReason);
+					}
+
+					@Override
+					public void onLoadingCancelled(String imageUri, View view) {
+						doneCallback.done(null);
+						super.onLoadingCancelled(imageUri, view);
+					}
+
+				});
+
 	}
 }

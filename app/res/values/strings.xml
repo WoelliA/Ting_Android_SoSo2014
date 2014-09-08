@@ -6,28 +6,44 @@
     <string name="action_settings">Settings</string>
     <string name="action_login">Login</string>
     <string name="action_profile">Profile</string>
+    <string name="action_proximity">Reminder</string>
     <string name="action_search">Search</string>
     <string name="action_search_hint">Search Ting</string>
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
     <string name="button_reting">re-ting</string>
     <string name="button_like">like</string>
+    <string name="button_add_reminder">Add new Reminder</string>
+    <string name="button_get_position">Get Position</string>
+    <string name="button_save_reminder">Save Reminder</string>
+    <string name="edittext_name_reminder">Name your Reminder</string>
+    <string name="edittext_latitude">Latitude</string>
+    <string name="edittext_longitude">Longitude</string>
     <string name="connection_error_title">No Internet Connection</string>
     <string name="connection_error_content">For Ting to work properly, please enable your Internet Connection.</string>
     <string name="login_error_title">Login Error</string>
     <string name="login_error_content">Your Internet Connection has to be enabled, if you want to log in.</string>
     <string name="button_back">Back</string>
     <string name="button_dismiss">OK</string>
-
+    <string name="no_location">No Location found</string>
+	<string name="fill_in">Please fill in the blanks</string>
+    
+    
     <string-array name="drawer_categories">
         <item>category 1</item>
         <item>category 2</item>
         <item>category 3</item>
     </string-array>
 
+
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_user_header">user</string>
     <string name="search_pins_header">pins</string>
     <string name="search_boards_header">boards</string>
+    <string name="share_selectpin_title">Select an image to pin</string>
+    <string name="select_board_title">Select one of your boards</string>
+    <string name="selectpinimage_title">Select an image you want to pin.</string>
+    <string name="editpin_pinbutton">Ting it.</string>
+    <string name="editpin_title">Edit your Pin.</string>
 
 </resources>

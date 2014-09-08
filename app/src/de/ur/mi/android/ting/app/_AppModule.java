@@ -16,7 +16,7 @@ import de.ur.mi.android.ting.utilities.initialization.IInitializeable;
 import de.ur.mi.android.ting.utilities.initialization.InitializeableProvider;
 
 @Module(library = true, complete = false)
-public class AppModule {
+public class _AppModule {
 
 	@Provides
 	IAppStart provideIAppStart() {

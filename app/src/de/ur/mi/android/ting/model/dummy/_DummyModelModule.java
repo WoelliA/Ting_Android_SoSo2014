@@ -44,7 +44,7 @@ public class _DummyModelModule implements _IModelModule {
 	@Override
 	@Provides
 	public IBoardsProvider provideIBoardsProvider(LocalUser user) {
-		return null;
+		return new DummyBoardsProvider();
 	}
 
 	@Override

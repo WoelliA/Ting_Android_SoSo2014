@@ -28,11 +28,11 @@ import static android.content.Context.LOCATION_SERVICE;
  * {@link android.app.Application} to create.
  */
 @Module(library = true)
-public class AndroidModule {
+public class _AndroidModule {
 
 	private TingApp application;
 
-	public AndroidModule(TingApp application) {
+	public _AndroidModule(TingApp application) {
 		this.application = application;
 	}
 

@@ -9,6 +9,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/dagger-1.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/javax.inject-1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/Parse-1.5.1.jar"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.7.3.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>

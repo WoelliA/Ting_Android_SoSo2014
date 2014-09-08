@@ -1,9 +1,5 @@
 package de.ur.mi.android.ting.app.fragments;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
 import javax.inject.Inject;
 
 import android.app.Activity;
@@ -15,36 +11,31 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.IChangeListener;
-import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.adapters.CategoriesListAdapter;
 import de.ur.mi.android.ting.app.controllers.CategoriesController;
 import de.ur.mi.android.ting.app.viewResolvers.CategoryViewResolver;
-import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.primitives.Category;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class CategoriesFragment extends FragmentBase {
 
 	private ListView categoriesListView;
-
 	@Inject
 	public CategoriesController controller;
 
 	private CategoriesListAdapter categoriesAdapter;
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		this.initUi(this.getActivity());
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_categories, container, false);
 	}
-
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		this.initUi(this.getActivity());
+	}
 
 	private void initUi(Activity parent) {
 			
@@ -57,9 +48,9 @@ public class CategoriesFragment extends FragmentBase {
 
 		this.categoriesAdapter = new CategoriesListAdapter(
 				this.getActivity(), categoryViewResolver);
-		this.controller.setAdapter(categoriesAdapter);
+		this.controller.setAdapter(this.categoriesAdapter);
 		
-		this.categoriesListView.setAdapter(categoriesAdapter);	
+		this.categoriesListView.setAdapter(this.categoriesAdapter);	
 		
 		this.categoriesListView
 				.setOnItemClickListener(new OnItemClickListener() {

@@ -2,10 +2,8 @@ package de.ur.mi.android.ting.app.controllers;
 
 import java.util.List;
 
-import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.fragments.ICollectionView;
 import de.ur.mi.android.ting.model.IBoardsProvider;
-import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
@@ -28,7 +26,7 @@ public class UserBoardsController {
 					@Override
 					public void done(List<Board> result) {
 						if (result != null) {
-							view.addAll(result.toArray());
+							UserBoardsController.this.view.addAll(result.toArray());
 						}
 					}
 				});

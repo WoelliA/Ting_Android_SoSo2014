@@ -25,5 +25,7 @@
     <string name="share_selectpin_title">Select an image to pin</string>
     <string name="select_board_title">Select one of your boards</string>
     <string name="selectpinimage_title">Select an image you want to pin.</string>
+    <string name="editpin_pinbutton">Ting it.</string>
+    <string name="editpin_title">Edit your Pin.</string>
 
 </resources>

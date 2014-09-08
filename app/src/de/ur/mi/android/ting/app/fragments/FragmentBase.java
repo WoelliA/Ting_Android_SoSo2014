@@ -8,8 +8,9 @@ public class FragmentBase extends android.support.v4.app.Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (!skipInject())
+		if (!this.skipInject()) {
 			((IInjector) this.getActivity()).inject(this);
+		}
 	}
 
 	protected boolean skipInject() {

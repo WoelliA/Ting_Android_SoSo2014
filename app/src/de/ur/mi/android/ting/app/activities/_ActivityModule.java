@@ -5,10 +5,7 @@ import javax.inject.Singleton;
 import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
-import de.ur.mi.android.ting.app.ForApplication;
 import de.ur.mi.android.ting.app._AndroidModule;
-import de.ur.mi.android.ting.utilities.Connectivity;
-import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.view.INotify;
 import de.ur.mi.android.ting.utilities.view.Notify;
 
@@ -24,18 +21,18 @@ public class _ActivityModule {
 	public _ActivityModule(Context context) {
 		this.context = context;
 
-		notify = new Notify(context);
+		this.notify = new Notify(context);
 	}
 
 	@Provides
 	@Singleton
 	@ForActivity
 	public Context provideActivityContext() {
-		return context;
+		return this.context;
 	}
 
 	@Provides
 	public INotify provideINotify() {
-		return notify;
+		return this.notify;
 	}
 }

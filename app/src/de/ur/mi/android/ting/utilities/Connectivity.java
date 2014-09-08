@@ -1,11 +1,8 @@
 package de.ur.mi.android.ting.utilities;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.IInjector;
-import de.ur.mi.android.ting.utilities.view.INotify;
 import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import android.content.Context;
@@ -29,7 +26,7 @@ public class Connectivity implements IConnectivity {
 	@Override
 	public boolean hasWebAccess(boolean notifyOnError) {
 
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		NetworkInfo netInfo = this.cm.getActiveNetworkInfo();
 		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
 			return true;
 		}
@@ -40,8 +37,8 @@ public class Connectivity implements IConnectivity {
 	}
 
 	private void notifyMissingConnection() {
-		String title = context.getString(R.string.connection_error_title);
-		String content = context.getString(R.string.connection_error_content);
+		String title = this.context.getString(R.string.connection_error_title);
+		String content = this.context.getString(R.string.connection_error_content);
 		NotifyKind kind = NotifyKind.ERROR;
 		Notify.current().notify(title, content, kind);
 	}

@@ -1,32 +1,25 @@
 package de.ur.mi.android.ting.app.activities;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.ISelectedListener;
-import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
 import de.ur.mi.android.ting.app.controllers.ShareController;
 import de.ur.mi.android.ting.app.controllers.IShareSetupView;
+import de.ur.mi.android.ting.app.fragments.EditPinDetailsFragment;
 import de.ur.mi.android.ting.app.fragments.ListFragment;
 import de.ur.mi.android.ting.app.fragments.SelectBoardFragment;
 import de.ur.mi.android.ting.app.fragments.SelectPinImageFragment;
+import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.LoadedImageData;
-import de.ur.mi.android.ting.utilities.view.ViewResolver;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 public class ShareActivity extends FragmentActivityBase implements
 		IShareSetupView {
@@ -74,30 +67,31 @@ public class ShareActivity extends FragmentActivityBase implements
 	}
 
 	@Override
-	public void addDisplayPinnableImage(LoadedImageData imageData) {
-		ensureShareStage(ShareStage.ImageSelect);
-		((ListFragment<?>) stageFragment).add(imageData);
+	public void addDisplayPinnableImage(PinData pinData) {
+		this.ensureShareStage(ShareStage.ImageSelect);
+		((ListFragment<?>) this.stageFragment).add(pinData);
 	}
 
 	private void ensureShareStage(ShareStage stage) {
-		if (currentShareStage != stage) {
+		if (this.currentShareStage != stage) {
 			this.goToShareStage(stage, false);
 		}
 	}
 
 	private void goToShareStage(ShareStage shareStage, boolean addToBackstack) {
 		this.currentShareStage = shareStage;
-		stageFragment = this.getFragmentForShareStage(shareStage);
-		displayFragment(shareStage, stageFragment, addToBackstack);
+		this.stageFragment = this.getFragmentForShareStage(shareStage);
+		this.displayFragment(shareStage, this.stageFragment, addToBackstack);
 	}
 
 	private void displayFragment(ShareStage stage, Fragment stageFragment,
 			boolean addToBackstack) {
 		FragmentTransaction transaction = this.getSupportFragmentManager()
 				.beginTransaction()
-				.replace(R.id.share_activity_frame, stageFragment);
-		if (addToBackstack)
+				.add(R.id.share_activity_frame, stageFragment);
+		if (addToBackstack) {
 			transaction.addToBackStack(stage.toString());
+		}
 		transaction.setTransition(android.R.anim.fade_in);
 		transaction.commit();
 	}
@@ -105,14 +99,14 @@ public class ShareActivity extends FragmentActivityBase implements
 	private Fragment getFragmentForShareStage(ShareStage shareStage) {
 		switch (shareStage) {
 		case ImageSelect:
-			ListFragment<LoadedImageData> selectPinImageFragment = new SelectPinImageFragment();
+			SelectPinImageFragment selectPinImageFragment = new SelectPinImageFragment();
 			selectPinImageFragment
-					.setSelectListener(new ISelectedListener<LoadedImageData>() {
+					.setSelectListener(new ISelectedListener<PinData>() {
 
 						@Override
-						public void onSelected(LoadedImageData selectedItem) {
-							controller.onPinImageSelected(selectedItem);
-							goToShareStage(ShareStage.BoardSelect, true);
+						public void onSelected(PinData selectedItem) {
+							ShareActivity.this.controller.onPinImageSelected(selectedItem);
+							ShareActivity.this.goToShareStage(ShareStage.BoardSelect, true);
 						}
 					});
 			return selectPinImageFragment;
@@ -123,12 +117,23 @@ public class ShareActivity extends FragmentActivityBase implements
 
 						@Override
 						public void onSelected(Board selectedBoard) {
-							controller.onBoardSelected(selectedBoard);
-							goToShareStage(ShareStage.Details, true);
+							ShareActivity.this.controller.onBoardSelected(selectedBoard);
+							ShareActivity.this.goToShareStage(ShareStage.Details, true);
 						}
 					});
 			return selectBoardFragment;
 
+		case Details:
+			EditPinDetailsFragment fragment = new EditPinDetailsFragment();
+			fragment.setOnSendPinClickListener(new SimpleDoneCallback<PinData>() {
+
+				@Override
+				public void done(PinData result) {
+					ShareActivity.this.controller.createPin(result);
+				}
+			});
+			fragment.setPinData(this.controller.getPinData());
+			return fragment;
 		default:
 			return null;
 		}

@@ -7,7 +7,6 @@ import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
 import de.ur.mi.android.ting.app.controllers.UserBoardsController;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TwoLineListItem;
 
 public class SelectBoardFragment extends ListFragment<Board> {
 
@@ -25,7 +23,7 @@ public class SelectBoardFragment extends ListFragment<Board> {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		controller.setView(this);
+		this.controller.setView(this);
 	}
 
 	@Override

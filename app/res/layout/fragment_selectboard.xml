@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:id="@+id/selectboard_listview">
+    android:id="@+id/selectboard_listview"
+    android:background="@android:color/background_light">
 
     <TextView
         android:id="@+id/select_board_title"

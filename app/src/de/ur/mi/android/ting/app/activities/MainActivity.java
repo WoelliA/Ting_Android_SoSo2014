@@ -2,14 +2,9 @@ package de.ur.mi.android.ting.app.activities;
 
 import javax.inject.Inject;
 
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +20,6 @@ import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.controllers.CategoriesController;
 import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
-import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 

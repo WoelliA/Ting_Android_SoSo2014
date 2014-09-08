@@ -4,7 +4,6 @@ import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class LoginController {
 	

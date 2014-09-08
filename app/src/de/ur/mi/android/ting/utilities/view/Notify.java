@@ -18,7 +18,7 @@ public class Notify implements INotify {
 
 	@Override
 	public void notify(String title, String content, NotifyKind kind) {
-		AlertDialog.Builder dialogDialog = new AlertDialog.Builder(context);
+		AlertDialog.Builder dialogDialog = new AlertDialog.Builder(this.context);
 		dialogDialog.setTitle(title);
 		dialogDialog.setMessage(content);
 		dialogDialog.setNeutralButton(R.string.button_dismiss,

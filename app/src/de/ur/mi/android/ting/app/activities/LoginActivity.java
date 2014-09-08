@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.controllers.LoginController;
-import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 

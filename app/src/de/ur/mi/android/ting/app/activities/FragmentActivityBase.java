@@ -13,8 +13,8 @@ public class FragmentActivityBase extends FragmentActivity implements IInjector{
 		super.onCreate(savedInstanceState);
 		IMainInjector mainInjector = (IMainInjector) this.getApplication();
 
-	    activityInjector = mainInjector.plus(getModules());
-	    activityInjector.inject(this);
+	    this.activityInjector = mainInjector.plus(this.getModules());
+	    this.activityInjector.inject(this);
 	}
 	
 	private Object[] getModules() {
@@ -23,7 +23,7 @@ public class FragmentActivityBase extends FragmentActivity implements IInjector{
 
 	@Override
 	public void inject(Object obj) {
-	    activityInjector.inject(obj);
+	    this.activityInjector.inject(obj);
 	}
 	
 	@Override

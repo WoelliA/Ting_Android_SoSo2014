@@ -2,7 +2,6 @@ package de.ur.mi.android.ting.app;
 
 import android.app.Application;
 import dagger.ObjectGraph;
-import de.ur.mi.android.ting.app.activities._ActivityModule;
 import de.ur.mi.android.ting.app.adapters._AdaptersModule;
 import de.ur.mi.android.ting.app.controllers._ControllersModule;
 import de.ur.mi.android.ting.app.fragments._FragmentsModule;

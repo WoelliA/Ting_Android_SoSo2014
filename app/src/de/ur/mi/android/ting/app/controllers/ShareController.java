@@ -8,11 +8,11 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
+import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.LoadedImageData;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
-import de.ur.mi.android.ting.utilities.html.PinData;
 import de.ur.mi.android.ting.utilities.html.PinDataParser;
 
 public class ShareController {
@@ -20,6 +20,10 @@ public class ShareController {
 	private IShareSetupView view;
 	private PinDataParser pindataParser;
 	private IImageLoader imageLoader;
+
+	private Board selectedBoard;
+
+	private PinData selectedPinData;
 
 	public ShareController(PinDataParser pindataParser, IImageLoader imageLoader) {
 		this.pindataParser = pindataParser;
@@ -35,7 +39,7 @@ public class ShareController {
 	}
 
 	public void handleSendText(final String text) {
-		if(this.view == null){
+		if (this.view == null) {
 			return;
 		}
 		if (text == null) {
@@ -57,7 +61,10 @@ public class ShareController {
 
 							@Override
 							public void done(Bitmap result) {
-								ShareController.this.view.addDisplayPinnableImage(new LoadedImageData(text,result));
+								ShareController.this.view
+										.addDisplayPinnableImage(new PinData(
+												"", "", new LoadedImageData(
+														text, result)));
 							}
 						});
 			} else {
@@ -67,14 +74,13 @@ public class ShareController {
 
 							@Override
 							public void done(PinData result) {
-								if(result == null){
-									view.displayError(IShareSetupView.LOAD_ERROR);
+								if (result == null) {
+									ShareController.this.view
+											.displayError(IShareSetupView.LOAD_ERROR);
 									return;
 								}
-								List<LoadedImageData> imageData = result.getImageData();
-								for (LoadedImageData loadedImageData : imageData) {
-									ShareController.this.view.addDisplayPinnableImage(loadedImageData);
-								}
+								ShareController.this.view
+										.addDisplayPinnableImage(result);
 							}
 						});
 			}
@@ -92,7 +98,10 @@ public class ShareController {
 
 					@Override
 					public void done(Bitmap result) {
-						ShareController.this.view.addDisplayPinnableImage(new LoadedImageData(uri.toString(), result));
+						ShareController.this.view
+								.addDisplayPinnableImage(new PinData("", "",
+										new LoadedImageData(uri.toString(),
+												result)));
 					}
 				});
 
@@ -103,14 +112,22 @@ public class ShareController {
 
 	}
 
-	public void onPinImageSelected(LoadedImageData selectedItem) {
-		// TODO Auto-generated method stub
-		
+	public void onPinImageSelected(PinData selectedItem) {
+		this.selectedPinData = selectedItem;
+
 	}
 
 	public void onBoardSelected(Board selectedBoard) {
+		this.selectedBoard = selectedBoard;
+	}
+
+	public PinData getPinData() {
+		return this.selectedPinData;
+	}
+
+	public void createPin(PinData result) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

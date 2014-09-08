@@ -6,11 +6,8 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.ForApplication;
-import de.ur.mi.android.ting.app.activities.ForActivity;
 import de.ur.mi.android.ting.utilities.html.JSoupPinDataParser;
 import de.ur.mi.android.ting.utilities.html.PinDataParser;
-import de.ur.mi.android.ting.utilities.view.INotify;
-import de.ur.mi.android.ting.utilities.view.Notify;
 
 @Module(
 		complete = false, 

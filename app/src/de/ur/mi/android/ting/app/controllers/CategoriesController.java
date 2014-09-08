@@ -2,9 +2,6 @@ package de.ur.mi.android.ting.app.controllers;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.model.ICategoryProvider;

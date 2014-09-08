@@ -3,7 +3,6 @@ package de.ur.mi.android.ting.model;
 import java.util.List;
 
 import de.ur.mi.android.ting.model.primitives.Board;
-import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public interface IBoardsProvider {

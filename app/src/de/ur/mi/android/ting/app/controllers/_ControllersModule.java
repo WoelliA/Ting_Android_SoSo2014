@@ -1,7 +1,5 @@
 package de.ur.mi.android.ting.app.controllers;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;

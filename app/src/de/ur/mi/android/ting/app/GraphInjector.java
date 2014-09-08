@@ -13,10 +13,11 @@ public class GraphInjector implements IInjector {
 	@Override
 	public void inject(Object obj) {
 		if (obj instanceof IInjectable) {
-			if (((IInjectable) obj).skipInject())
+			if (((IInjectable) obj).skipInject()) {
 				return;
+			}
 		}
-		graph.inject(obj);
+		this.graph.inject(obj);
 	}
 
 }

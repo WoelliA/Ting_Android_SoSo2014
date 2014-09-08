@@ -2,6 +2,7 @@ package de.ur.mi.android.ting.app.fragments;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
+import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.utilities.LoadedImageData;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class SelectPinImageFragment extends ListFragment<LoadedImageData> {
+public class SelectPinImageFragment extends ListFragment<PinData> {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,16 +28,17 @@ public class SelectPinImageFragment extends ListFragment<LoadedImageData> {
 	}
 
 	@Override
-	protected ArrayAdapter<LoadedImageData> getListAdapter() {
-		ViewResolver<LoadedImageData> imageViewResolver = new ViewResolver<LoadedImageData>(
+	protected ArrayAdapter<PinData> getListAdapter() {
+		ViewResolver<PinData> imageViewResolver = new ViewResolver<PinData>(
 				R.layout.pinnable_layout, this.getActivity()) {
 			@Override
-			protected void decorateView(View view, LoadedImageData dataItem,
+			protected void decorateView(View view, PinData dataItem,
 					ViewGroup parent) {
 				ImageView imageView = (ImageView) view;
 				imageView.setImageDrawable(null);
-				imageView.setImageBitmap(dataItem.getBitmap());
-				imageView.setTag(dataItem.getimageUrl());
+				LoadedImageData imageData = dataItem.getImageData();
+				imageView.setImageBitmap(imageData.getBitmap());
+				imageView.setTag(imageData.getimageUrl());
 			}
 
 			@Override
@@ -44,7 +46,7 @@ public class SelectPinImageFragment extends ListFragment<LoadedImageData> {
 				return true;
 			}
 		};
-		return new ViewCreationDelegatingListAdapter<LoadedImageData>(
+		return new ViewCreationDelegatingListAdapter<PinData>(
 				this.getActivity(), imageViewResolver);
 	}
 

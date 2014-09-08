@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.ur.mi.android.ting.app.ISelectedListener;
-import de.ur.mi.android.ting.utilities.LoadedImageData;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +19,7 @@ public abstract class ListFragment<T> extends FragmentBase implements
 	private ISelectedListener<T> selectedListener;
 
 	public ListFragment() {
-		items = new ArrayList<T>();
+		this.items = new ArrayList<T>();
 	}
 
 	@Override
@@ -37,23 +36,25 @@ public abstract class ListFragment<T> extends FragmentBase implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				if (selectedListener != null)
-					selectedListener.onSelected(adapter.getItem(position));
+				if (ListFragment.this.selectedListener != null) {
+					ListFragment.this.selectedListener.onSelected(ListFragment.this.adapter.getItem(position));
+				}
 			}
 		});
-		adapter = this.getListAdapter();
-		adapter.addAll(items);
-		items.clear();
-		listView.setAdapter(adapter);
+		this.adapter = this.getListAdapter();
+		this.adapter.addAll(this.items);
+		this.items.clear();
+		listView.setAdapter(this.adapter);
 	}
 
 	@Override
 	public void add(Object item) {
 		T obj = (T) item;
-		if (this.adapter == null)
-			items.add(obj);
-		else
+		if (this.adapter == null) {
+			this.items.add(obj);
+		} else {
 			this.adapter.add(obj);
+		}
 	}
 
 	@Override

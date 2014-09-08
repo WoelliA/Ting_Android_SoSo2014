@@ -35,7 +35,6 @@
         <item>category 3</item>
     </string-array>
 
-
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_user_header">user</string>
     <string name="search_pins_header">pins</string>

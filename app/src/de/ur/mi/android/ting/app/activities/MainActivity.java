@@ -148,6 +148,7 @@ public class MainActivity extends ActionBarActivityBase implements
 		boolean visible = this.user.getIsLogedIn();
 		this.menu.findItem(R.id.action_login).setVisible(!visible);
 		this.menu.findItem(R.id.action_profile).setVisible(visible);
+		this.menu.findItem(R.id.action_proximity).setVisible(visible);
 	}
 
 	@Override
@@ -167,6 +168,9 @@ public class MainActivity extends ActionBarActivityBase implements
 			return true;
 		case R.id.action_search:
 			intent = new Intent(this, SearchActivity.class);
+			this.startActivity(intent);
+		case R.id.action_proximity:
+			intent = new Intent(this, ProximityAlertActivity.class);
 			this.startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);

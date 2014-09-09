@@ -6,6 +6,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -38,11 +40,6 @@
             android:name=".app.activities.MainActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            <intent-filter >
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="image/*"/>
-            </intent-filter>
             
             <meta-data
                 android:name="android.app.default_searchable"
@@ -61,8 +58,7 @@
         </activity>
         <activity android:name=".app.activities.ShareActivity" >
             <intent-filter>
-                <action android:name="android.intent.action.SEND" >
-                </action>
+                <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -70,6 +66,16 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
+        
+        <activity 
+            android:name=".app.activities.ProximityAlertActivity"
+            android:label="@string/action_proximity">
+        </activity>
+        
+        <activity 
+            android:name=".app.activities.ProximityAlertSetActivity">
+        </activity>
+        
     </application>
 
 </manifest>

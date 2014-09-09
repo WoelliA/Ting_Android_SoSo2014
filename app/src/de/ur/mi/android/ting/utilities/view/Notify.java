@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.utilities.view;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -49,4 +50,27 @@ public class Notify implements INotify {
 	public static INotify current() {
 		return current;
 	}
+	
+	
+	@Override
+	public LoadingContext notifyLoading(int titleResourceId) {
+		return new LoadingContext(this.context, titleResourceId);					
+	}
+	
+	public class LoadingContext{
+		private ProgressDialog dialog;
+
+		public LoadingContext(Context context, int titleResourceId) {
+			this.dialog = new ProgressDialog(context);
+			this.dialog.setTitle(titleResourceId);
+			this.dialog.setCancelable(false);
+			this.dialog.show();
+		}
+
+		public void close() {
+			this.dialog.cancel();			
+		}
+		
+	}
+
 }

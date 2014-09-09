@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
 import de.ur.mi.android.ting.app.controllers.UserBoardsController;
+import de.ur.mi.android.ting.app.viewResolvers.BoardViewResolver;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.os.Bundle;
@@ -35,26 +36,7 @@ public class SelectBoardFragment extends ListFragment<Board> {
 
 	@Override
 	protected ArrayAdapter<Board> getListAdapter() {
-		ViewResolver<Board> viewResolver = new ViewResolver<Board>(
-				android.R.layout.simple_list_item_2, this.getActivity()) {
-
-			@Override
-			protected void decorateView(View view, Board dataItem,
-					ViewGroup parent) {
-				TextView headerText = (TextView) this.findViewById(view,
-						android.R.id.text1);
-				TextView descriptionTest = (TextView) this.findViewById(view,
-						android.R.id.text2);
-
-				headerText.setText(dataItem.getTitle());
-				descriptionTest.setText(dataItem.getDescription());
-			}
-			
-			@Override
-					public boolean skipInject() {
-						return true;
-					}
-		};
+		ViewResolver<Board> viewResolver = new BoardViewResolver(this.getActivity());
 		return new ViewCreationDelegatingListAdapter<Board>(this.getActivity(),
 				viewResolver);
 	}

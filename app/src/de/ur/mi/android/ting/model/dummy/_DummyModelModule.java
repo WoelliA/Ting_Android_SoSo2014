@@ -15,11 +15,15 @@ import de.ur.mi.android.ting.model.LocalUser;
 @Module(complete = true, library = true)
 public class _DummyModelModule implements _IModelModule {
 
+	private DummyCategoryProvider categoryProvider;
+
 	@Override
 	@Provides
 	@Singleton
 	public ICategoryProvider provideICategoryProvider(LocalUser user) {
-		return new DummyCategoryProvider(user);
+		if(this.categoryProvider == null)
+			this.categoryProvider = new DummyCategoryProvider(user);
+		return this.categoryProvider;
 	}
 
 	@Override

@@ -7,15 +7,14 @@
 
     <TextView
         android:id="@+id/selectpinimage_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/selectpinimage_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        style="@style/header_text_style"
+        android:text="@string/selectpinimage_title" />
 
     <ListView
         android:id="@+id/selectpinimage_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+         >
     </ListView>
 
 </LinearLayout>

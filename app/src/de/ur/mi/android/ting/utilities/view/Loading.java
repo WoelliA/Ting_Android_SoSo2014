@@ -1,4 +1,4 @@
-package de.ur.mi.android.ting.views;
+package de.ur.mi.android.ting.utilities.view;
 
 import de.ur.mi.android.ting.R;
 import android.content.Context;

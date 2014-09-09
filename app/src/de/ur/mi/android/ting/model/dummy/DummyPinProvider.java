@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
+import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.PinRequest;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class DummyPinProvider implements IPinProvider {
 
@@ -45,6 +48,18 @@ public class DummyPinProvider implements IPinProvider {
 			articles.add(new DummyPin(request.getOffset() + i));
 		}
 		return articles;
+	}
+
+	@Override
+	public void createPin(PinData result, Board selectedBoard, final IDoneCallback<Void> callback) {
+		DelayTask task = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				callback.done(null);
+				super.onPostExecute(result);
+			}
+		};
+		task.execute();
 	}
 
 }

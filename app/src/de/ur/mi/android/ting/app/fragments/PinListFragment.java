@@ -10,7 +10,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.model.primitives.Category;
-import de.ur.mi.android.ting.views.Loading;
+import de.ur.mi.android.ting.utilities.view.Loading;
 
 public class PinListFragment extends FragmentBase {
 	private PinListAdapter pinAdapter;

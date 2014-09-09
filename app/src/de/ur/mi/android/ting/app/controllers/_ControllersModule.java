@@ -5,7 +5,9 @@ import dagger.Provides;
 import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.model.IBoardsProvider;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.html.PinDataParser;
@@ -32,13 +34,18 @@ public class _ControllersModule {
 
 	@Provides
 	public ShareController provideShareController(PinDataParser pindataParser,
-			IImageLoader imageLoader) {
-		return new ShareController(pindataParser, imageLoader);
+			IImageLoader imageLoader, IPinProvider pinProvider) {
+		return new ShareController(pindataParser, imageLoader, pinProvider);
 	}
 
 	@Provides
 	public UserBoardsController provideUserBoardsController(
 			IBoardsProvider boardsProvider) {
 		return new UserBoardsController(boardsProvider);
+	}
+	
+	@Provides
+	public LoginController provideLoginController(IUserService userService, IConnectivity connectivity){
+		return new LoginController(userService, connectivity);
 	}
 }

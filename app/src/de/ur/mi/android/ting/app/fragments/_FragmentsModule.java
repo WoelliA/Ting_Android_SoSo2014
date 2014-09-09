@@ -5,7 +5,10 @@ import dagger.Module;
 @Module(injects = { PinListFragment.class, CategoriesFragment.class,
 		SearchResultFragment.class, SelectBoardFragment.class,
 		SelectPinImageFragment.class,
-		EditPinDetailsFragment.class
+		EditPinDetailsFragment.class,
+		LoginFragment.class,
+		RegisterFragment.class,
+		ForgotPWFragment.class
 		}, complete = false)
 public class _FragmentsModule {
 

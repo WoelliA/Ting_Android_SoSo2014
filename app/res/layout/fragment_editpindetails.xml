@@ -1,42 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:padding="10dp">
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editpin_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ImageView
-        android:id="@+id/editpin_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/editpin_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" 
-        android:inputType="text"/>
+        android:background="@android:color/background_light"
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editpin_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:minHeight="60dp"
-        android:inputType="textMultiLine" >
-    </EditText>
+        <TextView
+            style="@style/header_text_style"
+            android:text="@string/editpin_title" />
 
-    <Button
-        android:id="@+id/editpin_pinbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editpin_pinbutton" />
+        <LinearLayout
+            android:padding="@dimen/activity_content_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-</LinearLayout>
+            <ImageView
+                android:background="@drawable/border_1px_background"
+                android:id="@+id/editpin_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_content_padding" >
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editpin_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/editpin_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:minHeight="60dp" >
+            </EditText>
+
+            <Button
+                android:id="@+id/editpin_pinbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editpin_pinbutton" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

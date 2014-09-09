@@ -28,6 +28,7 @@ public class ShareActivity extends FragmentActivityBase implements
 	ShareController controller;
 	private ShareStage currentShareStage;
 	private Fragment stageFragment;
+	protected PinData selectedPinData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +104,10 @@ public class ShareActivity extends FragmentActivityBase implements
 			selectPinImageFragment
 					.setSelectListener(new ISelectedListener<PinData>() {
 
+
 						@Override
 						public void onSelected(PinData selectedItem) {
-							ShareActivity.this.controller.onPinImageSelected(selectedItem);
+							selectedPinData = selectedItem;
 							ShareActivity.this.goToShareStage(ShareStage.BoardSelect, true);
 						}
 					});
@@ -132,7 +134,7 @@ public class ShareActivity extends FragmentActivityBase implements
 					ShareActivity.this.controller.createPin(result);
 				}
 			});
-			fragment.setPinData(this.controller.getPinData());
+			fragment.setPinData(this.selectedPinData);
 			return fragment;
 		default:
 			return null;

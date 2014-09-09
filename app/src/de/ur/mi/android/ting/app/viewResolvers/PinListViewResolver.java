@@ -16,8 +16,8 @@ import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoader;
+import de.ur.mi.android.ting.utilities.view.Loading;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
-import de.ur.mi.android.ting.views.Loading;
 
 public class PinListViewResolver extends ViewResolver<Pin> {
 

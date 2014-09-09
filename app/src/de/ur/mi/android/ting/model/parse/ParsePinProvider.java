@@ -13,9 +13,12 @@ import com.parse.ParseQuery.CachePolicy;
 
 import de.ur.mi.android.ting.model.IPinProvider;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
+import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.PinRequest;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class ParsePinProvider implements IPinProvider {
 
@@ -68,6 +71,12 @@ public class ParsePinProvider implements IPinProvider {
 				object.getString("image"),
 				ParseHelper.createBoard(object.getParseObject("board")),
 				object.getString("url"), object.getDouble("aspectratio"));
+	}
+
+	@Override
+	public void createPin(PinData result, Board selectedBoard, IDoneCallback callback) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

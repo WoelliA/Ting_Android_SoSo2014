@@ -28,11 +28,11 @@ public class ReminderListAdapter extends ArrayAdapter<ProximityAlertReminder>{
 		View v = convertView;
 		
 		if (v==null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = inflater.inflate(R.layout.reminder_layout, null);
 		}
 		
-		ProximityAlertReminder proxRem = proxList.get(position);
+		ProximityAlertReminder proxRem = this.proxList.get(position);
 		
 		if (proxRem != null) {
 			TextView reminderName = (TextView) v.findViewById(R.id.reminder_name);

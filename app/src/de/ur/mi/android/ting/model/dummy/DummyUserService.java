@@ -1,6 +1,5 @@
 package de.ur.mi.android.ting.model.dummy;
 
-import android.os.AsyncTask;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -21,25 +20,18 @@ public class DummyUserService implements IUserService {
 	@Override
 	public void login(String userName, String password,
 			final IDoneCallback<LoginResult> callback) {
-		this.isRightLogin = userName == "right@right.de" && password == "right";
-		AsyncTask<Void, Void, Void> loginTask = new AsyncTask<Void, Void, Void>() {
-
-			@Override
-			protected Void doInBackground(Void... params) {
-				try {
-					Thread.sleep(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-
+		this.isRightLogin = userName.equals("right@right.de")
+				&& password.equals("right");
+		DelayTask loginTask = new DelayTask() {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				DummyUserService.this.user.setIsLoggedIn(DummyUserService.this.isRightLogin);
-				DummyUserService.this.user.setInfo("12355uuu", "Dummy Local User");
-				callback.done(new LoginResult(DummyUserService.this.isRightLogin));
+				DummyUserService.this.user
+						.setIsLoggedIn(DummyUserService.this.isRightLogin);
+				DummyUserService.this.user.setInfo("12355uuu",
+						"Dummy Local User");
+				callback.done(new LoginResult(
+						DummyUserService.this.isRightLogin));
 			}
 		};
 		loginTask.execute();

@@ -9,6 +9,7 @@ public class Board extends UniqueBase implements IHasCategory{
 	protected List<User> contributors;
 	private Category category;
 	private User owner;
+	private boolean isFollowing;
 
 	public Board(String id, Category category, String title, String description, User owner, List<User> contributors) {
 		super(id);
@@ -42,6 +43,14 @@ public class Board extends UniqueBase implements IHasCategory{
 
 	public User getOwner() {
 		return this.owner;
+	}
+	
+	public void setIsUserFollowing(boolean isFollowing){
+		this.isFollowing = isFollowing;
+	}
+
+	public boolean getIsUserFollowing() {
+		return this.isFollowing;
 	}
 
 }

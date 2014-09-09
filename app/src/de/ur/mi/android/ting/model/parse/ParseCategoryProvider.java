@@ -68,7 +68,7 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 	@Override
 	public void addFavoriteCategories(LocalUser user,
 			IDoneCallback<List<Category>> callback) {
-		// TODO Auto-generated method stub
+		// TODO add favorite category for parse
 		
 	}
 

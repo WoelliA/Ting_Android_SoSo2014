@@ -9,7 +9,7 @@ import de.ur.mi.android.ting.R;
 
 public class Notify implements INotify {
 
-	private static INotify current;
+	private static Notify current;
 	private Context context;
 
 	public Notify(Context context) {
@@ -18,10 +18,14 @@ public class Notify implements INotify {
 	}
 
 	@Override
-	public void notify(String title, String content, NotifyKind kind) {
+	public void showDialog(int titleResourceId, int contentResourceId,
+			NotifyKind kind) {
 		AlertDialog.Builder dialogDialog = new AlertDialog.Builder(this.context);
-		dialogDialog.setTitle(title);
-		dialogDialog.setMessage(content);
+
+		dialogDialog.setTitle(this.context.getString(titleResourceId));
+		if (contentResourceId > 1) {
+			dialogDialog.setMessage(this.context.getString(contentResourceId));
+		}
 		dialogDialog.setNeutralButton(R.string.button_dismiss,
 				new OnClickListener() {
 
@@ -47,17 +51,16 @@ public class Notify implements INotify {
 		}
 	}
 
-	public static INotify current() {
+	public static Notify current() {
 		return current;
 	}
-	
-	
+
 	@Override
-	public LoadingContext notifyLoading(int titleResourceId) {
-		return new LoadingContext(this.context, titleResourceId);					
+	public LoadingContext showLoading(int titleResourceId) {
+		return new LoadingContext(this.context, titleResourceId);
 	}
-	
-	public class LoadingContext{
+
+	public class LoadingContext {
 		private ProgressDialog dialog;
 
 		public LoadingContext(Context context, int titleResourceId) {
@@ -68,9 +71,9 @@ public class Notify implements INotify {
 		}
 
 		public void close() {
-			this.dialog.cancel();			
+			this.dialog.cancel();
 		}
-		
+
 	}
 
 }

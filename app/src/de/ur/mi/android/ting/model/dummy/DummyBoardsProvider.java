@@ -3,11 +3,12 @@ package de.ur.mi.android.ting.model.dummy;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ur.mi.android.ting.model.IBoardsProvider;
+import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.primitives.Board;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
-public class DummyBoardsProvider implements IBoardsProvider{
+public class DummyBoardsProvider implements IBoardsService{
 
 	@Override
 	public void getUserBoards(String id,
@@ -31,6 +32,18 @@ public class DummyBoardsProvider implements IBoardsProvider{
 			SimpleDoneCallback<List<Board>> callback) {
 		this.getUserBoards("someid", callback);
 		
+	}
+
+	@Override
+	public void getBoard(String boardId, final IDoneCallback<Board> callback) {
+		DelayTask task = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				callback.done(new DummyBoard(100));
+				super.onPostExecute(result);
+			}
+		};
+		task.execute();
 	}
 	
 }

@@ -3,16 +3,16 @@ package de.ur.mi.android.ting.app.controllers;
 import java.util.List;
 
 import de.ur.mi.android.ting.app.fragments.ICollectionView;
-import de.ur.mi.android.ting.model.IBoardsProvider;
+import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class UserBoardsController {
-	private IBoardsProvider boardsProvider;
+	private IBoardsService boardsService;
 	private ICollectionView view;
 
-	public UserBoardsController(IBoardsProvider boardsProvider) {
-		this.boardsProvider = boardsProvider;
+	public UserBoardsController(IBoardsService boardsService) {
+		this.boardsService = boardsService;
 	}
 
 	public void setView(ICollectionView view) {
@@ -21,7 +21,7 @@ public class UserBoardsController {
 	}
 
 	private void initBoards() {
-		this.boardsProvider.getLocalUserBoards(new SimpleDoneCallback<List<Board>>() {
+		this.boardsService.getLocalUserBoards(new SimpleDoneCallback<List<Board>>() {
 
 					@Override
 					public void done(List<Board> result) {

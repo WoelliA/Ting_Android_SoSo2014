@@ -9,7 +9,6 @@ public abstract class DelayTask extends AsyncTask<Void, Void, Void>{
 		try {
 			Thread.sleep(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

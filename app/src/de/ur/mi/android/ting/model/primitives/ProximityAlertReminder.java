@@ -1,7 +1,5 @@
 package de.ur.mi.android.ting.model.primitives;
 
-import android.app.PendingIntent;
-
 
 public class ProximityAlertReminder implements Comparable<ProximityAlertReminder> {
 	
@@ -17,21 +15,21 @@ public class ProximityAlertReminder implements Comparable<ProximityAlertReminder
 	}
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	public double getLat() {
-		return lat;
+		return this.lat;
 	}
 	
 	public double getLng() {
-		return lng;
+		return this.lng;
 	}
 
 	
 	@Override
 	public int compareTo(ProximityAlertReminder proximityAlertReminder){
-		int comparison_result = name.compareToIgnoreCase(proximityAlertReminder.getName());
+		int comparison_result = this.name.compareToIgnoreCase(proximityAlertReminder.getName());
 		if (comparison_result == 0) {
 			comparison_result = -1;
 		}

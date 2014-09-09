@@ -1,7 +1,6 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import de.ur.mi.android.ting.model.PinData;
-import de.ur.mi.android.ting.utilities.LoadedImageData;
 
 public interface IShareSetupView {
 
@@ -10,7 +9,5 @@ public interface IShareSetupView {
 	int LOAD_ERROR = 2;
 
 	void addDisplayPinnableImage(PinData result);
-
-	void displayError(int errorCode);
 
 }

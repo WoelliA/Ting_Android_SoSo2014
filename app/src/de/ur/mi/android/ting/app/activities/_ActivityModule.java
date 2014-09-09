@@ -9,8 +9,13 @@ import de.ur.mi.android.ting.app._AndroidModule;
 import de.ur.mi.android.ting.utilities.view.INotify;
 import de.ur.mi.android.ting.utilities.view.Notify;
 
-@Module(injects = { ShareActivity.class, MainActivity.class,
-		LoginActivity.class, SearchActivity.class, SplashScreenActivity.class },
+@Module(injects = { 
+		ShareActivity.class, 
+		MainActivity.class,
+		LoginActivity.class, 
+		SearchActivity.class, 
+		SplashScreenActivity.class,
+		BoardDetailsActivity.class},
 
 addsTo = _AndroidModule.class, library = true, complete = false)
 public class _ActivityModule {

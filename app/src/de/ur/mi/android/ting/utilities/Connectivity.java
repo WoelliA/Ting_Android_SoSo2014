@@ -37,10 +37,8 @@ public class Connectivity implements IConnectivity {
 	}
 
 	private void notifyMissingConnection() {
-		String title = this.context.getString(R.string.connection_error_title);
-		String content = this.context.getString(R.string.connection_error_content);
 		NotifyKind kind = NotifyKind.ERROR;
-		Notify.current().notify(title, content, kind);
+		Notify.current().showDialog(R.string.connection_error_title, R.string.connection_error_content, kind);
 	}
 
 }

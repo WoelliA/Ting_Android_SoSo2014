@@ -41,7 +41,6 @@ public class LoginActivity extends FragmentActivityBase {
 
 		public LoginFragmentAdapter(FragmentManager fm) {
 			super(fm);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

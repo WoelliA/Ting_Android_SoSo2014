@@ -1,7 +1,6 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
-import android.os.AsyncTask;
 import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
@@ -12,25 +11,14 @@ public class DummySearchService implements ISearchService {
 	@Override
 	public <T> void search(final SearchRequest request,
 			final IDoneCallback<SearchResult<T>> callback) {
-		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-
-			@Override
-			protected Void doInBackground(Void... params) {
-				try {
-					Thread.sleep(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return null;
-			}
-
+		DelayTask delayTask = new DelayTask() {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				callback.done(new Result<T>(request).execute());
 			}
 		};
-		task.execute();
+		delayTask.execute();
 
 	}
 

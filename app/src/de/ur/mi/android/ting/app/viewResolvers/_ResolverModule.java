@@ -4,10 +4,11 @@ import dagger.Module;
 
 @Module(injects = { PinListViewResolver.class,
 		SearchResultResolvers.BoardResolver.class,
-		SearchResultResolvers.PinResolver.class,
+		SearchResultResolvers.PinSearchResultViewResolver.class,
 		SearchResultResolvers.UserResolver.class, 
 		CategoryViewResolver.class,
-		BoardViewResolver.class }
+		BoardViewResolver.class ,
+		BoardPinViewResolver.class}
 , complete = false)
 public class _ResolverModule {
 

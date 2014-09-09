@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.model.IPinProvider;
+import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.IImageLoader;
@@ -16,6 +16,7 @@ import de.ur.mi.android.ting.utilities.LoadedImageData;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import de.ur.mi.android.ting.utilities.html.PinDataParser;
 import de.ur.mi.android.ting.utilities.view.Notify;
+import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import de.ur.mi.android.ting.utilities.view.Notify.LoadingContext;
 
 public class ShareController {
@@ -28,13 +29,13 @@ public class ShareController {
 	private IImageLoader imageLoader;
 
 	private Board selectedBoard;
-	private IPinProvider pinProvider;
+	private IPinService pinService;
 
 	public ShareController(PinDataParser pindataParser,
-			IImageLoader imageLoader, IPinProvider pinProvider) {
+			IImageLoader imageLoader, IPinService pinService) {
 		this.pindataParser = pindataParser;
 		this.imageLoader = imageLoader;
-		this.pinProvider = pinProvider;
+		this.pinService = pinService;
 	}
 
 	public void setView(IShareSetupView view) {
@@ -46,7 +47,6 @@ public class ShareController {
 			return;
 		}
 		if (text == null) {
-			this.view.displayError(IShareSetupView.NO_TEXT);
 			return;
 		}
 
@@ -100,7 +100,8 @@ public class ShareController {
 			}
 
 		} catch (MalformedURLException e) {
-			this.view.displayError(IShareSetupView.NO_URL);
+			Notify.current().showDialog(R.string.share_target_generic_error, 0,
+					NotifyKind.ERROR);
 			e.printStackTrace();
 		}
 
@@ -122,7 +123,25 @@ public class ShareController {
 	}
 
 	public void handleSendMultipleImages(ArrayList<Uri> parcelableArrayListExtra) {
-		// TODO Auto-generated method stub
+		if (parcelableArrayListExtra == null) {
+			return;
+		}
+
+		for (Uri uri : parcelableArrayListExtra) {
+			final String uriString = uri.toString();
+			this.imageLoader.loadImage(uriString,
+					new SimpleDoneCallback<Bitmap>() {
+
+						@Override
+						public void done(Bitmap result) {
+							if(result == null) {
+								return;
+							}
+							ShareController.this.view.addDisplayPinnableImage(new PinData("", "",
+									new LoadedImageData(uriString, result)));
+						}
+					});
+		}
 
 	}
 
@@ -131,9 +150,9 @@ public class ShareController {
 	}
 
 	public void createPin(PinData result) {
-		final LoadingContext loading = Notify.current().notifyLoading(
+		final LoadingContext loading = Notify.current().showLoading(
 				R.string.sending_pin_dialog_title);
-		this.pinProvider.createPin(result, this.selectedBoard,
+		this.pinService.createPin(result, this.selectedBoard,
 				new SimpleDoneCallback<Void>() {
 
 					@Override

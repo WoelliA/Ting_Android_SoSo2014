@@ -33,68 +33,68 @@ public class ProximityAlertActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_proximity);
+		this.setContentView(R.layout.activity_proximity);
 		
-		initDatabase();
-		initReminders();
-		initUI();
+		this.initDatabase();
+		this.initReminders();
+		this.initUI();
 		
 	}
 	
 	private void initDatabase() {
-		database = new ReminderDB(this);
-		database.open();
+		this.database = new ReminderDB(this);
+		this.database.open();
 		
 	}
 	
 	private void initReminders() {
-		reminders = new ArrayList<ProximityAlertReminder>();
-		getItemsFromDatabase();
+		this.reminders = new ArrayList<ProximityAlertReminder>();
+		this.getItemsFromDatabase();
 	}
 
 	private void getItemsFromDatabase() {
-		reminders.clear();
-		ArrayList<ProximityAlertReminder> dbItems = database.getAllItemFromDatabase();
-		reminders = new ArrayList<ProximityAlertReminder>(dbItems);
-		Collections.sort(reminders);
+		this.reminders.clear();
+		ArrayList<ProximityAlertReminder> dbItems = this.database.getAllItemFromDatabase();
+		this.reminders = new ArrayList<ProximityAlertReminder>(dbItems);
+		Collections.sort(this.reminders);
 	}
 
 	private void initUI() {
-		initAddButton();
-		initListView();
-		initListAdapter();
+		this.initAddButton();
+		this.initListView();
+		this.initListAdapter();
 	}
 
 
 
 	private void initListView() {
-		reminderList = (ListView) findViewById(R.id.reminder_list);
-		reminderList.setOnItemLongClickListener(new OnItemLongClickListener() {
+		this.reminderList = (ListView) this.findViewById(R.id.reminder_list);
+		this.reminderList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				removeReminderAtPosition(position);
+				ProximityAlertActivity.this.removeReminderAtPosition(position);
 				return false;
 			}
 		});
 	}
 
 	private void removeReminderAtPosition(int position) {
-		if (reminders.get(position) == null) {
+		if (this.reminders.get(position) == null) {
 			return;
 		} else {
-			database.removeItemFromDataBase(reminders.get(position));
-			reminders.remove(position);
-			reminders_adapter.notifyDataSetChanged();
+			this.database.removeItemFromDataBase(this.reminders.get(position));
+			this.reminders.remove(position);
+			this.reminders_adapter.notifyDataSetChanged();
 			Toast.makeText(ProximityAlertActivity.this,"deleted", Toast.LENGTH_SHORT).show();
 		}
 		
 	}
 
 	private void initAddButton() {
-		addReminderButton = (Button) findViewById(R.id.button_add_reminder);
-		addReminderButton.setOnClickListener(new OnClickListener() {
+		this.addReminderButton = (Button) this.findViewById(R.id.button_add_reminder);
+		this.addReminderButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -106,9 +106,9 @@ public class ProximityAlertActivity extends Activity{
 	}
 
 	private void initListAdapter() {
-		reminders_adapter = new ReminderListAdapter(this, reminders);
-		reminderList.setAdapter(reminders_adapter);
-		reminders_adapter.notifyDataSetChanged();	
+		this.reminders_adapter = new ReminderListAdapter(this, this.reminders);
+		this.reminderList.setAdapter(this.reminders_adapter);
+		this.reminders_adapter.notifyDataSetChanged();	
 	}     
 	
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.app.IInjector;
-import de.ur.mi.android.ting.model.IPinProvider;
+import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
 import de.ur.mi.android.ting.model.PagingResult;
 import de.ur.mi.android.ting.model.PinRequest;
@@ -19,7 +19,7 @@ public class PinListController extends PagingController<Pin> {
 	private Category category;
 
 	@Inject
-	public IPinProvider pinProvider;
+	public IPinService pinService;
 
 	private int requestCount = 10;
 
@@ -39,7 +39,7 @@ public class PinListController extends PagingController<Pin> {
 		}				
 		
 		PinRequest request = new PinRequest(offset, this.requestCount);
-		this.pinProvider.getPinsForCategory(this.category, request,
+		this.pinService.getPinsForCategory(this.category, request,
 				new IPinReceivedCallback() {
 					@Override
 					public void onPinsReceived(ArrayList<Pin> pins) {

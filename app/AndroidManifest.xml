@@ -6,8 +6,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -40,7 +40,6 @@
             android:name=".app.activities.MainActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".app.activities.SearchActivity" />
@@ -66,16 +65,14 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        
-        <activity 
+        <activity
             android:name=".app.activities.ProximityAlertActivity"
-            android:label="@string/action_proximity">
+            android:label="@string/action_proximity" >
         </activity>
-        
-        <activity 
-            android:name=".app.activities.ProximityAlertSetActivity">
+        <activity android:name=".app.activities.ProximityAlertSetActivity" >
         </activity>
-        
+        <activity android:name=".app.activities.BoardDetailsActivity" >
+        </activity>
     </application>
 
 </manifest>

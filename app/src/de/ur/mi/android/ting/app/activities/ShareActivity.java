@@ -13,7 +13,6 @@ import de.ur.mi.android.ting.app.fragments.SelectBoardFragment;
 import de.ur.mi.android.ting.app.fragments.SelectPinImageFragment;
 import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.primitives.Board;
-import de.ur.mi.android.ting.utilities.LoadedImageData;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.content.Intent;
 import android.net.Uri;
@@ -107,7 +106,7 @@ public class ShareActivity extends FragmentActivityBase implements
 
 						@Override
 						public void onSelected(PinData selectedItem) {
-							selectedPinData = selectedItem;
+							ShareActivity.this.selectedPinData = selectedItem;
 							ShareActivity.this.goToShareStage(ShareStage.BoardSelect, true);
 						}
 					});
@@ -139,12 +138,6 @@ public class ShareActivity extends FragmentActivityBase implements
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	public void displayError(int errorCode) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private enum ShareStage {

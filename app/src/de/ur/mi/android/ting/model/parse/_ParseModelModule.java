@@ -8,10 +8,10 @@ import com.parse.Parse;
 
 import dagger.Module;
 import dagger.Provides;
-import de.ur.mi.android.ting.model.IBoardsProvider;
+import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model._IModelModule;
-import de.ur.mi.android.ting.model.IPinProvider;
+import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -29,8 +29,8 @@ public class _ParseModelModule implements _IModelModule {
 
 	@Override
 	@Provides
-	public IPinProvider provideIPinProvider() {
-		return new ParsePinProvider();
+	public IPinService provideIPinService() {
+		return new ParsePinService();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class _ParseModelModule implements _IModelModule {
 
 	@Override
 	@Provides
-	public IBoardsProvider provideIBoardsProvider(LocalUser user) {
+	public IBoardsService provideIBoardsProvider(LocalUser user) {
 		return new ParseBoardsProvider(user);
 	}
 

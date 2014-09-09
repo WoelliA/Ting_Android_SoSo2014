@@ -22,16 +22,16 @@ public class ReminderDB {
 	public static final String KEY_LONGITUDE = "_longitude";
 
 	public ReminderDB(Context context){
-		helper = new ReminderDBHelper(context, DB_NAME, null, DB_VERSION);
+		this.helper = new ReminderDBHelper(context, DB_NAME, null, DB_VERSION);
 	}
 	
 	public void open(){
-		db = helper.getWritableDatabase();
+		this.db = this.helper.getWritableDatabase();
 	}
 	
 	public void close(){
-		db.close();
-		helper.close();
+		this.db.close();
+		this.helper.close();
 	}
 	
 	public void insertItemIntoDataBase(ProximityAlertReminder item) {
@@ -39,22 +39,22 @@ public class ReminderDB {
 		values.put(KEY_NAME, item.getName());
 		values.put(KEY_LATITUDE, item.getLat());
 		values.put(KEY_LONGITUDE, item.getLng());
-		db.insert(DATABASE_TABLE, null, values);
+		this.db.insert(DATABASE_TABLE, null, values);
 	}
 	
 	public void removeItemFromDataBase(ProximityAlertReminder item) {
 		String delete_clause = KEY_NAME+"=?";
 		String[] delete_args = new String[] {item.getName()};
-		db.delete(DATABASE_TABLE, delete_clause, delete_args);
+		this.db.delete(DATABASE_TABLE, delete_clause, delete_args);
 	}
 	
 	public void removeAllItemsFromDatabase() {
-		db.delete(DATABASE_TABLE, null, null);
+		this.db.delete(DATABASE_TABLE, null, null);
 	}
 	
 	public ArrayList<ProximityAlertReminder> getAllItemFromDatabase() {
 		ArrayList<ProximityAlertReminder> items = new ArrayList<ProximityAlertReminder>();
-		Cursor results = db.query(DATABASE_TABLE, new String[]{KEY_NAME,KEY_LATITUDE,KEY_LONGITUDE}, null, null, null, null, null);
+		Cursor results = this.db.query(DATABASE_TABLE, new String[]{KEY_NAME,KEY_LATITUDE,KEY_LONGITUDE}, null, null, null, null, null);
 		if(results.moveToFirst()) {
 			do {
 				String name = results.getString(0);

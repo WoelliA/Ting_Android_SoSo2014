@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.fragments;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.adapters.PagingListAdapterBase;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingPagingListAdapter;
 import de.ur.mi.android.ting.model.IPaging;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class SearchResultFragment<T> extends FragmentBase {
@@ -20,11 +23,14 @@ public class SearchResultFragment<T> extends FragmentBase {
 
 	private IPaging<T> pagingController;
 
+	private ISelectedListener<T> selectedListener;
+
 	public SearchResultFragment(String title, ViewResolver<T> viewResolver,
-			IPaging<T> pagingController) {
+			IPaging<T> pagingController, ISelectedListener<T> onSelect) {
 		this.title = title;
 		this.viewResolver = viewResolver;
 		this.pagingController = pagingController;
+		this.selectedListener = onSelect;
 	}
 
 	public String getTitle() {
@@ -50,10 +56,21 @@ public class SearchResultFragment<T> extends FragmentBase {
 			return;
 		}
 
-		PagingListAdapterBase<T> resultAdapter = new ViewCreationDelegatingPagingListAdapter<T>(
+		final PagingListAdapterBase<T> resultAdapter = new ViewCreationDelegatingPagingListAdapter<T>(
 				context, this.viewResolver, this.pagingController);
 		ListView listView = (ListView) this.getView().findViewById(
 				R.id.search_result_list);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				if (selectedListener == null)
+					return;
+				selectedListener.onSelected(resultAdapter.getItem(position));
+
+			}
+		});
 		listView.setAdapter(resultAdapter);
 	}
 }

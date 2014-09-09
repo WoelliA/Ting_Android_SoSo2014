@@ -3,7 +3,6 @@ package de.ur.mi.android.ting.app.fragments;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.activities.LoginActivity;
 import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
@@ -46,7 +45,6 @@ public class LoginFragment extends FragmentBase{
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		
 		this.mEmailView = (EditText) this.findViewById(R.id.email);
@@ -59,7 +57,7 @@ public class LoginFragment extends FragmentBase{
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
 						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							attemptLogin();
+							LoginFragment.this.attemptLogin();
 							return true;
 						}
 						return false;
@@ -74,7 +72,7 @@ public class LoginFragment extends FragmentBase{
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						attemptLogin();
+						LoginFragment.this.attemptLogin();
 					}
 				});
 	}
@@ -127,14 +125,14 @@ public void attemptLogin() {
 				
 				@Override
 				public void done(LoginResult result) {
-					showProgress(false);
+					LoginFragment.this.showProgress(false);
 					boolean success = result.getIsRightLogin();
 					if (success) {
-						getActivity().finish();
+						LoginFragment.this.getActivity().finish();
 					} else {
-						mPasswordView
-								.setError(getString(R.string.error_incorrect_password));
-						mPasswordView.requestFocus();
+						LoginFragment.this.mPasswordView
+								.setError(LoginFragment.this.getString(R.string.error_incorrect_password));
+						LoginFragment.this.mPasswordView.requestFocus();
 					}
 				}
 			});
@@ -155,7 +153,7 @@ private void showProgress(final boolean show) {
 				.setListener(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						mLoginStatusView.setVisibility(show ? View.VISIBLE
+						LoginFragment.this.mLoginStatusView.setVisibility(show ? View.VISIBLE
 								: View.GONE);
 					}
 				});
@@ -166,7 +164,7 @@ private void showProgress(final boolean show) {
 				.setListener(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						mLoginFormView.setVisibility(show ? View.GONE
+						LoginFragment.this.mLoginFormView.setVisibility(show ? View.GONE
 								: View.VISIBLE);
 					}
 				});

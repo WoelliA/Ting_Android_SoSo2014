@@ -14,8 +14,6 @@ import de.ur.mi.android.ting.utilities.view.Loading;
 
 public class PinListFragment extends FragmentBase {
 	private PinListAdapter pinAdapter;
-	private Category category;
-
 	private ViewSwitcher switcher;
 
 	private boolean loading;

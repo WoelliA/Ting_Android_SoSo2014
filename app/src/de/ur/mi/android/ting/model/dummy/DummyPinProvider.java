@@ -1,9 +1,9 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import android.os.AsyncTask;
-import de.ur.mi.android.ting.model.IPinProvider;
+import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
 import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.PinRequest;
@@ -12,28 +12,16 @@ import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
-public class DummyPinProvider implements IPinProvider {
+public class DummyPinProvider implements IPinService {
 
 	@Override
 	public void getPinsForCategory(Category category, final PinRequest request,
 			final IPinReceivedCallback callback) {
-		AsyncTask<Void,Void, ArrayList<Pin>> pinTask = new AsyncTask<Void, Void, ArrayList<Pin>>() {
+		DelayTask pinTask = new DelayTask(){
 				
 			@Override
-			protected ArrayList<Pin> doInBackground(Void... params) {
-				try {
-					Thread.sleep(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				return DummyPinProvider.this.createCategories(request);
-			}
-
-			@Override
-			protected void onPostExecute(ArrayList<Pin> result) {
-				callback.onPinsReceived(result);
+			protected void onPostExecute(Void result) {
+				callback.onPinsReceived(DummyPinProvider.this.createDummyPins(request));
 				super.onPostExecute(result);
 			}
 			
@@ -42,7 +30,7 @@ public class DummyPinProvider implements IPinProvider {
 		
 	}
 	
-	private ArrayList<Pin> createCategories(PinRequest request) {
+	private ArrayList<Pin> createDummyPins(PinRequest request) {
 		ArrayList<Pin> articles = new ArrayList<Pin>();
 		for (int i = 0; i < request.getCount(); i++) {
 			articles.add(new DummyPin(request.getOffset() + i));
@@ -60,6 +48,20 @@ public class DummyPinProvider implements IPinProvider {
 			}
 		};
 		task.execute();
+	}
+
+	@Override
+	public void getPinsForBoard(String boardId, final PinRequest request,
+			final IDoneCallback<List<Pin>> callback) {
+		DelayTask task = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				callback.done(createDummyPins(request));
+				super.onPostExecute(result);
+			}
+		};
+		task.execute();
+		
 	}
 
 }

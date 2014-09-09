@@ -18,23 +18,12 @@ import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 
 public class SearchResultResolvers {
-	public static class PinResolver extends PinListViewResolver {
+	public static class PinSearchResultViewResolver extends PinListViewResolver {
 
-		public PinResolver(Context context) {
+		public PinSearchResultViewResolver(Context context) {
 			super(context);
-			// TODO Auto-generated constructor stub
+			
 		}
-
-		// public PinResolver(Context context) {
-		// super(R.layout.search_pin_result_layout, context);
-		// }
-		//
-		// @Override
-		// protected void decorateView(View view, Pin dataItem) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-
 	}
 
 	public static class BoardResolver extends ViewResolver<Board> {

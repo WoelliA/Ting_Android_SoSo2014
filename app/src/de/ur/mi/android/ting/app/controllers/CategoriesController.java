@@ -1,10 +1,13 @@
 package de.ur.mi.android.ting.app.controllers;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.IConnectivity;
@@ -29,9 +32,9 @@ public class CategoriesController implements
 		this.categoryProvider = categoryProvider;
 		this.connectivity = connectivity;
 		this.categoryProvider
-				.setCategoryFavoriteChangeListener(new IChangeListener<List<Category>>() {
+				.setCategoriesChangedListener(new IChangeListener<Collection<Category>>() {
 					@Override
-					public void onChange(List<Category> changed) {
+					public void onChange(Collection<Category> changed) {
 						CategoriesController.this.initAdapter();
 					}
 				});
@@ -42,10 +45,10 @@ public class CategoriesController implements
 			return;
 		}
 		this.categoryProvider
-				.getAllCategories(new SimpleDoneCallback<List<Category>>() {
+				.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 					@Override
-					public void done(List<Category> result) {
-						CategoriesController.this.categories = result;
+					public void done(Collection<Category> result) {
+						CategoriesController.this.categories = new ArrayList<Category>(result);
 						CategoriesController.this.initAdapter();
 						CategoriesController.this
 								.onCategorySelected(CategoriesController.this.categories
@@ -65,11 +68,16 @@ public class CategoriesController implements
 	}
 
 	private void sortFavoritesUp() {
+		int insertAt = 0;
 		for (int i = 0; i < this.categories.size(); i++) {
 			Category category = this.categories.get(i);
+			if(category instanceof SpecialCategory){
+				insertAt++;
+				continue;
+			}
 			if (category.getIsFavorite()) {
 				this.categories.remove(category);
-				this.categories.add(0, category);
+				this.categories.add(insertAt, category);
 			}
 		}
 	}

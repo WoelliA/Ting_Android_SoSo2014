@@ -25,12 +25,12 @@ public class UserDetailsController extends UserBoardsController {
 	}
 
 	private void initUserDetails() {
-		this.userService.getUser(userId, new SimpleDoneCallback<User>() {
+		this.userService.getUser(this.userId, new SimpleDoneCallback<User>() {
 
 			@Override
 			public void done(User result) {
-				user = result;
-				userDetailsView.setProfileInfo(result);
+				UserDetailsController.this.user = result;
+				UserDetailsController.this.userDetailsView.setProfileInfo(result);
 			}
 		});
 

@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -8,6 +9,7 @@ import javax.inject.Singleton;
 
 import de.ur.mi.android.ting.model.CategoryProviderBase;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
@@ -17,48 +19,27 @@ import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 public class DummyCategoryProvider extends CategoryProviderBase implements
 		ICategoryProvider {
 
-	public DummyCategoryProvider(LocalUser user) {
-		super(user);
+	public DummyCategoryProvider(LocalUser user, ISpecialCategories specialCategories) {
+		super(user, specialCategories);
 	}
 
-	@Override
-	public void getAllCategories(final IDoneCallback<List<Category>> callback) {
-		super.getAllCategories(callback);
-		if (callback == null || callback.getIsDone()) {
-			return;
-		}
-
-		DelayTask task = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				ArrayList<Category> cats = new ArrayList<Category>();
-				for (int i = 0; i < 20; i++) {
-					cats.add(new DummyCategory(i));
-				}
-				DummyCategoryProvider.this.categories = cats;
-				callback.done(DummyCategoryProvider.this.categories);
-			}
-		};
-		task.execute();
-	}
 
 	@Override
-	public void addFavoriteCategories(LocalUser user,
+	public void getFavoriteCategories(LocalUser user,
 			final IDoneCallback<List<Category>> callback) {
-		this.getAllCategories(new SimpleDoneCallback<List<Category>>() {
+		this.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 
 			@Override
-			public void done(List<Category> result) {
+			public void done(Collection<Category> result) {
 				DelayTask task = new DelayTask() {
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						Random random = new Random();
 						List<Category> favorites = new ArrayList<Category>();
-						for (Category category : DummyCategoryProvider.this.categories) {
+						for (Category category : DummyCategoryProvider.super.getCategories()) {
 							int r = random.nextInt();
 							if (r % 4 == 0) {
-								category.setIsFavorite(true);
 								favorites.add(category);
 							}
 						}
@@ -71,8 +52,27 @@ public class DummyCategoryProvider extends CategoryProviderBase implements
 
 	}
 
+
+
 	@Override
 	public void saveIsFavoriteCategory(Category category, boolean isChecked) {
 
+	}
+
+	@Override
+	protected void getAllCategoriesImpl(
+			final IDoneCallback<List<Category>> callback) {
+		DelayTask task = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				List<Category> categories = new ArrayList<Category>();
+				for (int i = 0; i < 20; i++) {
+					categories.add(new DummyCategory(i));
+				}
+				callback.done(categories);
+			}
+		};
+		task.execute();
+		
 	}
 }

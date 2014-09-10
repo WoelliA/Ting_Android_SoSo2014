@@ -20,6 +20,10 @@ public class Board extends UniqueBase implements IHasCategory{
 		this.contributors = contributors;
 	}
 
+	public Board(String objectId) {
+		super(objectId);
+	}
+
 	@Override
 	public Category getCategory() {
 		return this.category;
@@ -51,6 +55,19 @@ public class Board extends UniqueBase implements IHasCategory{
 
 	public boolean getIsUserFollowing() {
 		return this.isFollowing;
+	}
+
+	public void setName(String string) {
+		this.title = string;
+		
+	}
+
+	public void setDescription(String string) {
+		this.description = string;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 }

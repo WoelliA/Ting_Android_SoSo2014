@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
@@ -41,6 +42,12 @@ public class CategoryViewResolver extends ViewResolver<Category> {
 		favoriteToggleButton
 				.setOnCheckedChangeListener(new CategoryFavoriteChangeListener(
 						category, this.favoriteChangeCallback));
+		
+		if(category instanceof SpecialCategory){
+			favoriteToggleButton.setVisibility(View.INVISIBLE);
+		} else {
+			favoriteToggleButton.setVisibility(View.VISIBLE);			
+		}
 
 	}
 	

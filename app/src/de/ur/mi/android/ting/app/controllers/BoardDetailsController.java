@@ -2,7 +2,6 @@ package de.ur.mi.android.ting.app.controllers;
 
 import java.util.List;
 
-import de.ur.mi.android.ting.app.adapters.PagingListAdapterBase;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.IPinService;
@@ -45,7 +44,7 @@ public class BoardDetailsController extends PagingController<Pin> implements
 			final IDoneCallback<PagingResult<Pin>> doneCallback) {
 		int pagingSize = 10;
 		final PinRequest pinRequest = new PinRequest(offset, pagingSize);
-		this.pinService.getPinsForBoard(boardId, pinRequest,
+		this.pinService.getPinsForBoard(this.boardId, pinRequest,
 				new SimpleDoneCallback<List<Pin>>() {
 					@Override
 					public void done(List<Pin> result) {

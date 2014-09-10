@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 public class SearchResultFragment<T> extends FragmentBase {
 
@@ -69,9 +68,10 @@ public class SearchResultFragment<T> extends FragmentBase {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				if (selectedListener == null)
+				if (SearchResultFragment.this.selectedListener == null) {
 					return;
-				selectedListener.onSelected(resultAdapter.getItem(position));
+				}
+				SearchResultFragment.this.selectedListener.onSelected(resultAdapter.getItem(position));
 
 			}
 		});

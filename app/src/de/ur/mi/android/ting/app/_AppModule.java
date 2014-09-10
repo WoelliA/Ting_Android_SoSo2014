@@ -1,7 +1,6 @@
 package de.ur.mi.android.ting.app;
 
-import java.util.List;
-
+import java.util.Collection;
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.activities.MainActivity;
@@ -41,9 +40,9 @@ public class _AppModule {
 			@Override
 			public void initialize(final IDoneCallback<Void> callback) {
 				categoryProvider
-						.getAllCategories(new SimpleDoneCallback<List<Category>>() {
+						.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 							@Override
-							public void done(List<Category> result) {
+							public void done(Collection<Category> result) {
 								userService.checkIsLoggedIn();
 								callback.done(null);
 							}

@@ -26,7 +26,7 @@ public class SelectBoardFragment extends ListFragment<Board> {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		this.controller.init(this, user.getId());
+		this.controller.init(this, this.user.getId());
 	}
 
 	@Override

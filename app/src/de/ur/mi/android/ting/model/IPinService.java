@@ -6,7 +6,6 @@ import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public interface IPinService {
 	public void getPinsForCategory(Category category, PinRequest request,

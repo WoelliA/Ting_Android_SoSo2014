@@ -44,8 +44,6 @@ public class MainActivity extends ActionBarActivityBase implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
-		this.categoryController.setSelectedCategoryChangeListener(this);
-
 		this.getSupportFragmentManager().addOnBackStackChangedListener(
 				new OnBackStackChangedListener() {
 					@Override
@@ -65,10 +63,18 @@ public class MainActivity extends ActionBarActivityBase implements
 
 	@Override
 	protected void onResume() {
-		super.onResume();
-		this.categoryController.initCategories();
+		
 		this.adjustOptionsMenu();
+		super.onResume();
 	}
+	
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
+		this.categoryController.setSelectedCategoryChangeListener(this);
+		this.categoryController.initCategories();
+	}
+
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -137,6 +143,7 @@ public class MainActivity extends ActionBarActivityBase implements
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(this
 				.getComponentName()));
 		searchView.setSubmitButtonEnabled(true);
+		searchView.setIconified(true);
 
 		return true;
 	}
@@ -182,8 +189,6 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.setCategory(selectedCategory);
 		if (this.drawerLayout != null) {
 			this.drawerLayout.closeDrawers();
-
 		}
 	}
-
 }

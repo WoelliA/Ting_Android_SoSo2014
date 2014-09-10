@@ -56,7 +56,7 @@ public class DummyPinProvider implements IPinService {
 		DelayTask task = new DelayTask() {
 			@Override
 			protected void onPostExecute(Void result) {
-				callback.done(createDummyPins(request));
+				callback.done(DummyPinProvider.this.createDummyPins(request));
 				super.onPostExecute(result);
 			}
 		};

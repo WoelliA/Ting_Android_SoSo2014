@@ -7,6 +7,10 @@ public class Category extends UniqueBase {
 		this.setShortName(shortName);
 	}
 
+	public Category(String id) {
+		super(id);
+	}
+
 	private String name;
 	
 	private String shortName;

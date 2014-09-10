@@ -35,19 +35,19 @@ public class BoardDetailsActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_boarddetails);
 
-		Intent intent = getIntent();
+		Intent intent = this.getIntent();
 		String boardId = intent.getExtras().getString(BOARD_ID_KEY);
 
 		BoardPinViewResolver viewResolver = new BoardPinViewResolver(this);
 		PagingListAdapterBase<Pin> adapter = new PinListAdapter(this,
-				controller, viewResolver);
+				this.controller, viewResolver);
 		this.listView = (ListView) this.findViewById(R.id.list);
-		listView.setAdapter(adapter);
-		controller.init(this, boardId);
+		this.listView.setAdapter(adapter);
+		this.controller.init(this, boardId);
 
-		headerView = getLayoutInflater().inflate(
+		this.headerView = this.getLayoutInflater().inflate(
 				R.layout.board_details_header_view, null, false);
-		this.listView.addHeaderView(headerView);
+		this.listView.addHeaderView(this.headerView);
 	}
 
 	@Override

@@ -131,7 +131,7 @@ public class SearchActivity extends ActionBarActivityBase implements
 					public void onSelected(User selectedItem) {
 						Intent intent = new Intent(SearchActivity.this,UserDetailsActivity.class);
 						intent.putExtra(UserDetailsActivity.USER_ID_KEY, selectedItem.getId());
-						startActivity(intent);
+						SearchActivity.this.startActivity(intent);
 					}
 
 				}));
@@ -147,7 +147,7 @@ public class SearchActivity extends ActionBarActivityBase implements
 								BoardDetailsActivity.class);
 						intent.putExtra(BoardDetailsActivity.BOARD_ID_KEY,
 								selectedItem.getId());
-						startActivity(intent);
+						SearchActivity.this.startActivity(intent);
 					}
 				}));
 

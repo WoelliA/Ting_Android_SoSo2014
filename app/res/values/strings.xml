@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">StarterProjekt</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -26,8 +27,8 @@
     <string name="button_back">Back</string>
     <string name="button_dismiss">OK</string>
     <string name="no_location">No Location found</string>
-	<string name="fill_in">Please fill in the blanks</string>
-	<string name="share_headder">Share Link with...</string>
+    <string name="fill_in">Please fill in the blanks</string>
+    <string name="share_headder">Share Link with...</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_user_header">user</string>
     <string name="search_pins_header">pins</string>
@@ -38,5 +39,8 @@
     <string name="editpin_pinbutton">Ting it.</string>
     <string name="editpin_title">Edit your Pin.</string>
     <string name="sending_pin_dialog_title">Creating Pin...</string>
-    	<string name="share_target_generic_error">There was an error retrieving what you wanted to share with us!</string>
+    <string name="share_target_generic_error">There was an error retrieving what you wanted to share with us!</string>
+    <string name="special_category_feed_name">Your Feed</string>
+    <string name="special_category_everything_name">Everything</string>
+
 </resources>

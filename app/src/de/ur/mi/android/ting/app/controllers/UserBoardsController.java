@@ -23,7 +23,7 @@ public class UserBoardsController {
 	}
 
 	private void initBoards() {
-		this.boardsService.getUserBoards(userId,
+		this.boardsService.getUserBoards(this.userId,
 				new SimpleDoneCallback<List<Board>>() {
 
 					@Override

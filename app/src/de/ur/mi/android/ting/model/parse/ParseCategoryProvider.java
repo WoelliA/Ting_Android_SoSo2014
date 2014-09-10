@@ -14,6 +14,7 @@ import com.parse.ParseQuery;
 
 import de.ur.mi.android.ting.model.CategoryProviderBase;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
@@ -22,41 +23,12 @@ import de.ur.mi.android.ting.utilities.IDoneCallback;
 public class ParseCategoryProvider extends CategoryProviderBase implements
 		ICategoryProvider {
 
-	public ParseCategoryProvider(LocalUser user) {
-		super(user);
+	public ParseCategoryProvider(LocalUser user,
+			ISpecialCategories specialCategories) {
+		super(user, specialCategories);
 	}
 
-
-	@Override
-	public void getAllCategories(final IDoneCallback<List<Category>> callback) {
-		super.getAllCategories(callback);
-		if(callback == null || callback.getIsDone()) {
-			return;
-		}
-		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("category");
-		
-		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-		query.setMaxCacheAge(604800000);
-
-
-		query.findInBackground(new FindCallback<ParseObject>() {
-
-			@Override
-			public void done(List<ParseObject> arg, ParseException ex) {
-				if (ex == null) {
-					ParseCategoryProvider.this.categories = ParseCategoryProvider.this.createCategories(arg);
-					callback.done(ParseCategoryProvider.this.categories);					
-
-				} else {
-					Log.e("Parse Categories Exception", ex.getMessage());
-				}
-			}
-		});
-	}
-
-
-	private ArrayList<Category> createCategories(List<ParseObject> arg) {
+	private List<Category> createCategories(List<ParseObject> arg) {
 		ArrayList<Category> categories = new ArrayList<Category>();
 		for (ParseObject parseObject : arg) {
 			Category category = ParseHelper.createCategory(parseObject);
@@ -66,18 +38,42 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 	}
 
 	@Override
-	public void addFavoriteCategories(LocalUser user,
+	public void getFavoriteCategories(LocalUser user,
 			IDoneCallback<List<Category>> callback) {
 		// TODO add favorite category for parse
-		
+
 	}
 
 	@Override
 	public void saveIsFavoriteCategory(Category category, boolean isChecked) {
-		if(!this.user.getIsLogedIn()) {
+		if (!this.user.getIsLogedIn()) {
 			return;
 		}
-		
+
+	}
+
+	@Override
+	protected void getAllCategoriesImpl(final IDoneCallback<List<Category>> callback) {
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("category");
+
+		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+		query.setMaxCacheAge(604800000);
+
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> arg, ParseException ex) {
+				if (ex == null) {
+					ArrayList<Category> categories = new ArrayList<Category>();
+					categories.addAll(ParseCategoryProvider.this
+							.createCategories(arg));
+					callback.done(categories);
+
+				} else {
+					Log.e("Parse Categories Exception", ex.getMessage());
+				}
+			}
+		});
 	}
 
 }

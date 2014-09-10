@@ -10,8 +10,9 @@
     <string name="action_search_hint">Search Ting</string>
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
-    <string name="button_reting">re-ting</string>
-    <string name="button_like">like</string>
+    <string name="button_reting">Re-Ting</string>
+    <string name="button_like">Like</string>
+    <string name="button_share">Share</string>
     <string name="button_add_reminder">Add new Reminder</string>
     <string name="button_get_position">Get Position</string>
     <string name="button_save_reminder">Save Reminder</string>
@@ -26,6 +27,7 @@
     <string name="button_dismiss">OK</string>
     <string name="no_location">No Location found</string>
 	<string name="fill_in">Please fill in the blanks</string>
+	<string name="share_headder">Share Link with...</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_user_header">user</string>
     <string name="search_pins_header">pins</string>

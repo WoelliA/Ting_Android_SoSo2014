@@ -72,6 +72,16 @@
                 android:background="@color/pin_button_background_color"
                 android:text="@string/button_reting"
                 android:textColor="@color/pin_button_text_color" />
+            
+            <Button
+                android:id="@+id/button_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/button_margin"
+                android:background="@color/pin_button_background_color"
+                android:text="@string/button_share"
+                android:textColor="@color/pin_button_text_color" />
         </LinearLayout>
     </LinearLayout>
 

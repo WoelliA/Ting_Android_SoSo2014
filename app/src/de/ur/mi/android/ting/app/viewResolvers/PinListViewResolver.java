@@ -54,17 +54,11 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 		}
 
 		Button reTing =  (Button) this.findViewById(view, R.id.button_reting);
-		this.linkUri = pin.getLinkUri();
 		reTing.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-		        String shareText = PinListViewResolver.this.linkUri;
-
-		        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
-		        textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-		        textShareIntent.setType("text/plain");
-		        PinListViewResolver.this.getContext().startActivity(Intent.createChooser(textShareIntent, "Share Link with..."));
+				Toast.makeText(PinListViewResolver.this.getContext(), "Re-Ting clicked", Toast.LENGTH_SHORT).show();
 				
 			}
 		});
@@ -79,7 +73,25 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 			}
 		});
 		
+		Button share = (Button) this.findViewById(view, R.id.button_share);
+		this.linkUri = pin.getLinkUri();
+		share.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String shareText = PinListViewResolver.this.linkUri;
+
+		        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+		        textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+		        textShareIntent.setType("text/plain");
+		        PinListViewResolver.this.getContext().startActivity(Intent.createChooser(textShareIntent, "Share Link with..."));
+				
+			}
+		});
+		
 	}
+	
+	
 	
 	private boolean isSameImage(View view, String imageUri) {
 		Object tag = view.getTag();

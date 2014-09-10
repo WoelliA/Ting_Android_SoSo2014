@@ -22,7 +22,7 @@ public class _ControllersModule {
 		return new SearchController(searchService);
 	}
 
-	@Provides
+	@Provides 
 	public CategoriesController provideCategoriesController(
 			ICategoryProvider categoryProvider, IConnectivity connectivity) {
 		if (this.categoryController == null) {
@@ -52,5 +52,10 @@ public class _ControllersModule {
 	@Provides
 	public BoardDetailsController provideBoardDetailsController(IPinService pinService, IBoardsService boardsService){
 		return new BoardDetailsController(pinService, boardsService);
+	}
+	
+	@Provides 
+	public UserDetailsController provideUserDetailsController(IUserService userService, IBoardsService boardsService){
+		return new UserDetailsController(userService, boardsService);
 	}
 }

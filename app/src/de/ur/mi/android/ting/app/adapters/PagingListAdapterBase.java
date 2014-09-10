@@ -27,7 +27,6 @@ public abstract class PagingListAdapterBase<T> extends
 		}
 		
 		this.paging.loadNextPage(new SimpleDoneCallback<PagingResult<T>>() {
-
 			@Override
 			public void done(PagingResult<T> result) {
 				PagingListAdapterBase.this.unlock();

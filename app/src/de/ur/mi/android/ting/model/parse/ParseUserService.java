@@ -7,17 +7,17 @@ import com.parse.ParseUser;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class ParseUserService implements IUserService {
 
 	private LocalUser user;
 
 	public ParseUserService(LocalUser user) {
-		this.user = user;
-		
+		this.user = user;	
 	}
-
 
 	@Override
 	public void login(String userName, String password,
@@ -47,6 +47,13 @@ public class ParseUserService implements IUserService {
 		}
 		 this.user.setIsLoggedIn(isLoggedIn);
 		 return isLoggedIn;
+	}
+
+	@Override
+	public void getUser(String userId,
+			SimpleDoneCallback<User> simpleDoneCallback) {
+		// TODO get user info - use cache
+		
 	}
 	
 	

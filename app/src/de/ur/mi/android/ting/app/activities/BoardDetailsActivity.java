@@ -23,11 +23,12 @@ public class BoardDetailsActivity extends BaseActivity implements
 		IBoardDetailsView {
 
 	public static final String BOARD_ID_KEY = "board_id";
-	
-	
+
 	@Inject
 	public BoardDetailsController controller;
 	private ListView listView;
+
+	private View headerView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +44,20 @@ public class BoardDetailsActivity extends BaseActivity implements
 		this.listView = (ListView) this.findViewById(R.id.list);
 		listView.setAdapter(adapter);
 		controller.init(this, boardId);
+
+		headerView = getLayoutInflater().inflate(
+				R.layout.board_details_header_view, null, false);
+		this.listView.addHeaderView(headerView);
 	}
 
 	@Override
 	public void displayBoardInfo(Board board) {
-		View headerView = this.createHeaderView(board);
-		this.listView.addHeaderView(headerView);
-	}
-
-	private View createHeaderView(Board board) {
-		View view = getLayoutInflater().inflate(R.layout.board_header_view,
-				null, false);
-		TextView titleText = (TextView) view.findViewById(R.id.board_title);
+		TextView titleText = (TextView) this.headerView
+				.findViewById(R.id.board_title);
 		titleText.setText(board.getTitle());
 
-		ToggleButton followToggle = (ToggleButton) view
+		ToggleButton followToggle = (ToggleButton) this.headerView
 				.findViewById(R.id.board_follow_toggle);
 		followToggle.setChecked(board.getIsUserFollowing());
-		
-		return view;
 	}
-
 }

@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.fragments;
 
 import ca.weixiao.widget.InfiniteScrollListView;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,7 @@ import de.ur.mi.android.ting.utilities.view.Loading;
 
 public class PinListFragment extends FragmentBase {
 	private PinListAdapter pinAdapter;
-	private ViewSwitcher switcher;
 
-	private boolean loading;
 	private PinListController controller;
 
 	public PinListFragment(PinListController controller) {
@@ -32,22 +31,7 @@ public class PinListFragment extends FragmentBase {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		this.initViewSwitcher();
 		this.initPinListUI();
-	}
-
-	private void initViewSwitcher() {
-		View loadingView = Loading.getView(this.getActivity(), "Loading");
-		this.switcher = (ViewSwitcher) this.getView().findViewById(
-				R.id.fragment_pinlist_viewswitcher);
-		this.switcher.addView(loadingView);
-	}
-
-	private void setLoading(boolean loading) {
-		if (this.loading != loading) {
-			this.switcher.showNext();
-		}
-		this.loading = loading;
 	}
 
 	private void initPinListUI() {
@@ -57,7 +41,7 @@ public class PinListFragment extends FragmentBase {
 	private void initPinList() {
 		this.pinAdapter = new PinListAdapter(this.getActivity(),
 				this.controller);
-		
+
 		InfiniteScrollListView pinList = (InfiniteScrollListView) this
 				.getView().findViewById(R.id.list);
 		pinList.setLoadingView(Loading.getView(this.getActivity(), "Loading..."));

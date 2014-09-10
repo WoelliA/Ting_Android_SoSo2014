@@ -6,6 +6,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
 import de.ur.mi.android.ting.app.controllers.UserBoardsController;
 import de.ur.mi.android.ting.app.viewResolvers.BoardViewResolver;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.os.Bundle;
@@ -19,11 +20,13 @@ public class SelectBoardFragment extends ListFragment<Board> {
 
 	@Inject
 	public UserBoardsController controller;
+	
+	@Inject LocalUser user;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		this.controller.setView(this);
+		this.controller.init(this, user.getId());
 	}
 
 	@Override

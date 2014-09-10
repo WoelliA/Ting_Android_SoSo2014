@@ -1,10 +1,12 @@
 package de.ur.mi.android.ting.app.fragments;
 
+import ca.weixiao.widget.InfiniteScrollListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.adapters.PagingListAdapterBase;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingPagingListAdapter;
 import de.ur.mi.android.ting.model.IPaging;
+import de.ur.mi.android.ting.utilities.view.Loading;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
 import android.os.Bundle;
@@ -58,8 +60,10 @@ public class SearchResultFragment<T> extends FragmentBase {
 
 		final PagingListAdapterBase<T> resultAdapter = new ViewCreationDelegatingPagingListAdapter<T>(
 				context, this.viewResolver, this.pagingController);
-		ListView listView = (ListView) this.getView().findViewById(
+		InfiniteScrollListView listView = (InfiniteScrollListView) this.getView().findViewById(
 				R.id.search_result_list);
+		listView.setLoadingView(Loading.getView(this.getActivity(), "Searching..."));
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

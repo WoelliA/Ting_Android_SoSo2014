@@ -15,7 +15,8 @@ import de.ur.mi.android.ting.utilities.view.Notify;
 		LoginActivity.class, 
 		SearchActivity.class, 
 		SplashScreenActivity.class,
-		BoardDetailsActivity.class},
+		BoardDetailsActivity.class,
+		UserDetailsActivity.class},
 
 addsTo = _AndroidModule.class, library = true, complete = false)
 public class _ActivityModule {

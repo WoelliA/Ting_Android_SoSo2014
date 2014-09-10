@@ -4,7 +4,9 @@ import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class DummyUserService implements IUserService {
 
@@ -41,5 +43,18 @@ public class DummyUserService implements IUserService {
 	public boolean checkIsLoggedIn() {
 		this.user.setIsLoggedIn(DummyConfig.IS_USER_LOGGED_DEFAULT);
 		return this.user.getIsLogedIn();
+	}
+
+	@Override
+	public void getUser(String userId,
+			final SimpleDoneCallback<User> callback) {
+		DelayTask task = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				callback.done(new DummyUser(10));
+				super.onPostExecute(result);
+			}
+		};
+		task.execute();
 	}
 }

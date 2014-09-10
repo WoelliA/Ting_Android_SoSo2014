@@ -26,8 +26,7 @@ public class ParseBoardsProvider implements IBoardsService {
 	@Override
 	public void getLocalUserBoards(
 			SimpleDoneCallback<List<Board>> callback) {
-		this.getUserBoards(this.user.getId(), callback);
-		
+		this.getUserBoards(this.user.getId(), callback);		
 	}
 
 	@Override

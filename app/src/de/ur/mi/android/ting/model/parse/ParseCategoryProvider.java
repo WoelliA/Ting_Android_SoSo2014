@@ -58,7 +58,7 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 
 		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
 		query.setMaxCacheAge(604800000);
-
+		query.orderByAscending("category_name");
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override

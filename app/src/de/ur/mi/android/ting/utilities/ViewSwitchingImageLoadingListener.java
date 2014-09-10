@@ -36,7 +36,11 @@ public class ViewSwitchingImageLoadingListener extends
 			FailReason failReason) {
 		super.onLoadingFailed(imageUri, view, failReason);
 		this.resetSwitcher();
-		view.setTag(failReason.getCause().getMessage());
+		if(view != null){
+			if(failReason != null && failReason.getCause() != null){
+				view.setTag(failReason.getCause().getMessage());
+			}
+		}
 	}
 
 	@Override

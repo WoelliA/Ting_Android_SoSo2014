@@ -48,7 +48,8 @@ public class CategoriesController implements
 				.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 					@Override
 					public void done(Collection<Category> result) {
-						CategoriesController.this.categories = new ArrayList<Category>(result);
+						CategoriesController.this.categories = new ArrayList<Category>(
+								result);
 						CategoriesController.this.initAdapter();
 						CategoriesController.this
 								.onCategorySelected(CategoriesController.this.categories
@@ -71,7 +72,7 @@ public class CategoriesController implements
 		int insertAt = 0;
 		for (int i = 0; i < this.categories.size(); i++) {
 			Category category = this.categories.get(i);
-			if(category instanceof SpecialCategory){
+			if (category instanceof SpecialCategory) {
 				insertAt++;
 				continue;
 			}
@@ -104,18 +105,22 @@ public class CategoriesController implements
 
 		this.adapter.remove(category);
 
-		if (isChecked) {
-			this.adapter.insert(category, 0);
-		} else {
-			for (int i = 0; i < this.adapter.getCount(); i++) {
-				Category c = this.adapter.getItem(i);
-				if (c.getIsFavorite()) {
-					continue;
-				}
+		for (int i = 0; i < this.adapter.getCount(); i++) {
+			Category c = this.adapter.getItem(i);
+			if (c.getIsFavorite() || c instanceof SpecialCategory) {
+				continue;
+			}
+			if (isChecked) {
 				this.adapter.insert(category, i);
 				break;
+			} else {
+				if (c.getName().compareTo(category.getName()) > 0) {
+					this.adapter.insert(category, i);
+					break;
+				}
 			}
 		}
+
 	}
 
 	public void setSelectedCategoryChangeListener(
@@ -127,12 +132,10 @@ public class CategoriesController implements
 		if (this.selectedCategoryChangedListener != null) {
 			this.selectedCategoryChangedListener.onSelected(selectedCategory);
 		}
-
 	}
 
 	@Override
 	public void onChange(Category category, Boolean u) {
-
 		this.categoryProvider.saveIsFavoriteCategory(category,
 				category.getIsFavorite());
 		this.adjustPosition(category, u);

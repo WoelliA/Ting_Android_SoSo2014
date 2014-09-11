@@ -82,6 +82,7 @@ public class JSoupPinDataParser implements PinDataParser {
 		final String description = this.getDescription(doc);
 		List<String> images = this.getImages(doc);
 		for (final String imageUrl : images) {
+			Log.i("image load", imageUrl);
 			this.imageloader.loadImage(imageUrl,
 					new SimpleDoneCallback<Bitmap>() {
 

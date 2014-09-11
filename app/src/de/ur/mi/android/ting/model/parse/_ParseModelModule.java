@@ -1,5 +1,7 @@
 package de.ur.mi.android.ting.model.parse;
 
+import java.util.HashMap;
+
 import javax.inject.Singleton;
 
 import android.content.Context;
@@ -11,13 +13,15 @@ import dagger.Provides;
 import de.ur.mi.android.ting.app.ForApplication;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.SpecialCategories;
 import de.ur.mi.android.ting.model._IModelModule;
 import de.ur.mi.android.ting.model.IPinService;
-import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
+import de.ur.mi.android.ting.model.primitives.SearchType;
 
 @Module(complete = false, library = true)
 public class _ParseModelModule implements _IModelModule {
@@ -25,6 +29,7 @@ public class _ParseModelModule implements _IModelModule {
 	private static final String applicationId = "rnklQPqG2yqcKwmXfYqMSqQ2CoF6lGB56sofWiHt";
 	private static final String clientKey = "u6OGwXAEEcm1qUZ8n75o5SuDBLo3rLw8kZrsAxCp";
 	private ICategoryProvider categoryProvider;
+	private LocalUser localUser;
 
 	public _ParseModelModule(Context context) {
 		// Parse.enableLocalDatastore(context);
@@ -40,9 +45,11 @@ public class _ParseModelModule implements _IModelModule {
 	@Override
 	@Provides
 	@Singleton
-	public ICategoryProvider provideICategoryProvider(LocalUser user, ISpecialCategories specialCategories) {
-		if(this.categoryProvider == null) {
-			this.categoryProvider = new ParseCategoryProvider(user, specialCategories);
+	public ICategoryProvider provideICategoryProvider(LocalUser user,
+			ISpecialCategories specialCategories) {
+		if (this.categoryProvider == null) {
+			this.categoryProvider = new ParseCategoryProvider(user,
+					specialCategories);
 		}
 		return this.categoryProvider;
 	}
@@ -55,29 +62,36 @@ public class _ParseModelModule implements _IModelModule {
 
 	@Override
 	@Provides
-	public IUserService provideIUserService(LocalUser user, ICategoryProvider categoryProvider) {
+	public IUserService provideIUserService(LocalUser user,
+			ICategoryProvider categoryProvider) {
 		return new ParseUserService(user);
 	}
 
-	@Override
 	@Provides
-	public ISearchService provideISearchService() {
-		// TODO Auto-generated method stub
-		return null;
+	public ISearchService provideISearchService(IUserService userService,
+			IPinService pinService, IBoardsService boardsService) {
+		
+		HashMap<SearchType, ITypedSearchService<?>> services = new HashMap<SearchType, ITypedSearchService<?>>();
+		services.put(SearchType.USER, userService);
+		services.put(SearchType.BOARD, boardsService);
+		services.put(SearchType.PIN, pinService);
+		return new ParseSearchProvider(services);
 	}
 
 	@Override
 	@Provides
 	@Singleton
 	public LocalUser provideLocalUser() {
-
-		return new LocalUser();
+		if (this.localUser == null) {
+			this.localUser = new LocalUser();
+		}
+		return this.localUser;
 	}
-	
-	
+
 	@Override
 	@Provides
-	public ISpecialCategories provideISpecialCategories(@ForApplication Context context) {
+	public ISpecialCategories provideISpecialCategories(
+			@ForApplication Context context) {
 		return new SpecialCategories(context);
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.primitives.SearchType;
 
 public class SearchController {
@@ -14,8 +15,8 @@ public class SearchController {
 	private String query;
 	private ISearchService searchService;
 
-	public SearchController(ISearchService searchService) {
-		this.searchService = searchService;
+	public SearchController(ISearchService typedSearchService) {
+		this.searchService = typedSearchService;
 		this.queryChangeListeners = new ArrayList<IChangeListener<String>>();
 	}
 

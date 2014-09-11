@@ -1,12 +1,13 @@
 package de.ur.mi.android.ting.model;
 
+import java.util.Collection;
 import java.util.List;
 
 public class PagingResult<T> {
-	protected List<T> results;
+	protected Collection<T> results;
 	private int pageSize;
 
-	public PagingResult(int pageSize, List<T> results) {
+	public PagingResult(int pageSize, Collection<T> results) {
 		this.pageSize = pageSize;
 		this.results = results;
 	}
@@ -15,7 +16,7 @@ public class PagingResult<T> {
 		return this.results.size() >= this.pageSize;
 	}
 
-	public List<T> getResults() {
+	public Collection<T> getResults() {
 		return this.results;
 	}
 }

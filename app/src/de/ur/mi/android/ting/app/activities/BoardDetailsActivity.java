@@ -37,13 +37,13 @@ public class BoardDetailsActivity extends BaseActivity implements
 
 		Intent intent = this.getIntent();
 		String boardId = intent.getExtras().getString(BOARD_ID_KEY);
+		this.controller.init(this, boardId);
 
 		BoardPinViewResolver viewResolver = new BoardPinViewResolver(this);
 		PagingListAdapterBase<Pin> adapter = new PinListAdapter(this,
 				this.controller, viewResolver);
 		this.listView = (ListView) this.findViewById(R.id.list);
 		this.listView.setAdapter(adapter);
-		this.controller.init(this, boardId);
 
 		this.headerView = this.getLayoutInflater().inflate(
 				R.layout.board_details_header_view, null, false);

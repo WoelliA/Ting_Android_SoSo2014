@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import de.ur.mi.android.ting.model.IPinService;
@@ -10,6 +11,8 @@ import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
+import de.ur.mi.android.ting.model.primitives.SearchRequest;
+import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class DummyPinProvider implements IPinService {
@@ -50,9 +53,16 @@ public class DummyPinProvider implements IPinService {
 		task.execute();
 	}
 
+
+	@Override
+	public <T> void search(SearchRequest request,
+			IDoneCallback<SearchResult<T>> callback) {
+		// no need to do anything - generic search is implemented		
+	}
+
 	@Override
 	public void getPinsForBoard(String boardId, final PinRequest request,
-			final IDoneCallback<List<Pin>> callback) {
+			final IDoneCallback<Collection<Pin>> callback) {
 		DelayTask task = new DelayTask() {
 			@Override
 			protected void onPostExecute(Void result) {
@@ -63,5 +73,6 @@ public class DummyPinProvider implements IPinService {
 		task.execute();
 		
 	}
+
 
 }

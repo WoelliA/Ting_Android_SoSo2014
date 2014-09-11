@@ -9,6 +9,5 @@ public interface _IModelModule {
 	public IBoardsService provideIBoardsProvider(LocalUser user);
 	public IUserService provideIUserService(LocalUser user, ICategoryProvider categoryProvider);
 	public LocalUser provideLocalUser();
-	public ISearchService provideISearchService();
 	ISpecialCategories provideISpecialCategories(Context context);
 }

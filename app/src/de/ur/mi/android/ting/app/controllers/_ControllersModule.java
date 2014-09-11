@@ -7,6 +7,7 @@ import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.IImageLoader;
@@ -18,8 +19,8 @@ public class _ControllersModule {
 	private CategoriesController categoryController;
 
 	@Provides
-	public SearchController provideSearchController(ISearchService searchService) {
-		return new SearchController(searchService);
+	public SearchController provideSearchController(ISearchService typedSearchService) {
+		return new SearchController(typedSearchService);
 	}
 
 	@Provides 

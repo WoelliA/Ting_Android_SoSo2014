@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.app.controllers;
 
+import java.util.Collection;
 import java.util.List;
 
 import de.ur.mi.android.ting.model.IBoardsService;
@@ -42,12 +43,14 @@ public class BoardDetailsController extends PagingController<Pin> implements
 	@Override
 	protected void loadNextPage(int offset,
 			final IDoneCallback<PagingResult<Pin>> doneCallback) {
+		if(boardId == null)
+			return;
 		int pagingSize = 10;
 		final PinRequest pinRequest = new PinRequest(offset, pagingSize);
 		this.pinService.getPinsForBoard(this.boardId, pinRequest,
-				new SimpleDoneCallback<List<Pin>>() {
+				new SimpleDoneCallback<Collection<Pin>>() {
 					@Override
-					public void done(List<Pin> result) {
+					public void done(Collection<Pin> result) {
 						doneCallback.done(new PagingResult<Pin>(pinRequest
 								.getCount(), result));
 					}

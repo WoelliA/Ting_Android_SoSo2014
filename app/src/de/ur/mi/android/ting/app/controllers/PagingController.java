@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.app.controllers;
 
+import java.util.Collection;
 import java.util.List;
 
 import android.widget.ArrayAdapter;
@@ -21,7 +22,7 @@ public abstract class PagingController<T> implements IPaging<T> {
 
 					@Override
 					public void done(PagingResult<T> result) {
-						List<T> results = result.getResults();
+						Collection<T> results = result.getResults();
 						if (results != null) {
 							PagingController.this.adapter.addAll(results);
 						}

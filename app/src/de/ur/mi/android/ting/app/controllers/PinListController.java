@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -42,7 +43,7 @@ public class PinListController extends PagingController<Pin> {
 		this.pinService.getPinsForCategory(this.category, request,
 				new IPinReceivedCallback() {
 					@Override
-					public void onPinsReceived(ArrayList<Pin> pins) {
+					public void onPinsReceived(Collection<Pin> pins) {
 						if (doneCallback != null) {
 							doneCallback.done(new PagingResult<Pin>(
 									PinListController.this.requestCount, pins));

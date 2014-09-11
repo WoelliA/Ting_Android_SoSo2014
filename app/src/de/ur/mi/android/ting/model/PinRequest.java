@@ -1,21 +1,11 @@
 package de.ur.mi.android.ting.model;
 
-public class PinRequest {
-	private int offset;
-	private int count;
+import de.ur.mi.android.ting.model.primitives.PagingRequestBase;
+
+public class PinRequest extends PagingRequestBase {
 	
 	public PinRequest(int offset, int count) {
-		this.offset = offset;
-		this.count = count;
-	}
-
-	public int getCount() {
-		return this.count;
-	}
-
-
-	public int getOffset() {
-		return this.offset;
+		super(offset, count);
 	}
 
 }

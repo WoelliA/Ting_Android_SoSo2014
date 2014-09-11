@@ -10,8 +10,11 @@ import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +23,7 @@ public class UserDetailsActivity extends BaseActivity implements
 		IUserDetailsView {
 
 	public static final String USER_ID_KEY = "userId";
-	
+
 	@Inject
 	public UserDetailsController controller;
 
@@ -36,6 +39,19 @@ public class UserDetailsActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_userdetails);
 		this.listView = (ListView) this.findViewById(R.id.list);
+		this.listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				Board board = adapter.getItem(position);
+				Intent intent = new Intent(UserDetailsActivity.this,
+						BoardDetailsActivity.class);
+				intent.putExtra(BoardDetailsActivity.BOARD_ID_KEY,
+						board.getId());
+				startActivity(intent);
+			}
+		});
 		ViewResolver<Board> viewResolver = new BoardResolver(this);
 		this.adapter = new ViewCreationDelegatingListAdapter<Board>(this,
 				viewResolver);
@@ -47,8 +63,8 @@ public class UserDetailsActivity extends BaseActivity implements
 		this.listView.addHeaderView(this.headerView);
 
 		String userId = this.getIntent().getExtras().getString(USER_ID_KEY);
-		
-		this.controller.setView(this,userId);
+
+		this.controller.setView(this, userId);
 	}
 
 	@Override
@@ -56,8 +72,9 @@ public class UserDetailsActivity extends BaseActivity implements
 		ImageView iamge = (ImageView) this.headerView
 				.findViewById(R.id.profile_imageview);
 		this.imageLoader.loadImage(user.getProfilePictureUri(), iamge);
-		
-		TextView nameTextView = (TextView) this.headerView.findViewById(R.id.profile_name);
+
+		TextView nameTextView = (TextView) this.headerView
+				.findViewById(R.id.profile_name);
 		nameTextView.setText(user.getName());
 	}
 

@@ -1,4 +1,5 @@
 package de.ur.mi.android.ting.app;
+
 /*
  * Copyright (C) 2013 Square, Inc.
  *
@@ -51,6 +52,7 @@ public class _AndroidModule {
 	@Provides
 	@Singleton
 	LocationManager provideLocationManager() {
-		return (LocationManager) this.application.getSystemService(LOCATION_SERVICE);
+		return (LocationManager) this.application
+				.getSystemService(LOCATION_SERVICE);
 	}
 }

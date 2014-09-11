@@ -50,7 +50,7 @@ public class SearchResultResolvers {
 				Board board, ViewGroup parent) {
 			List<User> contributors = board.getContributors();
 
-			if (contributorsLayout.getChildCount() >= 4
+			if (contributors != null && contributorsLayout.getChildCount() >= 4
 					&& contributors.size() >= 4) {
 				// TODO: some kind of indication there are more contributors
 
@@ -61,16 +61,20 @@ public class SearchResultResolvers {
 				ImageView image = (ImageView) inflater.inflate(
 						R.layout.contributor_small_layout, parent, false);
 				if (contributorsLayout.getChildCount() == 0) {
-					this.imageLoader.loadImage(board.getOwner()
-							.getProfilePictureUri(), image);
+					if(board.getOwner() != null){
+						this.imageLoader.loadImage(board.getOwner()
+								.getProfilePictureUri(), image);					
+					}
 				} else {
 					int contributorNumber = contributorsLayout.getChildCount() - 1;
-					if (contributors.size() >= 0
-							&& contributorNumber < contributors.size()) {
-						User contributor = contributors.get(contributorNumber);
-						this.imageLoader.loadImage(
-								contributor.getProfilePictureUri(), image);
-					}
+					if(contributors != null){
+						if (contributors.size() >= 0
+								&& contributorNumber < contributors.size()) {
+							User contributor = contributors.get(contributorNumber);
+							this.imageLoader.loadImage(
+									contributor.getProfilePictureUri(), image);
+						}
+					}					
 				}
 				contributorsLayout.addView(image);
 			}

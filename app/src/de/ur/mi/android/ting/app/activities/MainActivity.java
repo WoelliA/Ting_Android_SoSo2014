@@ -10,8 +10,10 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -35,9 +37,10 @@ public class MainActivity extends ActionBarActivityBase implements
 
 	@Inject
 	public LocalUser user;
-	
-	@Inject 
+
+	@Inject
 	public CategoriesController categoryController;
+	private SearchView searchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +63,19 @@ public class MainActivity extends ActionBarActivityBase implements
 				});
 	}
 
-
-	@Override
-	protected void onResume() {
-		
-		this.adjustOptionsMenu();
-		super.onResume();
-	}
-	
 	@Override
 	protected void onPostResume() {
 		super.onPostResume();
+		if (getCurrentFocus() != null)
+			getCurrentFocus().clearFocus();
+		
+		if (this.searchView != null) {
+			this.searchView.setIconified(true);
+		}
+		
 		this.categoryController.setSelectedCategoryChangeListener(this);
 		this.categoryController.initCategories();
 	}
-
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -111,8 +112,7 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		FragmentTransaction transaction = manager.beginTransaction();
 
-		PinListController controller = new PinListController(category,
-				this);
+		PinListController controller = new PinListController(category, this);
 		this.pinContent = new PinListFragment(controller);
 		transaction.add(R.id.container, this.pinContent);
 		transaction.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
@@ -134,18 +134,24 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		this.menu = menu;
 		this.getMenuInflater().inflate(R.menu.main, menu);
-		this.adjustOptionsMenu();
 
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
+		MenuItem searchViewMenuItem = menu.findItem(R.id.action_search);
+		this.searchView = (SearchView) searchViewMenuItem.getActionView();
+		searchViewMenuItem.collapseActionView();
 		SearchManager searchManager = (SearchManager) this
 				.getSystemService(Context.SEARCH_SERVICE);
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(this
 				.getComponentName()));
 		searchView.setSubmitButtonEnabled(true);
-		searchView.setIconified(true);
 
 		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		Log.i("MainActivity", "onPrepareOptionsMenu");
+		this.adjustOptionsMenu();
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	private void adjustOptionsMenu() {

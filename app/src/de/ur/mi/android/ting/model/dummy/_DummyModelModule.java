@@ -8,11 +8,12 @@ import dagger.Provides;
 import de.ur.mi.android.ting.app.ForApplication;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.ISearchService;
 import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.SpecialCategories;
 import de.ur.mi.android.ting.model._IModelModule;
 import de.ur.mi.android.ting.model.IPinService;
-import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 
@@ -38,7 +39,6 @@ public class _DummyModelModule implements _IModelModule {
 		return new LocalUser();
 	}
 
-	@Override
 	@Provides
 	public ISearchService provideISearchService() {
 		return new DummySearchService();

@@ -4,6 +4,8 @@ import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.SearchRequest;
+import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
@@ -57,4 +59,13 @@ public class DummyUserService implements IUserService {
 		};
 		task.execute();
 	}
+
+	@Override
+	public <T> void search(SearchRequest request,
+			IDoneCallback<SearchResult<T>> callback) {
+		// no need to do anything - generic search is implemented
+		
+	}
+
+
 }

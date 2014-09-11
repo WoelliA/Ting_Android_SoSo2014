@@ -1,26 +1,15 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
+
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class DummySearchService implements ISearchService {
 
-	@Override
-	public <T> void search(final SearchRequest request,
-			final IDoneCallback<SearchResult<T>> callback) {
-		DelayTask delayTask = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				callback.done(new Result<T>(request).execute());
-			}
-		};
-		delayTask.execute();
-
-	}
 
 	public class Result<T> {
 
@@ -58,6 +47,20 @@ public class DummySearchService implements ISearchService {
 			return item;
 		}
 
+	}
+
+	@Override
+	public <T> void search(final SearchRequest request,
+			final IDoneCallback<SearchResult<T>> callback) {
+		DelayTask delayTask = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				callback.done(new Result(request).execute());
+			}
+		};
+		delayTask.execute();
+		
 	}
 
 }

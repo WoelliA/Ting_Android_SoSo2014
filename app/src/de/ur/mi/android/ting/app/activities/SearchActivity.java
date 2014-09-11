@@ -129,8 +129,10 @@ public class SearchActivity extends ActionBarActivityBase implements
 
 					@Override
 					public void onSelected(User selectedItem) {
-						Intent intent = new Intent(SearchActivity.this,UserDetailsActivity.class);
-						intent.putExtra(UserDetailsActivity.USER_ID_KEY, selectedItem.getId());
+						Intent intent = new Intent(SearchActivity.this,
+								UserDetailsActivity.class);
+						intent.putExtra(UserDetailsActivity.USER_ID_KEY,
+								selectedItem.getId());
 						SearchActivity.this.startActivity(intent);
 					}
 

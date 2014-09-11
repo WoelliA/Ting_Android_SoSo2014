@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.app.controllers;
 
+import java.util.Collection;
 import java.util.List;
 
 import de.ur.mi.android.ting.app.fragments.ICollectionView;
@@ -24,10 +25,10 @@ public class UserBoardsController {
 
 	private void initBoards() {
 		this.boardsService.getUserBoards(this.userId,
-				new SimpleDoneCallback<List<Board>>() {
+				new SimpleDoneCallback<Collection<Board>>() {
 
 					@Override
-					public void done(List<Board> result) {
+					public void done(Collection<Board> result) {
 						if (result != null) {
 							UserBoardsController.this.view.addAll(result
 									.toArray());

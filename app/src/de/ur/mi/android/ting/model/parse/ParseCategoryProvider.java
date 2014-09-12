@@ -23,9 +23,8 @@ import de.ur.mi.android.ting.utilities.IDoneCallback;
 public class ParseCategoryProvider extends CategoryProviderBase implements
 		ICategoryProvider {
 
-	public ParseCategoryProvider(LocalUser user,
-			ISpecialCategories specialCategories) {
-		super(user, specialCategories);
+	public ParseCategoryProvider(LocalUser user) {
+		super(user);
 	}
 
 	private List<Category> createCategories(List<ParseObject> arg) {
@@ -53,7 +52,8 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 	}
 
 	@Override
-	protected void getAllCategoriesImpl(final IDoneCallback<List<Category>> callback) {
+	protected void getAllCategoriesImpl(
+			final IDoneCallback<List<Category>> callback) {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("category");
 
 		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);

@@ -5,7 +5,7 @@ import android.content.Context;
 
 public interface _IModelModule {
 	public IPinService provideIPinService(LocalUser user);
-	public ICategoryProvider provideICategoryProvider(LocalUser user, ISpecialCategories specialCategories);
+	public ICategoryProvider provideICategoryProvider(LocalUser user);
 	public IBoardsService provideIBoardsProvider(LocalUser user);
 	public IUserService provideIUserService(LocalUser user, ICategoryProvider categoryProvider);
 	public LocalUser provideLocalUser();

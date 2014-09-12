@@ -7,6 +7,8 @@ import java.util.List;
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.ISpecialCategories;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
@@ -27,10 +29,17 @@ public class CategoriesController implements
 
 	private IConnectivity connectivity;
 
+	private ISpecialCategories specialCategories;
+
+	private LocalUser user;
+
 	public CategoriesController(ICategoryProvider categoryProvider,
-			IConnectivity connectivity) {
+			IConnectivity connectivity, ISpecialCategories specialCategories,
+			LocalUser user) {
 		this.categoryProvider = categoryProvider;
 		this.connectivity = connectivity;
+		this.specialCategories = specialCategories;
+		this.user = user;
 		this.categoryProvider
 				.setCategoriesChangedListener(new IChangeListener<Collection<Category>>() {
 					@Override
@@ -50,6 +59,13 @@ public class CategoriesController implements
 					public void done(Collection<Category> result) {
 						CategoriesController.this.categories = new ArrayList<Category>(
 								result);
+
+						categories.add(0,
+								specialCategories.getEverythingCategory());
+						if (user.getIsLogedIn()) {
+							categories.add(0,
+									specialCategories.getFeedCategory());
+						}
 						CategoriesController.this.initAdapter();
 						CategoriesController.this
 								.onCategorySelected(CategoriesController.this.categories

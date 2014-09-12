@@ -185,6 +185,10 @@ public class MainActivity extends ActionBarActivityBase implements
 		case R.id.action_proximity:
 			intent = new Intent(this, ProximityAlertActivity.class);
 			this.startActivity(intent);
+		case R.id.action_profile:
+			intent = new Intent(this, UserDetailsActivity.class);
+			intent.putExtra(UserDetailsActivity.USER_ID_KEY, this.user.getId());
+			this.startActivity(intent);
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -44,6 +44,7 @@ public class DummyUserService implements IUserService {
 	@Override
 	public boolean checkIsLoggedIn() {
 		this.user.setIsLoggedIn(DummyConfig.IS_USER_LOGGED_DEFAULT);
+		this.user.setInfo("some", "Dummyuser");
 		return this.user.getIsLogedIn();
 	}
 

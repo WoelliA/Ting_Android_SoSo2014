@@ -25,9 +25,9 @@ public class _DummyModelModule implements _IModelModule {
 	@Override
 	@Provides
 	@Singleton
-	public ICategoryProvider provideICategoryProvider(LocalUser user, ISpecialCategories specialCategories) {
+	public ICategoryProvider provideICategoryProvider(LocalUser user) {
 		if(this.categoryProvider == null) {
-			this.categoryProvider = new DummyCategoryProvider(user, specialCategories);
+			this.categoryProvider = new DummyCategoryProvider(user);
 		}
 		return this.categoryProvider;
 	}

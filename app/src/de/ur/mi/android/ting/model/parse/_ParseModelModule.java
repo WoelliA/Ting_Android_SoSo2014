@@ -45,11 +45,9 @@ public class _ParseModelModule implements _IModelModule {
 	@Override
 	@Provides
 	@Singleton
-	public ICategoryProvider provideICategoryProvider(LocalUser user,
-			ISpecialCategories specialCategories) {
+	public ICategoryProvider provideICategoryProvider(LocalUser user) {
 		if (this.categoryProvider == null) {
-			this.categoryProvider = new ParseCategoryProvider(user,
-					specialCategories);
+			this.categoryProvider = new ParseCategoryProvider(user);
 		}
 		return this.categoryProvider;
 	}

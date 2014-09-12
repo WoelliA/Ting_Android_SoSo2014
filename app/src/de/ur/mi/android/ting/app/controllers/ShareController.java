@@ -100,7 +100,7 @@ public class ShareController {
 			}
 
 		} catch (MalformedURLException e) {
-			Notify.current().showDialog(R.string.share_target_generic_error, 0,
+			Notify.current().show(R.string.share_target_generic_error, 0,
 					NotifyKind.ERROR);
 			e.printStackTrace();
 		}

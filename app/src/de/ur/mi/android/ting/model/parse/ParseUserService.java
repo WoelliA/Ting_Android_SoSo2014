@@ -61,16 +61,23 @@ public class ParseUserService implements IUserService {
 	}
 
 	@Override
-	public void getUser(String userId,
-			final SimpleDoneCallback<User> callback) {
-		if(!ParseCache.current().restore(userId, new GetCallback<ParseObject>() {
-			
-			@Override
-			public void done(ParseObject object, ParseException e) {
-				callback.done(ParseHelper.createUser(object));				
-			}
-		})){
-			
+	public void getUser(String userId, final SimpleDoneCallback<User> callback) {
+		if (!ParseCache.current().restore(userId,
+				new GetCallback<ParseObject>() {
+
+					@Override
+					public void done(ParseObject object, ParseException e) {
+						callback.done(ParseHelper.createUser(object));
+					}
+				})) {
+			ParseQuery<ParseUser> query = ParseUser.getQuery();
+			query.getInBackground(userId, new GetCallback<ParseUser>() {
+
+				@Override
+				public void done(ParseUser object, ParseException e) {
+					callback.done(ParseHelper.createUser(object));
+				}
+			});
 		}
 	}
 
@@ -80,7 +87,7 @@ public class ParseUserService implements IUserService {
 		String[] searchedFields = new String[] { "username" };
 		ParseQuery<ParseUser> query = ParseUser.getQuery();
 		query.whereMatches("username", request.getQuery(), "mi");
-		
+
 		query.findInBackground(new FindCallback<ParseUser>() {
 
 			@SuppressWarnings("unchecked")
@@ -89,8 +96,7 @@ public class ParseUserService implements IUserService {
 				if (e == null && objects != null) {
 					List<? extends ParseObject> bases = objects;
 					callback.done((SearchResult<T>) new SearchResult<User>(
-							ParseHelper.createUsers(bases), request
-									.getCount()));
+							ParseHelper.createUsers(bases), request.getCount()));
 				}
 
 			}

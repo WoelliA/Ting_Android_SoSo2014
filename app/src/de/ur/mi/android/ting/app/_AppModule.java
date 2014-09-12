@@ -1,9 +1,11 @@
 package de.ur.mi.android.ting.app;
 
 import java.util.Collection;
+
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.activities.MainActivity;
+import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.Category;
@@ -31,7 +33,7 @@ public class _AppModule {
 	@Provides
 	IInitializeable provideIInitializeable(
 			final ICategoryProvider categoryProvider,
-			final IUserService userService) {
+			final LoginController loginController) {
 		InitializeableProvider provider = new InitializeableProvider();
 
 		// category initializeable
@@ -43,7 +45,7 @@ public class _AppModule {
 						.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 							@Override
 							public void done(Collection<Category> result) {
-								userService.checkIsLoggedIn();
+								loginController.checkIsLoggedIn();
 								callback.done(null);
 							}
 						});

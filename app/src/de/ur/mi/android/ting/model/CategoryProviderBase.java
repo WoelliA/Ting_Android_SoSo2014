@@ -17,12 +17,9 @@ public abstract class CategoryProviderBase implements
 	private LinkedHashMap<String,Category> categories;
 
 	private IChangeListener<Collection<Category>> categoryFavorityChangeListener;
-	private ISpecialCategories specialcategories;
 
-	public CategoryProviderBase(LocalUser user,
-			ISpecialCategories specialcategories) {
+	public CategoryProviderBase(LocalUser user) {
 		this.user = user;
-		this.specialcategories = specialcategories;
 		this.user.addLoginChangeListener(this);
 	}
 	
@@ -38,7 +35,6 @@ public abstract class CategoryProviderBase implements
 			return;
 		}
 		this.categories = new LinkedHashMap<String, Category>();
-		this.categories.put("everything", this.specialcategories.getEverythingCategory());
 		this.getAllCategoriesImpl(new SimpleDoneCallback<List<Category>>() {
 
 			@Override
@@ -69,7 +65,6 @@ public abstract class CategoryProviderBase implements
 		if (result.getIsRightLogin()) {
 			LinkedHashMap<String, Category> oldCategories = new LinkedHashMap<String, Category>(this.categories);
 			this.categories = new LinkedHashMap<String, Category>();
-			this.categories.put("feed", this.specialcategories.getFeedCategory());
 			this.categories.putAll(oldCategories);
 			
 			this.notifyCategoriesChangeListener();

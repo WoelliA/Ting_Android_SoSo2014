@@ -17,7 +17,7 @@ import de.ur.mi.android.ting.utilities.view.ViewResolver;
 public class CategoryViewResolver extends ViewResolver<Category> {
 
 	private IBiChangeListener<Category, Boolean> favoriteChangeCallback;
-	
+
 	public CategoryViewResolver(int resourceId, Context context,
 			IBiChangeListener<Category, Boolean> favoriteChangeCallback) {
 		super(resourceId, context);
@@ -25,32 +25,31 @@ public class CategoryViewResolver extends ViewResolver<Category> {
 	}
 
 	@Override
-	protected void decorateView(View view, Category category, ViewGroup parent) {	
-		
+	protected void decorateView(View view, Category category, ViewGroup parent) {
+
 		ToggleButton favoriteToggleButton = (ToggleButton) this.findViewById(
 				view, R.id.category_favorite_button);
 		TextView categoryNameTextView = (TextView) this.findViewById(view,
 				R.id.category_fragment_category_name);
 
-
 		categoryNameTextView.setText(category.getName());
-		
+
 		favoriteToggleButton.setOnCheckedChangeListener(null);
-		
+
 		this.setIsFavoriteState(category, favoriteToggleButton);
-		
+
 		favoriteToggleButton
 				.setOnCheckedChangeListener(new CategoryFavoriteChangeListener(
 						category, this.favoriteChangeCallback));
-		
-		if(category instanceof SpecialCategory){
+
+		if (category instanceof SpecialCategory) {
 			favoriteToggleButton.setVisibility(View.INVISIBLE);
 		} else {
-			favoriteToggleButton.setVisibility(View.VISIBLE);			
+			favoriteToggleButton.setVisibility(View.VISIBLE);
 		}
 
 	}
-	
+
 	private void setIsFavoriteState(Category category,
 			ToggleButton favoriteToggleButton) {
 		favoriteToggleButton.setChecked(category.getIsFavorite());

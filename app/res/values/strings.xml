@@ -42,5 +42,16 @@
     <string name="share_target_generic_error">There was an error retrieving what you wanted to share with us!</string>
     <string name="special_category_feed_name">Your Feed</string>
     <string name="special_category_everything_name">Everything</string>
-
+    <string name="button_text_board_unfollow">unfollow</string>
+    <string name="button_text_board_follow">follow</string>
+    <string name="button_edit_profile_text">Edit profile</string>
+    <string name="button_create_board_text">Create a Board</string>
+    <string name="label_board_title">boardtitle</string>
+    <string name="label_board_description">description</string>
+    <string name="button_save_text">save</string>
+    
+    <string name="loading_saving_board">saving your board</string>
+    <string name="success_saving_board">saved your board</string>
+    <string name="label_select_category">select a category</string>
+    
 </resources>

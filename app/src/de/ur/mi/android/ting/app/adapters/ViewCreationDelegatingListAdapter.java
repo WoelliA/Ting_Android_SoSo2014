@@ -20,4 +20,9 @@ public class ViewCreationDelegatingListAdapter<T> extends ArrayAdapter<T> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		return this.viewResolver.resolveView(this.getItem(position), convertView, parent);
 	}
+	
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		return this.viewResolver.resolveView(this.getItem(position), convertView, parent);
+	}
 }

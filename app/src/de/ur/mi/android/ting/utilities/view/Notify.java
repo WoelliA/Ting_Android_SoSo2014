@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.widget.Toast;
 import de.ur.mi.android.ting.R;
 
 public class Notify implements INotify {
@@ -18,8 +19,11 @@ public class Notify implements INotify {
 	}
 
 	@Override
-	public void showDialog(int titleResourceId, int contentResourceId,
-			NotifyKind kind) {
+	public void show(int titleResourceId, int contentResourceId, NotifyKind kind) {
+		if (kind == NotifyKind.SUCCESS) {
+			showToast(titleResourceId);
+			return;
+		}
 		AlertDialog.Builder dialogDialog = new AlertDialog.Builder(this.context);
 
 		dialogDialog.setTitle(this.context.getString(titleResourceId));
@@ -38,6 +42,17 @@ public class Notify implements INotify {
 		int drawableId = this.getDrawableId(kind);
 		dialogDialog.setIcon(drawableId);
 		dialogDialog.show();
+	}
+
+	@Override
+	public void showToast(int textResourceId) {
+		this.showToast(context.getString(textResourceId));
+	}
+
+	@Override
+	public void showToast(String content) {
+		Toast toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+		toast.show();
 	}
 
 	private int getDrawableId(NotifyKind kind) {

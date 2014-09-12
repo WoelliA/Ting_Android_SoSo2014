@@ -6,6 +6,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
 import de.ur.mi.android.ting.app.controllers.UserDetailsController;
 import de.ur.mi.android.ting.app.viewResolvers.SearchResultResolvers.BoardResolver;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
@@ -13,13 +14,15 @@ import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UserDetailsActivity extends BaseActivity implements
+public class UserDetailsActivity extends FragmentActivityBase implements
 		IUserDetailsView {
 
 	public static final String USER_ID_KEY = "userId";
@@ -30,13 +33,27 @@ public class UserDetailsActivity extends BaseActivity implements
 	@Inject
 	public IImageLoader imageLoader;
 
+	@Inject
+	public LocalUser localUser;
+
 	private ListView listView;
 	private ViewCreationDelegatingListAdapter<Board> adapter;
 	private View headerView;
 
+	private boolean isLocalUserPage;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		String userId = this.getIntent().getExtras().getString(USER_ID_KEY);
+		this.isLocalUserPage = userId.equals(localUser.getId());
+		this.initUi();
+
+		this.controller.setView(this, userId);
+	}
+
+	private void initUi() {
 		this.setContentView(R.layout.activity_userdetails);
 		this.listView = (ListView) this.findViewById(R.id.list);
 		this.listView.setOnItemClickListener(new OnItemClickListener() {
@@ -44,6 +61,9 @@ public class UserDetailsActivity extends BaseActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
+				position = position - ((ListView)arg0).getHeaderViewsCount();
+				if(position < 0)
+					return;
 				Board board = adapter.getItem(position);
 				Intent intent = new Intent(UserDetailsActivity.this,
 						BoardDetailsActivity.class);
@@ -60,11 +80,31 @@ public class UserDetailsActivity extends BaseActivity implements
 		this.headerView = this.getLayoutInflater().inflate(
 				R.layout.user_details_header_view, null, false);
 
-		this.listView.addHeaderView(this.headerView);
+		this.listView.addHeaderView(this.headerView, null, false);
 
-		String userId = this.getIntent().getExtras().getString(USER_ID_KEY);
+		if (this.isLocalUserPage) {
+			initLocalUserControls();
+		}
+	}
 
-		this.controller.setView(this, userId);
+	private void initLocalUserControls() {
+		Button editButton = (Button) this.headerView
+				.findViewById(R.id.button_edit_profile);
+		editButton.setVisibility(View.VISIBLE);
+
+		Button createBoardButton = (Button) this.headerView
+				.findViewById(R.id.button_create_board);
+		createBoardButton.setVisibility(View.VISIBLE);
+		
+		createBoardButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(UserDetailsActivity.this, EditBoardActivity.class);
+				intent.putExtra(EditBoardActivity.TYPE_KEY, EditBoardActivity.TYPE_CREATE);
+				UserDetailsActivity.this.startActivity(intent);				
+			}
+		});
 	}
 
 	@Override

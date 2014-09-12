@@ -19,8 +19,8 @@ import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 public class DummyCategoryProvider extends CategoryProviderBase implements
 		ICategoryProvider {
 
-	public DummyCategoryProvider(LocalUser user, ISpecialCategories specialCategories) {
-		super(user, specialCategories);
+	public DummyCategoryProvider(LocalUser user) {
+		super(user);
 	}
 
 

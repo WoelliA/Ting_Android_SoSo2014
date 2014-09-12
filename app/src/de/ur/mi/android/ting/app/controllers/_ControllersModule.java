@@ -7,8 +7,10 @@ import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.IUserService;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.html.PinDataParser;
@@ -19,16 +21,17 @@ public class _ControllersModule {
 	private CategoriesController categoryController;
 
 	@Provides
-	public SearchController provideSearchController(ISearchService typedSearchService) {
+	public SearchController provideSearchController(
+			ISearchService typedSearchService) {
 		return new SearchController(typedSearchService);
 	}
 
-	@Provides 
+	@Provides
 	public CategoriesController provideCategoriesController(
-			ICategoryProvider categoryProvider, IConnectivity connectivity) {
+			ICategoryProvider categoryProvider, IConnectivity connectivity, ISpecialCategories specialCats, LocalUser user) {
 		if (this.categoryController == null) {
 			this.categoryController = new CategoriesController(
-					categoryProvider, connectivity);
+					categoryProvider, connectivity, specialCats, user);
 		}
 		return this.categoryController;
 	}
@@ -44,19 +47,29 @@ public class _ControllersModule {
 			IBoardsService boardsService) {
 		return new UserBoardsController(boardsService);
 	}
-	
+
 	@Provides
-	public LoginController provideLoginController(IUserService userService, IConnectivity connectivity){
-		return new LoginController(userService, connectivity);
+	public LoginController provideLoginController(IUserService userService,
+			IConnectivity connectivity, LocalUser user) {
+		return new LoginController(userService, connectivity, user);
 	}
-	
+
 	@Provides
-	public BoardDetailsController provideBoardDetailsController(IPinService pinService, IBoardsService boardsService){
+	public BoardDetailsController provideBoardDetailsController(
+			IPinService pinService, IBoardsService boardsService) {
 		return new BoardDetailsController(pinService, boardsService);
 	}
-	
-	@Provides 
-	public UserDetailsController provideUserDetailsController(IUserService userService, IBoardsService boardsService){
+
+	@Provides
+	public UserDetailsController provideUserDetailsController(
+			IUserService userService, IBoardsService boardsService) {
 		return new UserDetailsController(userService, boardsService);
+	}
+
+	@Provides
+	public EditBoardController provideEditBoardController(
+			IBoardsService boardsService, IConnectivity conn,
+			ICategoryProvider cateProv) {
+		return new EditBoardController(boardsService, cateProv, conn);
 	}
 }

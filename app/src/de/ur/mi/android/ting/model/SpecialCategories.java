@@ -11,7 +11,7 @@ public class SpecialCategories implements ISpecialCategories {
 		this.context = context;
 	}
 
-	public class SpecialCategory extends Category {
+	public static class SpecialCategory extends Category {
 
 		private int specialId;
 

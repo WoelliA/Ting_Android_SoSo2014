@@ -1,24 +1,31 @@
 package de.ur.mi.android.ting.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Singleton;
 
 import de.ur.mi.android.ting.app.IChangeListener;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.UniqueBase;
+import de.ur.mi.android.ting.model.primitives.User;
 
 @Singleton
-public class LocalUser {
+public class LocalUser extends User {
 
 	private boolean isLoggedIn;
-	private String name;
-	private String id;
 	private List<Category> favoriteCategories;
 	private List<IChangeListener<LoginResult>> listeners;
+	private String email;
+	private List<Board> followedBoards;
+	private static LocalUser current;
 
 	public LocalUser() {
+		super(null);
+		current = this;
 		this.listeners = new ArrayList<IChangeListener<LoginResult>>();
 	}
 
@@ -28,10 +35,10 @@ public class LocalUser {
 
 	public void setIsLoggedIn(boolean isLoggedIn) {
 		LoginResult loginResult = new LoginResult(isLoggedIn);
-		if(this.isLoggedIn != isLoggedIn){
+		if (this.isLoggedIn != isLoggedIn) {
 			// only notify on change
-			this.notifyLoginChangeListeners(loginResult);	
-		}	
+			this.notifyLoginChangeListeners(loginResult);
+		}
 
 		this.isLoggedIn = isLoggedIn;
 	}
@@ -42,17 +49,16 @@ public class LocalUser {
 		}
 	}
 
-	public void setInfo(String id, String name) {
-		this.id = id;
-		this.name = name;
+	public void setInfo(User user, String email) {
+		this.id = user.getId();
+		this.name = user.getName();
+		this.setInfo(user.getInfo());
+		this.setProfilePictureUrl(user.getProfilePictureUri());
+		this.email = email;
 	}
 
-	public String getId() {
-		return this.id;
-	}
-
-	public String getName() {
-		return this.name;
+	public String getEmail() {
+		return this.email;
 	}
 
 	public void setFavoriteCategories(List<Category> categories) {
@@ -63,7 +69,20 @@ public class LocalUser {
 		return this.favoriteCategories;
 	}
 
-	public void addLoginChangeListener(IChangeListener<LoginResult> loginChangeListener) {
+	public void addLoginChangeListener(
+			IChangeListener<LoginResult> loginChangeListener) {
 		this.listeners.add(loginChangeListener);
+	}
+
+	public static LocalUser current() {
+		return current;
+	}
+
+	public List<Board> getFollowedBoards() {
+		return this.followedBoards;
+	}
+	
+	public void setFollowedBoards(Collection<Board> boards){
+		this.followedBoards = new ArrayList<Board>(boards);
 	}
 }

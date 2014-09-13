@@ -72,4 +72,9 @@ public class _ControllersModule {
 			ICategoryProvider cateProv) {
 		return new EditBoardController(boardsService, cateProv, conn);
 	}
+	
+	@Provides
+	public EditProfileController provideEditProfileController(IImageLoader imageloader, IUserService userService, LocalUser user){
+		return new EditProfileController(imageloader, userService, user);
+	}
 }

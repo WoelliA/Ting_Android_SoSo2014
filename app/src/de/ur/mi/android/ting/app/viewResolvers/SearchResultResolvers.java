@@ -41,9 +41,12 @@ public class SearchResultResolvers {
 					view, R.id.board_result_contributors);
 			TextView boardTitle = (TextView) this.findViewById(view,
 					R.id.board_result_title);
+			TextView descriptionView = (TextView) this.findViewById(view, R.id.textview_board_description);
+			
+			boardTitle.setText(board.getTitle());
+			descriptionView.setText(board.getDescription());
 
 			this.addContributor(contributorsLayout, board, parent);
-			boardTitle.setText(board.getTitle());
 		}
 
 		private void addContributor(LinearLayout contributorsLayout,
@@ -97,6 +100,10 @@ public class SearchResultResolvers {
 			TextView profileName = (TextView) this.findViewById(view,
 					R.id.user_profile_name);
 
+			TextView infoView = (TextView) this.findViewById(view, R.id.textview_info);
+			
+			infoView.setText(user.getInfo());
+			
 			this.imageLoader.loadImage(user.getProfilePictureUri(), profileImage);
 			profileName.setText(user.getName());
 		}

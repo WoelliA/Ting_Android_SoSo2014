@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -15,7 +16,9 @@ import de.ur.mi.android.ting.app.adapters.PinListAdapter;
 import de.ur.mi.android.ting.app.controllers.BoardDetailsController;
 import de.ur.mi.android.ting.app.controllers.BoardDetailsController.IBoardDetailsView;
 import de.ur.mi.android.ting.app.viewResolvers.BoardPinViewResolver;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
+import de.ur.mi.android.ting.model.primitives.Board.BoardAffiliation;
 import de.ur.mi.android.ting.model.primitives.Pin;
 
 @SuppressLint("InflateParams")
@@ -26,6 +29,10 @@ public class BoardDetailsActivity extends BaseActivity implements
 
 	@Inject
 	public BoardDetailsController controller;
+
+	@Inject
+	public LocalUser localUser;
+
 	private ListView listView;
 
 	private View headerView;
@@ -59,5 +66,19 @@ public class BoardDetailsActivity extends BaseActivity implements
 		ToggleButton followToggle = (ToggleButton) this.headerView
 				.findViewById(R.id.board_follow_toggle);
 		followToggle.setChecked(board.getIsUserFollowing());
+
+		BoardAffiliation affiliation = board.getBoardAffiliation(localUser);
+
+		if (affiliation == BoardAffiliation.Owner) {
+			Button editButton = (Button) this.headerView
+					.findViewById(R.id.button_edit_board);
+			editButton.setVisibility(View.VISIBLE);
+		} else {
+			followToggle.setVisibility(View.VISIBLE);
+			if (affiliation == BoardAffiliation.Follower
+					|| affiliation == BoardAffiliation.Contributor) {
+				followToggle.setChecked(true);
+			}
+		}
 	}
 }

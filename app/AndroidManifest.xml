@@ -8,10 +8,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-sdk
         android:minSdkVersion="18"
         android:targetSdkVersion="19" />
+
 
     <application
         android:name=".app.TingApp"
@@ -76,6 +78,8 @@
         <activity android:name=".app.activities.UserDetailsActivity" >
         </activity>
         <activity android:name=".app.activities.EditBoardActivity" >
+        </activity>
+        <activity android:name=".app.activities.EditProfileActivity" >
         </activity>
     </application>
 

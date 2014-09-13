@@ -17,7 +17,8 @@ import de.ur.mi.android.ting.utilities.view.Notify;
 		SplashScreenActivity.class,
 		BoardDetailsActivity.class,
 		UserDetailsActivity.class,
-		EditBoardActivity.class},
+		EditBoardActivity.class,
+		EditProfileActivity.class},
 		
 
 addsTo = _AndroidModule.class, library = true, complete = false)
@@ -28,7 +29,6 @@ public class _ActivityModule {
 
 	public _ActivityModule(Context context) {
 		this.context = context;
-
 		this.notify = new Notify(context);
 	}
 

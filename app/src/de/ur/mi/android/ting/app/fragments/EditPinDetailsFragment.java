@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class EditPinDetailsFragment extends FragmentBase {
 
@@ -19,6 +20,8 @@ public class EditPinDetailsFragment extends FragmentBase {
 	private ImageView pinImageView;
 	private EditText pinTitleView;
 	private EditText pinDescriptionView;
+	private TextView linkUrlView;
+	private Button changeLinkButton;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,13 +47,20 @@ public class EditPinDetailsFragment extends FragmentBase {
 				if (EditPinDetailsFragment.this.listener == null) {
 					return;
 				}
-				EditPinDetailsFragment.this.listener.done(EditPinDetailsFragment.this.createPinDataResult());
+				EditPinDetailsFragment.this.listener
+						.done(EditPinDetailsFragment.this.createPinDataResult());
 			}
 		});
 
 		View view = this.getView();
 		this.pinImageView = (ImageView) view.findViewById(R.id.editpin_image);
 		this.pinTitleView = (EditText) view.findViewById(R.id.editpin_title);
+		this.linkUrlView = (TextView) view.findViewById(R.id.textview_linktext);
+		this.changeLinkButton = (Button) view
+				.findViewById(R.id.button_change_link);
+
+		
+		this.linkUrlView.setText(this.pinData.getLinkUrl());
 		this.pinDescriptionView = (EditText) view
 				.findViewById(R.id.editpin_description);
 
@@ -58,6 +68,7 @@ public class EditPinDetailsFragment extends FragmentBase {
 				.getBitmap());
 		this.pinTitleView.setText(this.pinData.getTitle());
 		this.pinDescriptionView.setText(this.pinData.getDescription());
+
 	}
 
 	private PinData createPinDataResult() {

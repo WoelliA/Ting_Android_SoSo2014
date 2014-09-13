@@ -52,6 +52,22 @@
     
     <string name="loading_saving_board">saving your board</string>
     <string name="success_saving_board">saved your board</string>
+    <string name="success_saving_profile">saved your profile</string>
     <string name="label_select_category">select a category</string>
+    <string name="label_username">name</string>
+    <string name="button_change_profileimage_text">change image</string>
+    <string name="button_edit_profileimage_text">change profile image</string>
+    <string name="label_email">email</string>
+    
+    <string name="dialog_unsaved_changes_title">Unsaved changes.</string>
+    <string name="dialog_unsaved_changes_content">You have unsaved changes. Do you want to proceed?</string>
+    
+    <string name="button_proceed_text">Proceed</string>
+    
+    <string name="button_change_link_text">change link</string>
+    
+    <string name="button_edit_board_text">edit board</string>
+    
+    <string name="label_user_info">info</string>
     
 </resources>

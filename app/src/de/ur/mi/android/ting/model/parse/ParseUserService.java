@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.model.parse;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,12 +9,17 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
+import de.ur.mi.android.ting.model.parse.callbacks.SaveCallbackWrap;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
@@ -23,10 +29,10 @@ import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class ParseUserService implements IUserService {
 
-	private LocalUser user;
+	private LocalUser localuser;
 
 	public ParseUserService(LocalUser user) {
-		this.user = user;
+		this.localuser = user;
 	}
 
 	@Override
@@ -34,19 +40,43 @@ public class ParseUserService implements IUserService {
 			final IDoneCallback<LoginResult> callback) {
 
 		ParseUser.logInInBackground(userName, password, new LogInCallback() {
-
 			@Override
 			public void done(ParseUser u, ParseException e) {
 				boolean isSuccess = u != null;
 				LoginResult lr = new LoginResult(isSuccess);
-				ParseUserService.this.user.setIsLoggedIn(isSuccess);
-				if (isSuccess) {
-					ParseUserService.this.user.setInfo(u.getObjectId(),
-							u.getUsername());
-				}
+				if (isSuccess)
+					setUserInfo(u);
+				ParseUserService.this.localuser.setIsLoggedIn(isSuccess);
 				callback.done(lr);
 			}
 		});
+	}
+
+	protected void setUserInfo(ParseUser u) {
+
+		localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
+		if (u.has("boards_followed")) {
+
+			ParseRelation<ParseObject> followedBoards = u
+					.getRelation("boards_followed");
+			followedBoards.getQuery().findInBackground(
+					new FindCallback<ParseObject>() {
+
+						@Override
+						public void done(List<ParseObject> objects,
+								ParseException e) {
+							if (objects == null || e != null) {
+								return;
+							}
+							List<Board> boards = new ArrayList<Board>();
+							for (ParseObject object : objects) {
+								boards.add(ParseHelper.createBoard(object));
+							}
+							localuser.setFollowedBoards(boards);
+						}
+					});
+
+		}
 	}
 
 	@Override
@@ -54,9 +84,9 @@ public class ParseUserService implements IUserService {
 		ParseUser user = ParseUser.getCurrentUser();
 		boolean isLoggedIn = user != null;
 		if (isLoggedIn) {
-			this.user.setInfo(user.getObjectId(), user.getUsername());
+			setUserInfo(user);
 		}
-		this.user.setIsLoggedIn(isLoggedIn);
+		this.localuser.setIsLoggedIn(isLoggedIn);
 		return isLoggedIn;
 	}
 
@@ -98,10 +128,33 @@ public class ParseUserService implements IUserService {
 					callback.done((SearchResult<T>) new SearchResult<User>(
 							ParseHelper.createUsers(bases), request.getCount()));
 				}
-
 			}
 		});
 
 	}
 
+	@Override
+	public void saveChangedUser(EditProfileResult editProfileResult,
+			IDoneCallback<Void> callback) {
+		final ParseUser user = ParseUser.getCurrentUser();
+
+		user.setEmail(editProfileResult.getEmail());
+		user.setUsername(editProfileResult.getName());
+		user.put("info", editProfileResult.getInfo());
+
+		if (editProfileResult.getNewProfileImage() != null) {
+			ParseFile file = new ParseFile(
+					editProfileResult.getNewProfileImage());
+			user.put("profile_picture", file);
+		}
+
+		user.saveInBackground(new SaveCallbackWrap(callback) {
+			@Override
+			public void done(ParseException e) {
+				super.done(e);
+				ParseUserService.this.localuser.setInfo(
+						ParseHelper.createUser(user), user.getEmail());
+			}
+		});
+	}
 }

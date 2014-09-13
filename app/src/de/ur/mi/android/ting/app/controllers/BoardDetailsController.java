@@ -6,6 +6,7 @@ import java.util.List;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.IPinService;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.PagingResult;
 import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.primitives.Board;

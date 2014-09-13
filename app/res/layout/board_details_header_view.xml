@@ -11,10 +11,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ToggleButton
+        android:visibility="gone"
         android:id="@+id/board_follow_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOff="@string/button_text_board_follow"
         android:textOn="@string/button_text_board_unfollow" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/button_edit_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_edit_board_text" />
 
 </LinearLayout>

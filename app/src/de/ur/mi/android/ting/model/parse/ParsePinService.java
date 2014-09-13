@@ -12,6 +12,7 @@ import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQuery.CachePolicy;
@@ -23,6 +24,7 @@ import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.PinRequest;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
+import de.ur.mi.android.ting.model.parse.callbacks.SaveCallbackWrap;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
@@ -56,8 +58,7 @@ public class ParsePinService implements IPinService {
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {
-					callback.onPinsReceived(ParseHelper
-							.createPins(objects));
+					callback.onPinsReceived(ParseHelper.createPins(objects));
 				} else {
 					Log.e("parse query pin", e.getMessage());
 				}
@@ -103,7 +104,8 @@ public class ParsePinService implements IPinService {
 					@Override
 					public void done(List<ParseObject> objects, ParseException e) {
 						if (e == null) {
-							callback.onPinsReceived(ParseHelper.createPins(objects));
+							callback.onPinsReceived(ParseHelper
+									.createPins(objects));
 						} else {
 							Log.e("parse query pin", e.getMessage());
 						}
@@ -119,8 +121,7 @@ public class ParsePinService implements IPinService {
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null) {
-					callback.onPinsReceived(ParseHelper
-							.createPins(objects));
+					callback.onPinsReceived(ParseHelper.createPins(objects));
 				} else {
 					Log.e("parse query pin", e.getMessage());
 				}
@@ -131,26 +132,32 @@ public class ParsePinService implements IPinService {
 
 	@Override
 	public void createPin(PinData result, Board selectedBoard,
-			IDoneCallback callback) {
-		// TODO implement parse create pin
+			IDoneCallback<Void> callback) {
+		ParseObject pin = ParseObject.create("pin");
+		pin.put("title", result.getTitle());
+		pin.put("description", result.getDescription());
+		
+		pin.put("board", ParseObject.createWithoutData("board", selectedBoard.getId()));
 
+		pin.saveInBackground(new SaveCallbackWrap(callback));
 	}
-
 
 	@Override
 	public <T> void search(final SearchRequest request,
 			final IDoneCallback<SearchResult<T>> callback) {
 		String[] searchedFields = new String[] { "title", "description" };
-		ParseQuery<ParseObject> query = ParseQueryHelper.getSearchQuery("pin", request, searchedFields);
+		ParseQuery<ParseObject> query = ParseQueryHelper.getSearchQuery("pin",
+				request, searchedFields);
 
-		query.orderByDescending("createdAt");	
+		query.orderByDescending("createdAt");
 		query.findInBackground(new FindCallback<ParseObject>() {
-			
+
 			@SuppressWarnings("unchecked")
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
-				if(e == null && objects != null){
-					callback.done((SearchResult<T>) new SearchResult<Pin>(ParseHelper.createPins(objects), request.getCount()));
+				if (e == null && objects != null) {
+					callback.done((SearchResult<T>) new SearchResult<Pin>(
+							ParseHelper.createPins(objects), request.getCount()));
 				}
 			}
 		});
@@ -160,22 +167,21 @@ public class ParsePinService implements IPinService {
 	public void getPinsForBoard(String boardId, PinRequest request,
 			final IDoneCallback<Collection<Pin>> callback) {
 		ParseQuery<ParseObject> query = this.getBasePinQuery(request);
-		
+
 		ParseObject board = ParseObject.create("board");
 		board.setObjectId(boardId);
 		query.whereEqualTo("board", board);
-		
-		
+
 		query.findInBackground(new FindCallback<ParseObject>() {
-			
+
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
-				if(e == null && objects != null){
+				if (e == null && objects != null) {
 					callback.done(ParseHelper.createPins(objects));
-				}				
+				}
 			}
 		});
-		
+
 	}
 
 }

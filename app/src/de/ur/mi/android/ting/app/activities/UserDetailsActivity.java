@@ -61,8 +61,8 @@ public class UserDetailsActivity extends FragmentActivityBase implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				position = position - ((ListView)arg0).getHeaderViewsCount();
-				if(position < 0)
+				position = position - ((ListView) arg0).getHeaderViewsCount();
+				if (position < 0)
 					return;
 				Board board = adapter.getItem(position);
 				Intent intent = new Intent(UserDetailsActivity.this,
@@ -92,17 +92,29 @@ public class UserDetailsActivity extends FragmentActivityBase implements
 				.findViewById(R.id.button_edit_profile);
 		editButton.setVisibility(View.VISIBLE);
 
+		editButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(UserDetailsActivity.this,
+						EditProfileActivity.class);
+				UserDetailsActivity.this.startActivity(intent);
+			}
+		});
+
 		Button createBoardButton = (Button) this.headerView
 				.findViewById(R.id.button_create_board);
 		createBoardButton.setVisibility(View.VISIBLE);
-		
+
 		createBoardButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(UserDetailsActivity.this, EditBoardActivity.class);
-				intent.putExtra(EditBoardActivity.TYPE_KEY, EditBoardActivity.TYPE_CREATE);
-				UserDetailsActivity.this.startActivity(intent);				
+				Intent intent = new Intent(UserDetailsActivity.this,
+						EditBoardActivity.class);
+				intent.putExtra(EditBoardActivity.TYPE_KEY,
+						EditBoardActivity.TYPE_CREATE);
+				UserDetailsActivity.this.startActivity(intent);
 			}
 		});
 	}

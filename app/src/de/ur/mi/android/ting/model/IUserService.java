@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.model;
 
+import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
@@ -13,4 +14,7 @@ public interface IUserService extends ITypedSearchService<User> {
 
 	public void getUser(String userId,
 			SimpleDoneCallback<User> simpleDoneCallback);
+
+	public void saveChangedUser(EditProfileResult editProfileResult,
+			IDoneCallback<Void> callback);
 }

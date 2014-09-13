@@ -1,5 +1,7 @@
 package de.ur.mi.android.ting.utilities.view;
 
+import javax.security.auth.callback.ConfirmationCallback;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,6 +19,7 @@ public class Notify implements INotify {
 		this.context = context;
 		current = this;
 	}
+
 
 	@Override
 	public void show(int titleResourceId, int contentResourceId, NotifyKind kind) {
@@ -80,7 +83,8 @@ public class Notify implements INotify {
 
 		public LoadingContext(Context context, int titleResourceId) {
 			this.dialog = new ProgressDialog(context);
-			this.dialog.setTitle(titleResourceId);
+			if (titleResourceId > 0)
+				this.dialog.setTitle(titleResourceId);
 			this.dialog.setCancelable(false);
 			this.dialog.show();
 		}

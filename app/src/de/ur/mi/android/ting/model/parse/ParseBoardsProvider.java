@@ -24,7 +24,7 @@ import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class ParseBoardsProvider implements IBoardsService {
 
-	private LocalUser user;
+	private LocalUser localuser;
 
 	private static final String BOARD_CLASS_NAME = "board";
 	private static final String BOARD_TITLE_KEY = "name";
@@ -37,15 +37,15 @@ public class ParseBoardsProvider implements IBoardsService {
 	protected ParseObject boardRef;
 
 	public ParseBoardsProvider(LocalUser user) {
-		this.user = user;
+		this.localuser = user;
 	}
 
 	@Override
-	public void getUserBoards(String id,
+	public void getUserBoards(final String id,
 			final IDoneCallback<Collection<Board>> callback) {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(BOARD_CLASS_NAME);
 
-		if (id.equals(user.getId())) {
+		if (id.equals(this.localuser.getId())) {
 			query.setCachePolicy(CachePolicy.CACHE_THEN_NETWORK);
 			query.setMaxCacheAge(60000);
 		}
@@ -60,7 +60,9 @@ public class ParseBoardsProvider implements IBoardsService {
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
 				if (e == null && objects != null) {
-					callback.done(ParseHelper.createBoards(objects));
+					Collection<Board> boards = ParseHelper
+							.createBoards(objects);
+					callback.done(boards);
 				}
 			}
 		});
@@ -68,7 +70,7 @@ public class ParseBoardsProvider implements IBoardsService {
 
 	@Override
 	public void getLocalUserBoards(IDoneCallback<Collection<Board>> callback) {
-		this.getUserBoards(this.user.getId(), callback);
+		this.getUserBoards(this.localuser.getId(), callback);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.ur.mi.android.ting.model.dummy;
 
+import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -32,8 +33,7 @@ public class DummyUserService implements IUserService {
 				super.onPostExecute(result);
 				DummyUserService.this.user
 						.setIsLoggedIn(DummyUserService.this.isRightLogin);
-				DummyUserService.this.user.setInfo("12355uuu",
-						"Dummy Local User");
+				DummyUserService.this.user.setInfo(new DummyUser(1), "w@w.de");
 				callback.done(new LoginResult(
 						DummyUserService.this.isRightLogin));
 			}
@@ -44,13 +44,12 @@ public class DummyUserService implements IUserService {
 	@Override
 	public boolean checkIsLoggedIn() {
 		this.user.setIsLoggedIn(DummyConfig.IS_USER_LOGGED_DEFAULT);
-		this.user.setInfo("some", "Dummyuser");
+		this.user.setInfo(new DummyUser(1), "w@w.de");
 		return this.user.getIsLogedIn();
 	}
 
 	@Override
-	public void getUser(String userId,
-			final SimpleDoneCallback<User> callback) {
+	public void getUser(String userId, final SimpleDoneCallback<User> callback) {
 		DelayTask task = new DelayTask() {
 			@Override
 			protected void onPostExecute(Void result) {
@@ -65,8 +64,14 @@ public class DummyUserService implements IUserService {
 	public <T> void search(SearchRequest request,
 			IDoneCallback<SearchResult<T>> callback) {
 		// no need to do anything - generic search is implemented
-		
+
 	}
 
+	@Override
+	public void saveChangedUser(EditProfileResult editProfileResult,
+			IDoneCallback<Void> callback) {
+		new DummyResultTask<Void>(null, callback);
+
+	}
 
 }

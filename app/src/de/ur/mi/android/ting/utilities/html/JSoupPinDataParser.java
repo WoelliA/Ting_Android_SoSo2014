@@ -68,7 +68,8 @@ public class JSoupPinDataParser implements PinDataParser {
 			@Override
 			protected void onPostExecute(Document result) {
 				if (result != null) {
-					JSoupPinDataParser.this.readParseData(result, callback);
+					JSoupPinDataParser.this.readParseData(url.toString(),
+							result, callback);
 				}
 				super.onPostExecute(result);
 			}
@@ -76,7 +77,7 @@ public class JSoupPinDataParser implements PinDataParser {
 		task.execute();
 	}
 
-	protected void readParseData(Document doc,
+	protected void readParseData(final String url, Document doc,
 			final IDoneCallback<PinData> callback) {
 		final String title = this.getTitle(doc);
 		final String description = this.getDescription(doc);
@@ -88,11 +89,13 @@ public class JSoupPinDataParser implements PinDataParser {
 
 						@Override
 						public void done(Bitmap result) {
-							if(result == null){
+							if (result == null) {
 								return;
 							}
-							callback.done(new PinData(title, description,
-									new LoadedImageData(imageUrl, result)));
+							PinData pinData = new PinData(title, description,
+									new LoadedImageData(imageUrl, result));
+							pinData.setLinkUrl(url);
+							callback.done(pinData);
 						}
 					});
 		}

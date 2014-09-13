@@ -8,10 +8,13 @@ import java.util.List;
 import android.util.Log;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.PagingRequestBase;
@@ -29,9 +32,13 @@ public class ParseHelper {
 	public static User createUser(ParseObject parseObject) {
 		cache().put(parseObject);
 		
-		String profilePictureUrl = null;
+		String profilePictureUrl = null;Object object;
 		if (parseObject.has("profile_picture")) {
 			profilePictureUrl = parseObject.getString("profile_picture");
+			object = parseObject.get("profile_picture");
+			ParseFile file = (ParseFile)object;
+			String url = file.getUrl();
+			profilePictureUrl = url;
 		}
 		if (profilePictureUrl == null || profilePictureUrl == "") {
 			profilePictureUrl = "assets://images/defaultprofile.png";
@@ -41,6 +48,10 @@ public class ParseHelper {
 		if (parseObject.has("username")) {
 			user.setName(parseObject.getString("username"));
 		}
+		if(parseObject.has("info")){
+			user.setInfo(parseObject.getString("info"));
+		}
+
 		return user;
 	}
 
@@ -60,7 +71,6 @@ public class ParseHelper {
 		}
 		if (o.has("owner")) {
 			board.setOwner(ParseHelper.createUser(o.getParseObject("owner")));
-
 		}
 		return board;
 	}

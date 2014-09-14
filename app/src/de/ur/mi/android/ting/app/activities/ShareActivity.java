@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
-public class ShareActivity extends FragmentActivityBase implements
+public class ShareActivity extends BaseActivity implements
 		IShareSetupView {
 
 	public static final String PIN_ID_KEY = "pinIdKey";

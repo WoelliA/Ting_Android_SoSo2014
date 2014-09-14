@@ -5,6 +5,7 @@
     
     <string name="action_settings">Settings</string>
     <string name="action_login">Login</string>
+    <string name="action_logout">Logout</string>
     <string name="action_profile">Profile</string>
     <string name="action_proximity">Reminder</string>
     <string name="action_search">Search</string>
@@ -71,6 +72,8 @@
     <string name="label_user_info">info</string>
     
     <string name="favorite_category_needs_login">Log in to set a favorite category.</string>
+    <string name="needs_login_like">Log in to like a pin.</string>
+    <string name="needs_login_reting">Log in to re-ting a pin.</string>
     
     <string name="button_liked">Liked</string>
     

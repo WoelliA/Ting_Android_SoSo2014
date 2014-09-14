@@ -20,6 +20,7 @@ import android.widget.ListView;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.controllers.CategoriesController;
+import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -39,8 +40,12 @@ public class MainActivity extends ActionBarActivityBase implements
 	public LocalUser user;
 
 	@Inject
+	public LoginController loginController;
+
+	@Inject
 	public CategoriesController categoryController;
 	private SearchView searchView;
+	protected String firstTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +59,23 @@ public class MainActivity extends ActionBarActivityBase implements
 						FragmentManager manager = MainActivity.this
 								.getSupportFragmentManager();
 						int backstackCount = manager.getBackStackEntryCount();
+						String name;
 						if (backstackCount > 0) {
-							String name = manager.getBackStackEntryAt(
+							name = manager.getBackStackEntryAt(
 									backstackCount - 1).getName();
-							MainActivity.this.setTitle(name);
+						} else {
+							name = firstTitle;
 						}
+						MainActivity.this.setTitle(name);
 					}
 				});
+	}
+
+	@Override
+	protected void onResume() {
+		this.categoryController.setSelectedCategoryChangeListener(this);
+		this.categoryController.initCategories();
+		super.onResume();
 	}
 
 	@Override
@@ -68,13 +83,10 @@ public class MainActivity extends ActionBarActivityBase implements
 		super.onPostResume();
 		if (getCurrentFocus() != null)
 			getCurrentFocus().clearFocus();
-		
+
 		if (this.searchView != null) {
 			this.searchView.setIconified(true);
 		}
-		
-		this.categoryController.setSelectedCategoryChangeListener(this);
-		this.categoryController.initCategories();
 	}
 
 	@Override
@@ -96,17 +108,12 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.drawerListener.syncState();
 	}
 
-	private void setSelectItem(int position) {
-		this.categoryListView.setItemChecked(position, true);
-	}
-
 	private void setCategory(Category selectedCategory) {
-		// setTitle(categoryName);
+		setTitle(selectedCategory.getName());
 		this.setContent(selectedCategory);
 	}
 
 	private void setContent(Category category) {
-		this.setTitle(category.getName());
 		FragmentManager manager = this.getSupportFragmentManager();
 		boolean isFirst = this.pinContent == null;
 
@@ -125,6 +132,8 @@ public class MainActivity extends ActionBarActivityBase implements
 	}
 
 	private void setTitle(String title) {
+		if (firstTitle == null)
+			firstTitle = title;
 		this.getSupportActionBar().setTitle(title);
 	}
 
@@ -162,6 +171,7 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.menu.findItem(R.id.action_login).setVisible(!visible);
 		this.menu.findItem(R.id.action_profile).setVisible(visible);
 		this.menu.findItem(R.id.action_proximity).setVisible(visible);
+		this.menu.findItem(R.id.action_logout).setVisible(visible);
 	}
 
 	@Override
@@ -189,6 +199,8 @@ public class MainActivity extends ActionBarActivityBase implements
 			intent = new Intent(this, UserDetailsActivity.class);
 			intent.putExtra(UserDetailsActivity.USER_ID_KEY, this.user.getId());
 			this.startActivity(intent);
+		case R.id.action_logout:
+			this.loginController.logout();
 		default:
 			return super.onOptionsItemSelected(item);
 		}

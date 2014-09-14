@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import android.content.Context;
 import android.content.Intent;
+import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.activities.ShareActivity;
 import de.ur.mi.android.ting.app.activities.ShareActivity.ShareStage;
 import de.ur.mi.android.ting.app.viewResolvers.PinViewResolver;
@@ -17,6 +18,7 @@ public class PinController {
 
 	private LocalUser user;
 	private IUserService userService;
+	private Context context;
 
 	@Inject
 	public PinController(IUserService userService, LocalUser user) {
@@ -24,17 +26,36 @@ public class PinController {
 		this.user = user;
 	}
 
-	public void reting(Pin pin, Context context) {
+	public void setup(Context context) {
+		this.context = context;
+	}
+
+	public void reting(Pin pin) {
+		if(isNotLoggedIn(R.string.needs_login_reting))
+			return;
 		Intent intent = new Intent(context, ShareActivity.class);
 		intent.putExtra(ShareActivity.STAGE_KEY, ShareStage.BoardSelect);
 		intent.putExtra(ShareActivity.PIN_ID_KEY, pin.getId());
 		context.startActivity(intent);
 	}
 
-	public void like(Pin pin, Context context) {
+	public boolean like(Pin pin) {
+		if (isNotLoggedIn(R.string.needs_login_like))
+			return false;
+
 		user.getLikedPins().add(pin);
 		pin.setAffiliation(PinAffiliation.Liked);
 		userService.setPinLike(pin, true);
+		return true;
+	}
+
+	private boolean isNotLoggedIn(int explanationResId) {
+		if (!user.getIsLogedIn()) {
+			NotifyRequiresLogin notify = new NotifyRequiresLogin(context,explanationResId);
+			notify.show();
+			return true;
+		}
+		return false;
 	}
 
 	public void unlike(Pin pin, Context context) {

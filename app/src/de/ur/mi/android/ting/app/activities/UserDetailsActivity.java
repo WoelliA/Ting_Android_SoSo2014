@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UserDetailsActivity extends FragmentActivityBase implements
+public class UserDetailsActivity extends BaseActivity implements
 		IUserDetailsView {
 
 	public static final String USER_ID_KEY = "userId";

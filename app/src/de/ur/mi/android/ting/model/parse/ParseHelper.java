@@ -25,18 +25,19 @@ import de.ur.mi.android.ting.utilities.cache.WeakRefMemoryCache;
 
 public class ParseHelper {
 
-	private static ParseCache cache(){
+	private static ParseCache cache() {
 		return ParseCache.current();
 	}
-	
+
 	public static User createUser(ParseObject parseObject) {
 		cache().put(parseObject);
-		
-		String profilePictureUrl = null;Object object;
+
+		String profilePictureUrl = null;
+		Object object;
 		if (parseObject.has("profile_picture")) {
 			profilePictureUrl = parseObject.getString("profile_picture");
 			object = parseObject.get("profile_picture");
-			ParseFile file = (ParseFile)object;
+			ParseFile file = (ParseFile) object;
 			String url = file.getUrl();
 			profilePictureUrl = url;
 		}
@@ -48,7 +49,7 @@ public class ParseHelper {
 		if (parseObject.has("username")) {
 			user.setName(parseObject.getString("username"));
 		}
-		if(parseObject.has("info")){
+		if (parseObject.has("info")) {
 			user.setInfo(parseObject.getString("info"));
 		}
 
@@ -56,10 +57,10 @@ public class ParseHelper {
 	}
 
 	public static Board createBoard(ParseObject o) {
-		if(o == null)
+		if (o == null)
 			return null;
 		cache().put(o);
-		
+
 		Board board = new Board(o.getObjectId());
 		if (o.has("category")) {
 			board.setCategory(ParseHelper.createCategory(o
@@ -78,7 +79,7 @@ public class ParseHelper {
 	}
 
 	protected static Category createCategory(ParseObject parseObject) {
-		
+
 		Category category = new Category(parseObject.getObjectId());
 		Log.i("parse", "category " + parseObject);
 		if (parseObject.has("category_name")) {
@@ -92,11 +93,20 @@ public class ParseHelper {
 
 	public static Pin createPin(ParseObject object) {
 		cache().put(object);
-		
-		return new Pin(object.getObjectId(), object.getString("title"),
-				object.getString("description"), object.getString("image"),
-				ParseHelper.createBoard(object.getParseObject("board")),
-				object.getString("url"), object.getDouble("aspectratio"));
+		String title = getStringIfHas(object, "title");
+		String description = getStringIfHas(object, "description");
+		String image = getStringIfHas(object, "image");
+		String linkUrl = getStringIfHas(object, "url");
+		double aspectRatio = object.has("aspectratio") ? object
+				.getDouble("aspectratio") : 1;
+		ParseObject board = object.has("board") ? object
+				.getParseObject("board") : null;
+		return new Pin(object.getObjectId(), title, description, image,
+				ParseHelper.createBoard(board), linkUrl, aspectRatio);
+	}
+
+	private static String getStringIfHas(ParseObject object, String key) {
+		return object.has(key) ? object.getString(key) : "";
 	}
 
 	public static Collection<User> createUsers(

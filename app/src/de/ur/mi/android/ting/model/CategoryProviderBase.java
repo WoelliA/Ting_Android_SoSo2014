@@ -88,7 +88,6 @@ public abstract class CategoryProviderBase implements
 			for (Category category : this.categories.values()) {
 				category.setIsFavorite(false);
 			}
-			this.categories.remove("feed");
 			this.notifyCategoriesChangeListener();
 		}
 	}

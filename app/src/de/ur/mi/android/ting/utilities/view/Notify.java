@@ -1,7 +1,11 @@
 package de.ur.mi.android.ting.utilities.view;
 
+import java.util.List;
+
 import javax.security.auth.callback.ConfirmationCallback;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.widget.Toast;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.TingApp;
 
 public class Notify implements INotify {
 
@@ -20,8 +25,16 @@ public class Notify implements INotify {
 		current = this;
 	}
 
+	private boolean canNotify() {
+		this.context = TingApp.getActivityContext();
+		return TingApp.isVisible();
+	}
+
 	@Override
 	public void show(int titleResourceId, int contentResourceId, NotifyKind kind) {
+		if (!canNotify()) {
+			return;
+		}
 		if (kind == NotifyKind.SUCCESS) {
 			showToast(titleResourceId);
 			return;
@@ -53,6 +66,8 @@ public class Notify implements INotify {
 
 	@Override
 	public void showToast(String content) {
+		if (!canNotify())
+			return;
 		Toast toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
 		toast.show();
 	}
@@ -81,21 +96,26 @@ public class Notify implements INotify {
 		private ProgressDialog dialog;
 
 		public LoadingContext(Context context, int titleResourceId) {
-			this.dialog = new ProgressDialog(context);
-			if (titleResourceId > 0)
-				this.dialog.setTitle(titleResourceId);
-			this.dialog.setCancelable(false);
-			this.dialog.show();
+			if (canNotify()) {
+				this.dialog = new ProgressDialog(context);
+				if (titleResourceId > 0)
+					this.dialog.setTitle(titleResourceId);
+				this.dialog.setCancelable(false);
+				this.dialog.show();
+			}
 		}
 
 		public void close() {
-			this.dialog.cancel();
+			if (dialog != null)
+				this.dialog.cancel();
 		}
 
 	}
 
 	public void showYesNoDialog(int titleResId, int contentResId,
 			int yesButtonTextResId, final IYesNoCallback callback) {
+		if (!canNotify())
+			return;
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(titleResId);
 		if (contentResId > 0) {
@@ -106,7 +126,7 @@ public class Notify implements INotify {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						callback.onYes();						
+						callback.onYes();
 					}
 				}).setNegativeButton(android.R.string.cancel,
 				new DialogInterface.OnClickListener() {

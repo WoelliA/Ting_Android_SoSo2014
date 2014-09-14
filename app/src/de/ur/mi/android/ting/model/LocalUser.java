@@ -24,7 +24,7 @@ public class LocalUser extends User {
 	private String email;
 	private List<Board> followedBoards = new ArrayList<Board>();
 	private HashSet<Pin> likedPins = new HashSet<Pin>();
-	private HashSet<Board> ownedBoards;
+	private HashSet<Board> ownedBoards = new HashSet<Board>();
 	private static LocalUser current;
 
 	public LocalUser() {
@@ -43,9 +43,13 @@ public class LocalUser extends User {
 			// only notify on change
 			this.notifyLoginChangeListeners(loginResult);
 		}
-
+		if(!isLoggedIn){
+			this.followedBoards.clear();
+			this.likedPins.clear();
+			this.ownedBoards.clear();
+		}
 		this.isLoggedIn = isLoggedIn;
-	}
+	} 
 
 	private void notifyLoginChangeListeners(LoginResult loginResult) {
 		for (IChangeListener<LoginResult> iLoginChangeListener : this.listeners) {

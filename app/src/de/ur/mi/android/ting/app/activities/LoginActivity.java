@@ -12,7 +12,7 @@ import de.ur.mi.android.ting.app.fragments.LoginFragment;
 import de.ur.mi.android.ting.app.fragments.RegisterFragment;
 
 
-public class LoginActivity extends FragmentActivityBase {
+public class LoginActivity extends BaseActivity {
 	
 	private ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
 

@@ -20,4 +20,6 @@ public interface IUserService extends ITypedSearchService<User> {
 			IDoneCallback<Void> callback);
 
 	public void setPinLike(Pin pin, boolean isliked);
+
+	public void logout();
 }

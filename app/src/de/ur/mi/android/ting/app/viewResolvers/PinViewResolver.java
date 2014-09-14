@@ -37,6 +37,7 @@ public class PinViewResolver extends ViewResolver<Pin> {
 
 	public PinViewResolver(Context context) {
 		super(R.layout.pin_layout, context);
+		controller.setup(context);
 	}
 
 	@Override
@@ -74,12 +75,12 @@ public class PinViewResolver extends ViewResolver<Pin> {
 			return;
 		}
 		controls.setVisibility(View.VISIBLE);
-		
+
 		Button reTing = (Button) this.findViewById(view, R.id.button_reting);
 		reTing.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				controller.reting(pin, context);
+				controller.reting(pin);
 			}
 		});
 
@@ -87,15 +88,19 @@ public class PinViewResolver extends ViewResolver<Pin> {
 				R.id.button_like);
 		like.setChecked(controller.getIsLiked(pin));
 
-		like.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		like.setOnClickListener(new OnClickListener() {
+
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				if (isChecked) {
-					controller.like(pin, context);
+			public void onClick(View v) {
+				ToggleButton button = (ToggleButton) v;
+				if (button.isChecked()) {
+					boolean success = controller.like(pin);
+					if (!success)
+						button.setChecked(success);
 				} else {
 					controller.unlike(pin, context);
 				}
+
 			}
 		});
 

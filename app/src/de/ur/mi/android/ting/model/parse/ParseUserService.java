@@ -200,6 +200,8 @@ public class ParseUserService implements IUserService {
 	@Override
 	public void setPinLike(Pin pin, boolean isliked) {
 		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser == null)
+			return;
 		ParseRelation<ParseObject> likedPins = currentUser
 				.getRelation("liked_pins");
 		if (isliked) {
@@ -208,5 +210,10 @@ public class ParseUserService implements IUserService {
 			likedPins.remove(ParseObject.createWithoutData("pin", pin.getId()));
 		}
 		currentUser.saveEventually();
+	}
+
+	@Override
+	public void logout() {
+		ParseUser.logOut();
 	}
 }

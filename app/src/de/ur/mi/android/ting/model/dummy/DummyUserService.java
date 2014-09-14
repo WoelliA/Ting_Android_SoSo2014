@@ -1,5 +1,9 @@
 package de.ur.mi.android.ting.model.dummy;
 
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
@@ -58,7 +62,7 @@ public class DummyUserService implements IUserService {
 				super.onPostExecute(result);
 			}
 		};
-		task.execute();
+		task.execute(); 
 	}
 
 	@Override
@@ -76,8 +80,11 @@ public class DummyUserService implements IUserService {
 	}
 
 	@Override
-	public void setPinLike(Pin pin, boolean b) {
+	public void setPinLike(Pin pin, boolean isliked) {
+	}
 
+	@Override
+	public void logout() {
 	}
 
 }

@@ -11,6 +11,7 @@ import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
+import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
@@ -33,6 +34,10 @@ public class CategoriesController implements
 
 	private LocalUser user;
 
+	private Category selectedCategory;
+
+	protected Category feedCategory;
+
 	public CategoriesController(ICategoryProvider categoryProvider,
 			IConnectivity connectivity, ISpecialCategories specialCategories,
 			LocalUser user) {
@@ -40,11 +45,30 @@ public class CategoriesController implements
 		this.connectivity = connectivity;
 		this.specialCategories = specialCategories;
 		this.user = user;
+		this.user.addLoginChangeListener(new IChangeListener<LoginResult>() {
+
+			@Override
+			public void onChange(LoginResult changed) {
+				if (!changed.getIsRightLogin()) {
+					 removeFeedCategory();
+					 if(feedCategory.equals(selectedCategory)){
+						 onCategorySelected(adapter.getItem(0));
+					 }
+				}
+			}
+
+			private void removeFeedCategory() {
+				Category first = adapter.getItem(0);
+
+				if (first.equals(feedCategory))
+					adapter.remove(first);
+			}
+		});
 		this.categoryProvider
 				.setCategoriesChangedListener(new IChangeListener<Collection<Category>>() {
 					@Override
 					public void onChange(Collection<Category> changed) {
-						CategoriesController.this.initAdapter();
+						CategoriesController.this.initCategories();
 					}
 				});
 	}
@@ -63,13 +87,16 @@ public class CategoriesController implements
 						categories.add(0,
 								specialCategories.getEverythingCategory());
 						if (user.getIsLogedIn()) {
-							categories.add(0,
-									specialCategories.getFeedCategory());
+							feedCategory = specialCategories.getFeedCategory();
+
+							categories.add(0, feedCategory);
 						}
 						CategoriesController.this.initAdapter();
-						CategoriesController.this
-								.onCategorySelected(CategoriesController.this.categories
-										.get(0));
+						if (selectedCategory == null) {
+							CategoriesController.this
+									.onCategorySelected(CategoriesController.this.categories
+											.get(0));
+						}
 					}
 				});
 	}
@@ -145,6 +172,7 @@ public class CategoriesController implements
 	}
 
 	public void onCategorySelected(Category selectedCategory) {
+		this.selectedCategory = selectedCategory;
 		if (this.selectedCategoryChangedListener != null) {
 			this.selectedCategoryChangedListener.onSelected(selectedCategory);
 		}

@@ -63,6 +63,13 @@ public abstract class ListFragment<T> extends FragmentBase implements
 			this.add(object);
 		}
 	}
+	
+	@Override
+	public void set(Object[] items) {
+		this.adapter.clear();
+		this.addAll(items);	
+	}
+	
 
 	protected abstract ListView getListView(View view);
 

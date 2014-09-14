@@ -33,4 +33,10 @@
         <item name="android:layout_width">wrap_content</item>        
         <item name="android:layout_height">wrap_content</item>
     </style>
+    <style name="pin_control_style" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">@color/pin_button_background_color</item>
+        <item name="android:layout_margin">@dimen/button_margin</item>
+        <item name="android:textColor">@color/pin_button_text_color</item>
+        <item name="android:textSize">@dimen/pin_controls_textsize</item>
+    </style>
 </resources>

@@ -142,4 +142,11 @@ public class UserDetailsActivity extends FragmentActivityBase implements
 		}
 	}
 
+	@Override
+	public void set(Object[] items) {
+		this.adapter.clear();
+		this.addAll(items);
+
+	}
+
 }

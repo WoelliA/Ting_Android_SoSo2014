@@ -24,6 +24,7 @@ public class LocalUser extends User {
 	private String email;
 	private List<Board> followedBoards = new ArrayList<Board>();
 	private HashSet<Pin> likedPins = new HashSet<Pin>();
+	private HashSet<Board> ownedBoards;
 	private static LocalUser current;
 
 	public LocalUser() {
@@ -95,5 +96,13 @@ public class LocalUser extends User {
 	
 	public HashSet<Pin> getLikedPins(){
 		return this.likedPins;
+	}
+
+	public HashSet<Board> getOwnedBoards() {
+		return this.ownedBoards;
+	}
+	
+	public void setOwnedBoards(Collection<Board> boards){
+		this.ownedBoards = new HashSet<Board>(boards);
 	}
 }

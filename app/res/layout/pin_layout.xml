@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/pin_picture"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </ViewSwitcher>
 
     <LinearLayout
@@ -48,40 +48,38 @@
             android:textSize="@dimen/pin_content_text_size" />
 
         <LinearLayout
-            android:id="@+id/buttons"
+            android:id="@+id/pin_controls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <Button
+            <ToggleButton
                 android:id="@+id/button_like"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@color/pin_button_background_color"
-                android:text="@string/button_like"
-                android:textColor="@color/pin_button_text_color" />
+                android:layout_weight="1"
+                android:background="@drawable/like_button_selector"
+                android:textColor="@drawable/like_text_selector"
+                android:textOff="@string/button_like"
+                android:textOn="@string/button_liked"
+                android:textSize="@dimen/pin_controls_textsize" />
 
             <Button
                 android:id="@+id/button_reting"
+                style="@style/pin_control_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="@dimen/button_margin"
-                android:background="@color/pin_button_background_color"
-                android:text="@string/button_reting"
-                android:textColor="@color/pin_button_text_color" />
-            
+                android:text="@string/button_reting" />
+
             <Button
                 android:id="@+id/button_share"
+                style="@style/pin_control_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="@dimen/button_margin"
-                android:background="@color/pin_button_background_color"
-                android:text="@string/button_share"
-                android:textColor="@color/pin_button_text_color" />
+                android:text="@string/button_share" />
         </LinearLayout>
     </LinearLayout>
 

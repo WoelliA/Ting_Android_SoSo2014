@@ -6,4 +6,5 @@
     <color name="pin_content_text_color">#4c4c4c</color>
     <color name="pin_divider_background_color">#e7e7e7</color>
     
+    <color name="highlight_color">#00b7e1</color>
 </resources>

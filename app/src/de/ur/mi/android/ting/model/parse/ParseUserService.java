@@ -16,6 +16,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
+import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.parse.callbacks.SaveCallbackWrap;
@@ -54,23 +55,34 @@ public class ParseUserService implements IUserService {
 	}
 
 	protected void setUserInfo(ParseUser u) {
-
 		localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
 		tryAddBoardsFollowed(u);
 		tryAddLikedPins(u);
+		tryAddOwnedBoards();
+	}
+
+	private void tryAddOwnedBoards() {
+		IBoardsService boardsService = new ParseBoardsProvider(localuser);
+		boardsService
+				.getLocalUserBoards(new SimpleDoneCallback<Collection<Board>>() {
+
+					@Override
+					public void done(Collection<Board> result) {
+						localuser.setOwnedBoards(result);
+					}
+				});
 	}
 
 	private void tryAddLikedPins(ParseUser u) {
-		if(u.has("liked_pins")){
-			ParseRelation<ParseObject> likedPins = u
-					.getRelation("liked_pins");
-			ParseQuery<ParseObject> query = likedPins.getQuery()
-			;query.selectKeys(new ArrayList<String>());
+		if (u.has("liked_pins")) {
+			ParseRelation<ParseObject> likedPins = u.getRelation("liked_pins");
+			ParseQuery<ParseObject> query = likedPins.getQuery();
+			query.selectKeys(new ArrayList<String>()); // only get the ID
 			query.findInBackground(new FindCallback<ParseObject>() {
-				
+
 				@Override
 				public void done(List<ParseObject> objects, ParseException e) {
-					if(objects == null || e != null){
+					if (objects == null || e != null) {
 						return;
 					}
 					Collection<Pin> likedPins = ParseHelper.createPins(objects);
@@ -78,7 +90,7 @@ public class ParseUserService implements IUserService {
 				}
 			});
 		}
-		
+
 	}
 
 	private void tryAddBoardsFollowed(ParseUser u) {
@@ -87,23 +99,21 @@ public class ParseUserService implements IUserService {
 			ParseRelation<ParseObject> followedBoards = u
 					.getRelation("boards_followed");
 			ParseQuery<ParseObject> query = followedBoards.getQuery();
-			query.selectKeys(new ArrayList<String>());
-			query.findInBackground(
-					new FindCallback<ParseObject>() {
+			query.selectKeys(new ArrayList<String>()); // only get the ID
+			query.findInBackground(new FindCallback<ParseObject>() {
 
-						@Override
-						public void done(List<ParseObject> objects,
-								ParseException e) {
-							if (objects == null || e != null) {
-								return;
-							}
-							List<Board> boards = new ArrayList<Board>();
-							for (ParseObject object : objects) {
-								boards.add(ParseHelper.createBoard(object));
-							}
-							localuser.setFollowedBoards(boards);
-						}
-					});
+				@Override
+				public void done(List<ParseObject> objects, ParseException e) {
+					if (objects == null || e != null) {
+						return;
+					}
+					List<Board> boards = new ArrayList<Board>();
+					for (ParseObject object : objects) {
+						boards.add(ParseHelper.createBoard(object));
+					}
+					localuser.setFollowedBoards(boards);
+				}
+			});
 
 		}
 	}
@@ -185,5 +195,18 @@ public class ParseUserService implements IUserService {
 						ParseHelper.createUser(user), user.getEmail());
 			}
 		});
+	}
+
+	@Override
+	public void setPinLike(Pin pin, boolean isliked) {
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		ParseRelation<ParseObject> likedPins = currentUser
+				.getRelation("liked_pins");
+		if (isliked) {
+			likedPins.add(ParseObject.createWithoutData("pin", pin.getId()));
+		} else {
+			likedPins.remove(ParseObject.createWithoutData("pin", pin.getId()));
+		}
+		currentUser.saveEventually();
 	}
 }

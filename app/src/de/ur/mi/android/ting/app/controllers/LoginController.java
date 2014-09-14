@@ -29,8 +29,8 @@ public class LoginController implements IChangeListener<LoginResult> {
 		this.userService.login(userName, password, callback);		
 	}
 
-	public void checkIsLoggedIn() {
-		userService.checkIsLoggedIn();		
+	public boolean checkIsLoggedIn() {
+		return userService.checkIsLoggedIn();		
 	}
 
 	@Override

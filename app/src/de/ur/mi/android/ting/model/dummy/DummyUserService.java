@@ -5,6 +5,7 @@ import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.User;
@@ -71,6 +72,11 @@ public class DummyUserService implements IUserService {
 	public void saveChangedUser(EditProfileResult editProfileResult,
 			IDoneCallback<Void> callback) {
 		new DummyResultTask<Void>(null, callback);
+
+	}
+
+	@Override
+	public void setPinLike(Pin pin, boolean b) {
 
 	}
 

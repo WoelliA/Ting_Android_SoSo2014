@@ -56,6 +56,8 @@ public class ParseHelper {
 	}
 
 	public static Board createBoard(ParseObject o) {
+		if(o == null)
+			return null;
 		cache().put(o);
 		
 		Board board = new Board(o.getObjectId());

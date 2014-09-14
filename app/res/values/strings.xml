@@ -72,4 +72,6 @@
     
     <string name="favorite_category_needs_login">Log in to set a favorite category.</string>
     
+    <string name="button_liked">Liked</string>
+    
 </resources>

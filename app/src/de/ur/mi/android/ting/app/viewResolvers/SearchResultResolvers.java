@@ -18,7 +18,7 @@ import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 
 public class SearchResultResolvers {
-	public static class PinSearchResultViewResolver extends PinListViewResolver {
+	public static class PinSearchResultViewResolver extends PinViewResolver {
 
 		public PinSearchResultViewResolver(Context context) {
 			super(context);

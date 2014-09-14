@@ -30,8 +30,7 @@ public class UserBoardsController {
 					@Override
 					public void done(Collection<Board> result) {
 						if (result != null) {
-							UserBoardsController.this.view.addAll(result
-									.toArray());
+							UserBoardsController.this.view.set(result.toArray());
 						}
 					}
 				});

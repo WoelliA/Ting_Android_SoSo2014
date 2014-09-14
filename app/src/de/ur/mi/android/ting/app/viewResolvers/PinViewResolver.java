@@ -4,31 +4,38 @@ import javax.inject.Inject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.activities.ShareActivity;
 import de.ur.mi.android.ting.app.activities.ShareActivity.ShareStage;
+import de.ur.mi.android.ting.app.controllers.PinController;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.Loading;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 
-public class PinListViewResolver extends ViewResolver<Pin> {
+public class PinViewResolver extends ViewResolver<Pin> {
 
 	@Inject
 	public IImageLoader imageLoader;
 
-	private String linkUri;
+	@Inject
+	public PinController controller;
 
-	public PinListViewResolver(Context context) {
+	public PinViewResolver(Context context) {
 		super(R.layout.pin_layout, context);
 	}
 
@@ -56,44 +63,49 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 		} else {
 		}
 
+		this.setupControls(view, pin);
+	}
+
+	private void setupControls(View view, final Pin pin) {
+		ViewGroup controls = (ViewGroup) this.findViewById(view,
+				R.id.pin_controls);
+		if (controller.getIsOwned(pin)) {
+			controls.setVisibility(View.GONE);
+			return;
+		}
+		controls.setVisibility(View.VISIBLE);
+		
 		Button reTing = (Button) this.findViewById(view, R.id.button_reting);
 		reTing.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(context, ShareActivity.class);
-				intent.putExtra(ShareActivity.STAGE_KEY, ShareStage.BoardSelect);
-				intent.putExtra(ShareActivity.PIN_ID_KEY, pin.getId());
-				context.startActivity(intent);
+				controller.reting(pin, context);
 			}
 		});
 
-		Button like = (Button) this.findViewById(view, R.id.button_like);
-		like.setOnClickListener(new OnClickListener() {
+		ToggleButton like = (ToggleButton) this.findViewById(view,
+				R.id.button_like);
+		like.setChecked(controller.getIsLiked(pin));
 
+		like.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
-			public void onClick(View v) {
-				Toast.makeText(PinListViewResolver.this.getContext(),
-						"like clicked", Toast.LENGTH_SHORT).show();
-
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked) {
+					controller.like(pin, context);
+				} else {
+					controller.unlike(pin, context);
+				}
 			}
 		});
 
 		Button share = (Button) this.findViewById(view, R.id.button_share);
-		this.linkUri = pin.getLinkUri();
+
 		share.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String shareText = PinListViewResolver.this.linkUri;
-
-				Intent textShareIntent = new Intent(Intent.ACTION_SEND);
-				textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-				textShareIntent.setType("text/plain");
-				PinListViewResolver.this.getContext().startActivity(
-						Intent.createChooser(textShareIntent,
-								"Share Link with..."));
-
+				controller.share(pin, context);
 			}
 		});
 

@@ -8,10 +8,11 @@ public class PinData {
 	private LoadedImageData imageData;
 	private String linkUrl;
 
-	public PinData(String title, String description, LoadedImageData imageData) {
+	public PinData(String title, String description, LoadedImageData imageData, String linkUrl) {
 		this.title = title;
 		this.description = description;
 		this.imageData = imageData;
+		this.linkUrl = linkUrl;
 	}
 
 	public String getTitle() {

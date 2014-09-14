@@ -1,6 +1,9 @@
 package de.ur.mi.android.ting.app.viewResolvers;
 
+import javax.inject.Inject;
+
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +12,20 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.activities.LoginActivity;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
+import de.ur.mi.android.ting.utilities.view.IYesNoCallback;
+import de.ur.mi.android.ting.utilities.view.Notify;
+import de.ur.mi.android.ting.utilities.view.SimpleYesNoCallback;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 
 public class CategoryViewResolver extends ViewResolver<Category> {
+
+	@Inject
+	public LocalUser user;
 
 	private IBiChangeListener<Category, Boolean> favoriteChangeCallback;
 
@@ -70,6 +81,25 @@ public class CategoryViewResolver extends ViewResolver<Category> {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
+			if (!user.getIsLogedIn()) {
+				if (isChecked) {
+					Notify.current().showYesNoDialog(R.string.action_login,
+
+					R.string.favorite_category_needs_login,
+							R.string.action_login, new SimpleYesNoCallback() {
+
+								@Override
+								public void onYes() {
+									Intent intent = new Intent(context,
+											LoginActivity.class);
+									context.startActivity(intent);
+								}
+							});
+					buttonView.setChecked(false);
+				}
+
+				return;
+			}
 			Log.i("category favorite", this.category.getName() + " "
 					+ isChecked);
 			this.category.setIsFavorite(isChecked);

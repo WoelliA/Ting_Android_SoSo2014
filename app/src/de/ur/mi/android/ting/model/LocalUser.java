@@ -2,6 +2,7 @@ package de.ur.mi.android.ting.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -10,6 +11,7 @@ import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.UniqueBase;
 import de.ur.mi.android.ting.model.primitives.User;
 
@@ -20,7 +22,8 @@ public class LocalUser extends User {
 	private List<Category> favoriteCategories;
 	private List<IChangeListener<LoginResult>> listeners;
 	private String email;
-	private List<Board> followedBoards;
+	private List<Board> followedBoards = new ArrayList<Board>();
+	private HashSet<Pin> likedPins = new HashSet<Pin>();
 	private static LocalUser current;
 
 	public LocalUser() {
@@ -81,8 +84,16 @@ public class LocalUser extends User {
 	public List<Board> getFollowedBoards() {
 		return this.followedBoards;
 	}
-	
-	public void setFollowedBoards(Collection<Board> boards){
+
+	public void setFollowedBoards(Collection<Board> boards) {
 		this.followedBoards = new ArrayList<Board>(boards);
+	}
+
+	public void setLikedPins(Collection<Pin> likedPins) {
+		this.likedPins = new HashSet<Pin>(likedPins);
+	}
+	
+	public HashSet<Pin> getLikedPins(){
+		return this.likedPins;
 	}
 }

@@ -93,8 +93,7 @@ public class JSoupPinDataParser implements PinDataParser {
 								return;
 							}
 							PinData pinData = new PinData(title, description,
-									new LoadedImageData(imageUrl, result));
-							pinData.setLinkUrl(url);
+									new LoadedImageData(imageUrl, result), url);
 							callback.done(pinData);
 						}
 					});

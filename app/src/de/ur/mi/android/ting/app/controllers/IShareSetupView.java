@@ -10,4 +10,6 @@ public interface IShareSetupView {
 
 	void addDisplayPinnableImage(PinData result);
 
+	void setPinData(PinData data);
+
 }

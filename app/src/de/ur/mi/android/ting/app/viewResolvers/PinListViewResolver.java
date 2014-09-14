@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.activities.ShareActivity;
+import de.ur.mi.android.ting.app.activities.ShareActivity.ShareStage;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.Loading;
@@ -25,13 +27,13 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 	public IImageLoader imageLoader;
 
 	private String linkUri;
-	
+
 	public PinListViewResolver(Context context) {
 		super(R.layout.pin_layout, context);
 	}
 
 	@Override
-	protected void decorateView(View view, Pin pin, ViewGroup parent) {
+	protected void decorateView(View view, final Pin pin, ViewGroup parent) {
 
 		TextView headline = (TextView) this.findViewById(view,
 				R.id.pin_headline);
@@ -46,53 +48,57 @@ public class PinListViewResolver extends ViewResolver<Pin> {
 				R.id.pin_loading_switcher);
 
 		String imageUri = pin.getImageUri();
-		if (switcher.getChildCount() < 2 && !this.isSameImage(picture, imageUri)) {
+		if (switcher.getChildCount() < 2
+				&& !this.isSameImage(picture, imageUri)) {
 			picture.setTag(imageUri);
 			this.imageLoader.loadImage(imageUri, picture, switcher,
 					Loading.getView(this.getContext(), ""));
 		} else {
 		}
 
-		Button reTing =  (Button) this.findViewById(view, R.id.button_reting);
+		Button reTing = (Button) this.findViewById(view, R.id.button_reting);
 		reTing.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(PinListViewResolver.this.getContext(), "Re-Ting clicked", Toast.LENGTH_SHORT).show();
-				
+				Intent intent = new Intent(context, ShareActivity.class);
+				intent.putExtra(ShareActivity.STAGE_KEY, ShareStage.BoardSelect);
+				intent.putExtra(ShareActivity.PIN_ID_KEY, pin.getId());
+				context.startActivity(intent);
 			}
 		});
-		
+
 		Button like = (Button) this.findViewById(view, R.id.button_like);
 		like.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(PinListViewResolver.this.getContext(), "like clicked", Toast.LENGTH_SHORT).show();
-				
+				Toast.makeText(PinListViewResolver.this.getContext(),
+						"like clicked", Toast.LENGTH_SHORT).show();
+
 			}
 		});
-		
+
 		Button share = (Button) this.findViewById(view, R.id.button_share);
 		this.linkUri = pin.getLinkUri();
 		share.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				String shareText = PinListViewResolver.this.linkUri;
 
-		        Intent textShareIntent = new Intent(Intent.ACTION_SEND);
-		        textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-		        textShareIntent.setType("text/plain");
-		        PinListViewResolver.this.getContext().startActivity(Intent.createChooser(textShareIntent, "Share Link with..."));
-				
+				Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+				textShareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+				textShareIntent.setType("text/plain");
+				PinListViewResolver.this.getContext().startActivity(
+						Intent.createChooser(textShareIntent,
+								"Share Link with..."));
+
 			}
 		});
-		
+
 	}
-	
-	
-	
+
 	private boolean isSameImage(View view, String imageUri) {
 		Object tag = view.getTag();
 		boolean isSame = tag != null && tag.equals(imageUri);

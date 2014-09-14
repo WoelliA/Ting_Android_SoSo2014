@@ -20,19 +20,20 @@ public class DummyPinProvider implements IPinService {
 	@Override
 	public void getPinsForCategory(Category category, final PinRequest request,
 			final IPinReceivedCallback callback) {
-		DelayTask pinTask = new DelayTask(){
-				
+		DelayTask pinTask = new DelayTask() {
+
 			@Override
 			protected void onPostExecute(Void result) {
-				callback.onPinsReceived(DummyPinProvider.this.createDummyPins(request));
+				callback.onPinsReceived(DummyPinProvider.this
+						.createDummyPins(request));
 				super.onPostExecute(result);
 			}
-			
+
 		};
 		pinTask.execute();
-		
+
 	}
-	
+
 	private ArrayList<Pin> createDummyPins(PinRequest request) {
 		ArrayList<Pin> articles = new ArrayList<Pin>();
 		for (int i = 0; i < request.getCount(); i++) {
@@ -41,23 +42,11 @@ public class DummyPinProvider implements IPinService {
 		return articles;
 	}
 
-	@Override
-	public void createPin(PinData result, Board selectedBoard, final IDoneCallback<Void> callback) {
-		DelayTask task = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				callback.done(null);
-				super.onPostExecute(result);
-			}
-		};
-		task.execute();
-	}
-
 
 	@Override
 	public <T> void search(SearchRequest request,
 			IDoneCallback<SearchResult<T>> callback) {
-		// no need to do anything - generic search is implemented		
+		// no need to do anything - generic search is implemented
 	}
 
 	@Override
@@ -71,8 +60,19 @@ public class DummyPinProvider implements IPinService {
 			}
 		};
 		task.execute();
-		
+
 	}
 
+	@Override
+	public void getPin(String pinId, IDoneCallback<Pin> callback) {
+		Pin result = new DummyPin(Integer.parseInt(pinId));
+		DummyResultTask<Pin> task = new DummyResultTask<Pin>(result, callback);		
+	}
 
+	@Override
+	public void createPin(PinData pin, String sharedPinId, Board selectedBoard,
+			IDoneCallback<Void> callback) {
+		DummyResultTask<Void> task = new DummyResultTask<Void>(null, callback);		;
+		
+	}
 }

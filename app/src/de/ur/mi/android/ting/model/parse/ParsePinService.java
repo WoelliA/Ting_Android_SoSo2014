@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
+import com.parse.GetCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -131,18 +132,6 @@ public class ParsePinService implements IPinService {
 	}
 
 	@Override
-	public void createPin(PinData result, Board selectedBoard,
-			IDoneCallback<Void> callback) {
-		ParseObject pin = ParseObject.create("pin");
-		pin.put("title", result.getTitle());
-		pin.put("description", result.getDescription());
-		
-		pin.put("board", ParseObject.createWithoutData("board", selectedBoard.getId()));
-
-		pin.saveInBackground(new SaveCallbackWrap(callback));
-	}
-
-	@Override
 	public <T> void search(final SearchRequest request,
 			final IDoneCallback<SearchResult<T>> callback) {
 		String[] searchedFields = new String[] { "title", "description" };
@@ -184,4 +173,49 @@ public class ParsePinService implements IPinService {
 
 	}
 
+	@Override
+	public void getPin(String pinId, final IDoneCallback<Pin> callback) {
+		boolean cached = ParseCache.current().restore(pinId,
+				new GetCallback<ParseObject>() {
+
+					@Override
+					public void done(ParseObject object, ParseException e) {
+						callback.done(ParseHelper.createPin(object));
+					}
+				});
+		if (!cached) {
+			ParseQuery.getQuery("pin").getInBackground(pinId,
+					new GetCallback<ParseObject>() {
+
+						@Override
+						public void done(ParseObject object, ParseException e) {
+							callback.done(ParseHelper.createPin(object));
+						}
+					});
+			;
+		}
+	}
+
+	@Override
+	public void createPin(PinData result, String sharedPinId,
+			Board selectedBoard, IDoneCallback<Void> callback) {
+		ParseObject pin = ParseObject.create("pin");
+		pin.put("title", result.getTitle());
+		pin.put("description", result.getDescription());
+		pin.put("image", result.getImageData().getimageUrl());
+		pin.put("category", ParseObject.createWithoutData("category",
+				selectedBoard.getCategory().getId()));
+		pin.put("url", result.getLinkUrl());
+		
+		if (sharedPinId != null) {
+			pin.put("original_pin",
+					ParseObject.createWithoutData("pin", sharedPinId));
+		}
+
+		pin.put("board",
+				ParseObject.createWithoutData("board", selectedBoard.getId()));
+
+		pin.saveInBackground(new SaveCallbackWrap(callback));
+
+	}
 }

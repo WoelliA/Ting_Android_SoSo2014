@@ -21,6 +21,7 @@ import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.parse.callbacks.SaveCallbackWrap;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.model.primitives.User;
@@ -55,11 +56,39 @@ public class ParseUserService implements IUserService {
 	protected void setUserInfo(ParseUser u) {
 
 		localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
+		tryAddBoardsFollowed(u);
+		tryAddLikedPins(u);
+	}
+
+	private void tryAddLikedPins(ParseUser u) {
+		if(u.has("liked_pins")){
+			ParseRelation<ParseObject> likedPins = u
+					.getRelation("liked_pins");
+			ParseQuery<ParseObject> query = likedPins.getQuery()
+			;query.selectKeys(new ArrayList<String>());
+			query.findInBackground(new FindCallback<ParseObject>() {
+				
+				@Override
+				public void done(List<ParseObject> objects, ParseException e) {
+					if(objects == null || e != null){
+						return;
+					}
+					Collection<Pin> likedPins = ParseHelper.createPins(objects);
+					localuser.setLikedPins(likedPins);
+				}
+			});
+		}
+		
+	}
+
+	private void tryAddBoardsFollowed(ParseUser u) {
 		if (u.has("boards_followed")) {
 
 			ParseRelation<ParseObject> followedBoards = u
 					.getRelation("boards_followed");
-			followedBoards.getQuery().findInBackground(
+			ParseQuery<ParseObject> query = followedBoards.getQuery();
+			query.selectKeys(new ArrayList<String>());
+			query.findInBackground(
 					new FindCallback<ParseObject>() {
 
 						@Override

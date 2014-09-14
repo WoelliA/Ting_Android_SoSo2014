@@ -11,6 +11,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.model.primitives.Board;
+import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.LoadedImageData;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
@@ -30,6 +31,7 @@ public class ShareController {
 
 	private Board selectedBoard;
 	private IPinService pinService;
+	private String sharedPinId;
 
 	public ShareController(PinDataParser pindataParser,
 			IImageLoader imageLoader, IPinService pinService) {
@@ -67,7 +69,7 @@ public class ShareController {
 								ShareController.this.view
 										.addDisplayPinnableImage(new PinData(
 												"", "", new LoadedImageData(
-														text, result)));
+														text, result), ""));
 							}
 						});
 			} else {
@@ -116,7 +118,7 @@ public class ShareController {
 						ShareController.this.view
 								.addDisplayPinnableImage(new PinData("", "",
 										new LoadedImageData(uri.toString(),
-												result)));
+												result), ""));
 					}
 				});
 
@@ -134,11 +136,13 @@ public class ShareController {
 
 						@Override
 						public void done(Bitmap result) {
-							if(result == null) {
+							if (result == null) {
 								return;
 							}
-							ShareController.this.view.addDisplayPinnableImage(new PinData("", "",
-									new LoadedImageData(uriString, result)));
+							ShareController.this.view
+									.addDisplayPinnableImage(new PinData("",
+											"", new LoadedImageData(uriString,
+													result), ""));
 						}
 					});
 		}
@@ -152,7 +156,7 @@ public class ShareController {
 	public void createPin(PinData result) {
 		final LoadingContext loading = Notify.current().showLoading(
 				R.string.sending_pin_dialog_title);
-		this.pinService.createPin(result, this.selectedBoard,
+		this.pinService.createPin(result, this.sharedPinId, this.selectedBoard,
 				new SimpleDoneCallback<Void>() {
 
 					@Override
@@ -161,5 +165,19 @@ public class ShareController {
 					}
 				});
 
+	}
+
+	public void setupPinShare(String pinId) {
+		this.sharedPinId = pinId;
+		pinService.getPin(pinId, new SimpleDoneCallback<Pin>() {
+
+			@Override
+			public void done(Pin result) {
+				PinData data = new PinData(result.getTitle(), result
+						.getDescription(), new LoadedImageData(result
+						.getImageUri(), null), result.getLinkUri());
+				view.setPinData(data);
+			}
+		});
 	}
 }

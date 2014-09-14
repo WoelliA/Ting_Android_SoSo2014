@@ -70,4 +70,6 @@
     
     <string name="label_user_info">info</string>
     
+    <string name="favorite_category_needs_login">Log in to set a favorite category.</string>
+    
 </resources>

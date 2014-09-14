@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.activities;
 
 import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
@@ -23,11 +24,15 @@ import android.support.v4.app.FragmentTransaction;
 public class ShareActivity extends FragmentActivityBase implements
 		IShareSetupView {
 
+	public static final String PIN_ID_KEY = "pinIdKey";
+	public static final String STAGE_KEY = ShareStage.class.getName()
+			.toString();
 	@Inject
 	ShareController controller;
 	private ShareStage currentShareStage;
 	private Fragment stageFragment;
 	protected PinData selectedPinData;
+	private String pinId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +61,19 @@ public class ShareActivity extends FragmentActivityBase implements
 				this.controller.handleSendMultipleImages(imageUris);
 			}
 		} else {
-			// Handle other intents, such as being started from the home screen
+			ShareStage stage = (ShareStage) intent.getExtras().get(STAGE_KEY);
+			pinId = intent.getExtras().getString(PIN_ID_KEY);
+			this.controller.setupPinShare(pinId);
 		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		this.goToShareStage(ShareStage.ImageSelect, false);
+		if (pinId == null)
+			this.goToShareStage(ShareStage.ImageSelect, false);
+		else
+			this.goToShareStage(ShareStage.BoardSelect, false);
 	}
 
 	@Override
@@ -103,11 +113,11 @@ public class ShareActivity extends FragmentActivityBase implements
 			selectPinImageFragment
 					.setSelectListener(new ISelectedListener<PinData>() {
 
-
 						@Override
 						public void onSelected(PinData selectedItem) {
 							ShareActivity.this.selectedPinData = selectedItem;
-							ShareActivity.this.goToShareStage(ShareStage.BoardSelect, true);
+							ShareActivity.this.goToShareStage(
+									ShareStage.BoardSelect, true);
 						}
 					});
 			return selectPinImageFragment;
@@ -118,8 +128,10 @@ public class ShareActivity extends FragmentActivityBase implements
 
 						@Override
 						public void onSelected(Board selectedBoard) {
-							ShareActivity.this.controller.onBoardSelected(selectedBoard);
-							ShareActivity.this.goToShareStage(ShareStage.Details, true);
+							ShareActivity.this.controller
+									.onBoardSelected(selectedBoard);
+							ShareActivity.this.goToShareStage(
+									ShareStage.Details, true);
 						}
 					});
 			return selectBoardFragment;
@@ -140,8 +152,13 @@ public class ShareActivity extends FragmentActivityBase implements
 		}
 	}
 
-	private enum ShareStage {
+	public static enum ShareStage {
 		ImageSelect, BoardSelect, Details
+	}
+
+	@Override
+	public void setPinData(PinData data) {
+		this.selectedPinData = data;		
 	}
 
 }

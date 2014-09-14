@@ -19,11 +19,16 @@ public abstract class UniqueBase implements IUnique {
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof IUnique) {
-			IUnique other = (IUnique) o;
-			if (this.id != null) {
-				return this.id.equals(other.getId());
-			}
+			return this.hashCode() == o.hashCode();
 		}
 		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		if (this.id != null) {
+			return this.id.hashCode();
+		}
+		return super.hashCode();
 	}
 }

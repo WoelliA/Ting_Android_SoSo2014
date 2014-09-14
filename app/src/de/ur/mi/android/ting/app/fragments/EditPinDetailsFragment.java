@@ -1,8 +1,11 @@
 package de.ur.mi.android.ting.app.fragments;
 
+import javax.inject.Inject;
+
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.PinData;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.IImageLoader;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,9 @@ public class EditPinDetailsFragment extends FragmentBase {
 	private TextView linkUrlView;
 	private Button changeLinkButton;
 
+	@Inject
+	public IImageLoader imageLoader;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -33,7 +39,6 @@ public class EditPinDetailsFragment extends FragmentBase {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		this.initUi();
 	}
 
@@ -53,19 +58,24 @@ public class EditPinDetailsFragment extends FragmentBase {
 		});
 
 		View view = this.getView();
+
 		this.pinImageView = (ImageView) view.findViewById(R.id.editpin_image);
 		this.pinTitleView = (EditText) view.findViewById(R.id.editpin_title);
 		this.linkUrlView = (TextView) view.findViewById(R.id.textview_linktext);
 		this.changeLinkButton = (Button) view
 				.findViewById(R.id.button_change_link);
 
-		
 		this.linkUrlView.setText(this.pinData.getLinkUrl());
 		this.pinDescriptionView = (EditText) view
 				.findViewById(R.id.editpin_description);
 
-		this.pinImageView.setImageBitmap(this.pinData.getImageData()
-				.getBitmap());
+		if (this.pinData.getImageData().getBitmap() != null) {
+			this.pinImageView.setImageBitmap(this.pinData.getImageData()
+					.getBitmap());
+		} else {
+			this.imageLoader.loadImage(this.pinData.getImageData()
+					.getimageUrl(), this.pinImageView);
+		}
 		this.pinTitleView.setText(this.pinData.getTitle());
 		this.pinDescriptionView.setText(this.pinData.getDescription());
 
@@ -74,7 +84,8 @@ public class EditPinDetailsFragment extends FragmentBase {
 	private PinData createPinDataResult() {
 		return new PinData(this.pinTitleView.getText().toString(),
 				this.pinDescriptionView.getText().toString(),
-				this.pinData.getImageData());
+				this.pinData.getImageData(), 
+				this.linkUrlView.getText().toString());
 	}
 
 	public void setPinData(PinData pinData) {

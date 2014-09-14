@@ -20,7 +20,6 @@ public class Notify implements INotify {
 		current = this;
 	}
 
-
 	@Override
 	public void show(int titleResourceId, int contentResourceId, NotifyKind kind) {
 		if (kind == NotifyKind.SUCCESS) {
@@ -95,4 +94,28 @@ public class Notify implements INotify {
 
 	}
 
+	public void showYesNoDialog(int titleResId, int contentResId,
+			int yesButtonTextResId, final IYesNoCallback callback) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle(titleResId);
+		if (contentResId > 0) {
+			builder.setMessage(contentResId);
+		}
+
+		builder.setPositiveButton(yesButtonTextResId,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						callback.onYes();						
+					}
+				}).setNegativeButton(android.R.string.cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						callback.onNo();
+					}
+				});
+		// Create the AlertDialog object and return it
+		builder.create().show();
+
+	}
 }

@@ -7,8 +7,6 @@ import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.ISearchService;
-import de.ur.mi.android.ting.model.ISpecialCategories;
-import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.utilities.IConnectivity;
@@ -27,16 +25,6 @@ public class _ControllersModule {
 	}
 
 	@Provides
-	public CategoriesController provideCategoriesController(
-			ICategoryProvider categoryProvider, IConnectivity connectivity, ISpecialCategories specialCats, LocalUser user) {
-		if (this.categoryController == null) {
-			this.categoryController = new CategoriesController(
-					categoryProvider, connectivity, specialCats, user);
-		}
-		return this.categoryController;
-	}
-
-	@Provides
 	public ShareController provideShareController(PinDataParser pindataParser,
 			IImageLoader imageLoader, IPinService pinService) {
 		return new ShareController(pindataParser, imageLoader, pinService);
@@ -52,12 +40,6 @@ public class _ControllersModule {
 	public LoginController provideLoginController(IUserService userService,
 			IConnectivity connectivity, LocalUser user) {
 		return new LoginController(userService, connectivity, user);
-	}
-
-	@Provides
-	public BoardDetailsController provideBoardDetailsController(
-			IPinService pinService, IBoardsService boardsService) {
-		return new BoardDetailsController(pinService, boardsService);
 	}
 
 	@Provides

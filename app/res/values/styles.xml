@@ -39,4 +39,11 @@
         <item name="android:textColor">@color/pin_button_text_color</item>
         <item name="android:textSize">@dimen/pin_controls_textsize</item>
     </style>
+    <style name="ting_toggle_button_style">
+        <item name="android:background">@drawable/ting_toggleselector</item>
+        <item name="android:textColor">@drawable/ting_toggle_text_selector</item>
+    </style>
+    <style name="label_style" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:textColor">#333</item>
+    </style>
 </resources>

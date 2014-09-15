@@ -7,8 +7,6 @@ import android.content.Intent;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.activities.ShareActivity;
 import de.ur.mi.android.ting.app.activities.ShareActivity.ShareStage;
-import de.ur.mi.android.ting.app.viewResolvers.PinViewResolver;
-import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.PinAffiliation;
@@ -31,27 +29,29 @@ public class PinController {
 	}
 
 	public void reting(Pin pin) {
-		if(isNotLoggedIn(R.string.needs_login_reting))
+		if(this.isNotLoggedIn(R.string.needs_login_reting)) {
 			return;
-		Intent intent = new Intent(context, ShareActivity.class);
+		}
+		Intent intent = new Intent(this.context, ShareActivity.class);
 		intent.putExtra(ShareActivity.STAGE_KEY, ShareStage.BoardSelect);
 		intent.putExtra(ShareActivity.PIN_ID_KEY, pin.getId());
-		context.startActivity(intent);
+		this.context.startActivity(intent);
 	}
 
 	public boolean like(Pin pin) {
-		if (isNotLoggedIn(R.string.needs_login_like))
+		if (this.isNotLoggedIn(R.string.needs_login_like)) {
 			return false;
+		}
 
-		user.getLikedPins().add(pin);
+		this.user.getLikedPins().add(pin);
 		pin.setAffiliation(PinAffiliation.Liked);
-		userService.setPinLike(pin, true);
+		this.userService.setPinLike(pin, true);
 		return true;
 	}
 
 	private boolean isNotLoggedIn(int explanationResId) {
-		if (!user.getIsLogedIn()) {
-			NotifyRequiresLogin notify = new NotifyRequiresLogin(context,explanationResId);
+		if (!this.user.getIsLogedIn()) {
+			NotifyRequiresLogin notify = new NotifyRequiresLogin(this.context,explanationResId);
 			notify.show();
 			return true;
 		}
@@ -59,17 +59,17 @@ public class PinController {
 	}
 
 	public void unlike(Pin pin, Context context) {
-		user.getLikedPins().remove(pin);
+		this.user.getLikedPins().remove(pin);
 		pin.setAffiliation(PinAffiliation.None);
-		userService.setPinLike(pin, false);
+		this.userService.setPinLike(pin, false);
 	}
 
 	public boolean getIsLiked(Pin pin) {
-		return pin.getAffiliation(user) == PinAffiliation.Liked;
+		return pin.getAffiliation(this.user) == PinAffiliation.Liked;
 	}
 
 	public boolean getIsOwned(Pin pin) {
-		return pin.getAffiliation(user) == PinAffiliation.Owned;
+		return pin.getAffiliation(this.user) == PinAffiliation.Owned;
 	}
 
 	public void share(Pin pin, Context context) {

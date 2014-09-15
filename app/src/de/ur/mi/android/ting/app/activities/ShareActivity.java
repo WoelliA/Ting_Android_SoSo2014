@@ -62,18 +62,19 @@ public class ShareActivity extends BaseActivity implements
 			}
 		} else {
 			ShareStage stage = (ShareStage) intent.getExtras().get(STAGE_KEY);
-			pinId = intent.getExtras().getString(PIN_ID_KEY);
-			this.controller.setupPinShare(pinId);
+			this.pinId = intent.getExtras().getString(PIN_ID_KEY);
+			this.controller.setupPinShare(this.pinId);
 		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (pinId == null)
+		if (this.pinId == null) {
 			this.goToShareStage(ShareStage.ImageSelect, false);
-		else
+		} else {
 			this.goToShareStage(ShareStage.BoardSelect, false);
+		}
 	}
 
 	@Override

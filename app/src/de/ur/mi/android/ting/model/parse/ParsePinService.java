@@ -13,10 +13,10 @@ import com.parse.FunctionCallback;
 import com.parse.GetCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQuery.CachePolicy;
+import com.parse.ParseUser;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.IPinService;
@@ -31,11 +31,13 @@ import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
+import de.ur.mi.android.ting.model.primitives.UniqueBase;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
 public class ParsePinService implements IPinService {
 
 	private LocalUser user;
+	protected boolean hasNoFeed;
 
 	public ParsePinService(LocalUser user) {
 		this.user = user;
@@ -94,6 +96,47 @@ public class ParsePinService implements IPinService {
 	}
 
 	private void getFeed(PinRequest request, final IPinReceivedCallback callback) {
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser == null) {
+			return;
+		}
+
+		Collection<ParseObject> objects = ParseHelper.toParseObjects("board",
+				UniqueBase.getIds(this.user.getFollowedBoards()));
+		if (objects.size() == 0) {
+
+			if (this.hasNoFeed) {
+				// called cloud feed before and nothing retrieved
+				callback.onPinsReceived(new ArrayList<Pin>());
+				return;
+			}
+			this.getFeedFromCloudCode(request, callback);
+			return;
+		}
+
+		ParseQuery<ParseObject> query = this.getBasePinQuery(request);
+		query.orderByDescending("createdAt");
+		query.whereContainedIn("board", objects);
+
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				if (objects != null && e == null) {
+					Collection<Pin> pins = ParseHelper.createPins(objects);
+					callback.onPinsReceived(pins);
+				}
+			}
+		});
+
+	}
+
+	private void getFeedFromCloudCode(final PinRequest request,
+			final IPinReceivedCallback callback) {
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser == null) {
+			return;
+		}
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("user", this.user.getId());
 		params.put("from", "" + request.getOffset());
@@ -105,6 +148,9 @@ public class ParsePinService implements IPinService {
 					@Override
 					public void done(List<ParseObject> objects, ParseException e) {
 						if (e == null) {
+							if (objects.size() == 0 && request.getOffset() == 0) {
+								ParsePinService.this.hasNoFeed = true;
+							}
 							callback.onPinsReceived(ParseHelper
 									.createPins(objects));
 						} else {
@@ -206,7 +252,7 @@ public class ParsePinService implements IPinService {
 		pin.put("category", ParseObject.createWithoutData("category",
 				selectedBoard.getCategory().getId()));
 		pin.put("url", result.getLinkUrl());
-		
+
 		if (sharedPinId != null) {
 			pin.put("original_pin",
 					ParseObject.createWithoutData("pin", sharedPinId));

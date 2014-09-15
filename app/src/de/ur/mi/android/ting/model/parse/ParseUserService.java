@@ -2,7 +2,6 @@ package de.ur.mi.android.ting.model.parse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.parse.FindCallback;
@@ -14,13 +13,16 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
+import de.ur.mi.android.ting.app.fragments.RegisterRequest;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.parse.callbacks.SaveCallbackWrap;
 import de.ur.mi.android.ting.model.primitives.Board;
+import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
@@ -46,8 +48,9 @@ public class ParseUserService implements IUserService {
 			public void done(ParseUser u, ParseException e) {
 				boolean isSuccess = u != null;
 				LoginResult lr = new LoginResult(isSuccess);
-				if (isSuccess)
-					setUserInfo(u);
+				if (isSuccess) {
+					ParseUserService.this.setUserInfo(u);
+				}
 				ParseUserService.this.localuser.setIsLoggedIn(isSuccess);
 				callback.done(lr);
 			}
@@ -55,20 +58,20 @@ public class ParseUserService implements IUserService {
 	}
 
 	protected void setUserInfo(ParseUser u) {
-		localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
-		tryAddBoardsFollowed(u);
-		tryAddLikedPins(u);
-		tryAddOwnedBoards();
+		this.localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
+		this.tryAddBoardsFollowed(u);
+		this.tryAddLikedPins(u);
+		this.tryAddOwnedBoards();
 	}
 
 	private void tryAddOwnedBoards() {
-		IBoardsService boardsService = new ParseBoardsProvider(localuser);
+		IBoardsService boardsService = new ParseBoardsProvider(this.localuser);
 		boardsService
 				.getLocalUserBoards(new SimpleDoneCallback<Collection<Board>>() {
 
 					@Override
 					public void done(Collection<Board> result) {
-						localuser.setOwnedBoards(result);
+						ParseUserService.this.localuser.setOwnedBoards(result);
 					}
 				});
 	}
@@ -86,7 +89,7 @@ public class ParseUserService implements IUserService {
 						return;
 					}
 					Collection<Pin> likedPins = ParseHelper.createPins(objects);
-					localuser.setLikedPins(likedPins);
+					ParseUserService.this.localuser.setLikedPins(likedPins);
 				}
 			});
 		}
@@ -111,7 +114,7 @@ public class ParseUserService implements IUserService {
 					for (ParseObject object : objects) {
 						boards.add(ParseHelper.createBoard(object));
 					}
-					localuser.setFollowedBoards(boards);
+					ParseUserService.this.localuser.setFollowedBoards(boards);
 				}
 			});
 
@@ -123,7 +126,7 @@ public class ParseUserService implements IUserService {
 		ParseUser user = ParseUser.getCurrentUser();
 		boolean isLoggedIn = user != null;
 		if (isLoggedIn) {
-			setUserInfo(user);
+			this.setUserInfo(user);
 		}
 		this.localuser.setIsLoggedIn(isLoggedIn);
 		return isLoggedIn;
@@ -200,8 +203,9 @@ public class ParseUserService implements IUserService {
 	@Override
 	public void setPinLike(Pin pin, boolean isliked) {
 		ParseUser currentUser = ParseUser.getCurrentUser();
-		if (currentUser == null)
+		if (currentUser == null) {
 			return;
+		}
 		ParseRelation<ParseObject> likedPins = currentUser
 				.getRelation("liked_pins");
 		if (isliked) {
@@ -215,5 +219,73 @@ public class ParseUserService implements IUserService {
 	@Override
 	public void logout() {
 		ParseUser.logOut();
+	}
+
+	@Override
+	public void setIsFavoriteCategory(Category category, boolean isFavorite) {
+		ParseUser user = ParseUser.getCurrentUser();
+		if (user == null) {
+			return;
+		}
+		user.getRelation("favorite_categories").add(
+				ParseObject.createWithoutData("category", category.getId()));
+		user.saveEventually();
+	}
+
+	@Override
+	public void getFavoriteCategories(
+			final IDoneCallback<List<Category>> callback) {
+		ParseUser user = ParseUser.getCurrentUser();
+		if (user == null) {
+			callback.fail(new Exception("not logged in"));
+			return;
+		}
+		user.getRelation("favorite_categories").getQuery()
+				.findInBackground(new FindCallback<ParseObject>() {
+
+					@Override
+					public void done(List<ParseObject> objects, ParseException e) {
+						if (e != null || objects == null) {
+							callback.fail(e);
+						} else {
+							callback.done(ParseHelper.createCategories(objects));
+						}
+					}
+				});
+	}
+
+	@Override
+	public void setFollowBoard(String boardId, boolean follow) {
+		ParseUser user = ParseUser.getCurrentUser();
+		if (user == null) {
+			return;
+		}
+		user.getRelation("boards_followed").add(
+				ParseObject.createWithoutData("board", boardId));
+		user.saveEventually();
+	}
+
+	@Override
+	public void register(RegisterRequest request,
+			final IDoneCallback<Boolean> callback) {
+		ParseUser user = new ParseUser();
+		user.setUsername(request.getName());
+		user.setPassword(request.getPassword());
+		user.setEmail(request.getEmail());
+
+		if (request.getGender() != null && request.getGender().getId() != null) {
+			user.put("gender", ParseObject.createWithoutData("gender", request
+					.getGender().getId()));
+		}
+		user.signUpInBackground(new SignUpCallback() {
+			@Override
+			public void done(ParseException e) {
+				if (e == null) {
+					callback.done(true);
+				} else {
+					callback.fail(e);
+				}
+			}
+		});
 	}
 }

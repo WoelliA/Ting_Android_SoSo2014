@@ -2,8 +2,6 @@ package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import de.ur.mi.android.ting.model.IPinService;
 import de.ur.mi.android.ting.model.IPinReceivedCallback;
 import de.ur.mi.android.ting.model.PinData;

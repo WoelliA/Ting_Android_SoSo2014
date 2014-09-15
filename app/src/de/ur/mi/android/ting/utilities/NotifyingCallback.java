@@ -17,10 +17,11 @@ public class NotifyingCallback<T> extends SimpleDoneCallback<T> {
 
 	@Override
 	public void done(T result) {
-		if (successMessage == null)
-			Notify.current().showToast(successResourceId);
-		else
-			Notify.current().showToast(successMessage);
+		if (this.successMessage == null) {
+			Notify.current().showToast(this.successResourceId);
+		} else {
+			Notify.current().showToast(this.successMessage);
+		}
 	}
 
 	@Override

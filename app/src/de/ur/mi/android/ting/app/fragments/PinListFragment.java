@@ -1,7 +1,5 @@
 package de.ur.mi.android.ting.app.fragments;
 
-import javax.inject.Inject;
-
 import ca.weixiao.widget.InfiniteScrollListView;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,7 +31,7 @@ public class PinListFragment extends FragmentBase {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if(controller == null){
+		if(this.controller == null){
 			return;
 		}
 		this.initPinListUI();

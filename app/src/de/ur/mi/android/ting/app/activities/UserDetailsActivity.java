@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
+import de.ur.mi.android.ting.app.controllers.EditBoardController.EditBoardView;
 import de.ur.mi.android.ting.app.controllers.UserDetailsController;
 import de.ur.mi.android.ting.app.viewResolvers.SearchResultResolvers.BoardResolver;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -47,7 +48,7 @@ public class UserDetailsActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 
 		String userId = this.getIntent().getExtras().getString(USER_ID_KEY);
-		this.isLocalUserPage = userId.equals(localUser.getId());
+		this.isLocalUserPage = userId.equals(this.localUser.getId());
 		this.initUi();
 
 		this.controller.setView(this, userId);
@@ -62,14 +63,15 @@ public class UserDetailsActivity extends BaseActivity implements
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				position = position - ((ListView) arg0).getHeaderViewsCount();
-				if (position < 0)
+				if (position < 0) {
 					return;
-				Board board = adapter.getItem(position);
+				}
+				Board board = UserDetailsActivity.this.adapter.getItem(position);
 				Intent intent = new Intent(UserDetailsActivity.this,
 						BoardDetailsActivity.class);
 				intent.putExtra(BoardDetailsActivity.BOARD_ID_KEY,
 						board.getId());
-				startActivity(intent);
+				UserDetailsActivity.this.startActivity(intent);
 			}
 		});
 		ViewResolver<Board> viewResolver = new BoardResolver(this);
@@ -83,7 +85,7 @@ public class UserDetailsActivity extends BaseActivity implements
 		this.listView.addHeaderView(this.headerView, null, false);
 
 		if (this.isLocalUserPage) {
-			initLocalUserControls();
+			this.initLocalUserControls();
 		}
 	}
 
@@ -113,7 +115,7 @@ public class UserDetailsActivity extends BaseActivity implements
 				Intent intent = new Intent(UserDetailsActivity.this,
 						EditBoardActivity.class);
 				intent.putExtra(EditBoardActivity.TYPE_KEY,
-						EditBoardActivity.TYPE_CREATE);
+						EditBoardView.TYPE_CREATE);
 				UserDetailsActivity.this.startActivity(intent);
 			}
 		});

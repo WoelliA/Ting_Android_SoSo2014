@@ -14,22 +14,24 @@ public abstract class CategoryProviderBase implements
 		IChangeListener<LoginResult>, ICategoryProvider {
 
 	protected LocalUser user;
-	private LinkedHashMap<String,Category> categories;
+	private LinkedHashMap<String, Category> categories;
 
 	private IChangeListener<Collection<Category>> categoryFavorityChangeListener;
+	private IUserService userService;
 
-	public CategoryProviderBase(LocalUser user) {
+	public CategoryProviderBase(LocalUser user, IUserService userService) {
 		this.user = user;
+		this.userService = userService;
 		this.user.addLoginChangeListener(this);
 	}
-	
 
 	protected Collection<Category> getCategories() {
 		return this.categories.values();
 	}
 
 	@Override
-	public void getAllCategories(final IDoneCallback<Collection<Category>> callback) {
+	public void getAllCategories(
+			final IDoneCallback<Collection<Category>> callback) {
 		if (this.categories != null && this.categories.size() != 0) {
 			callback.done(this.categories.values());
 			return;
@@ -40,7 +42,8 @@ public abstract class CategoryProviderBase implements
 			@Override
 			public void done(List<Category> result) {
 				for (Category category : result) {
-					CategoryProviderBase.this.categories.put(category.getId(), category);
+					CategoryProviderBase.this.categories.put(category.getId(),
+							category);
 				}
 				callback.done(CategoryProviderBase.this.categories.values());
 			}
@@ -63,19 +66,21 @@ public abstract class CategoryProviderBase implements
 	@Override
 	public void onChange(LoginResult result) {
 		if (result.getIsRightLogin()) {
-			LinkedHashMap<String, Category> oldCategories = new LinkedHashMap<String, Category>(this.categories);
+			LinkedHashMap<String, Category> oldCategories = new LinkedHashMap<String, Category>(
+					this.categories);
 			this.categories = new LinkedHashMap<String, Category>();
 			this.categories.putAll(oldCategories);
-			
+
 			this.notifyCategoriesChangeListener();
-			this.getFavoriteCategories(this.user,
-					new SimpleDoneCallback<List<Category>>() {
+			this.userService
+					.getFavoriteCategories(new SimpleDoneCallback<List<Category>>() {
 
 						@Override
 						public void done(List<Category> result) {
 							for (Category c : result) {
-								Category category = CategoryProviderBase.this.categories.get(c.getId());
-								if(category != null){
+								Category category = CategoryProviderBase.this.categories
+										.get(c.getId());
+								if (category != null) {
 									category.setIsFavorite(true);
 								}
 							}
@@ -84,7 +89,7 @@ public abstract class CategoryProviderBase implements
 									.notifyCategoriesChangeListener();
 						}
 					});
-		} else {		
+		} else {
 			for (Category category : this.categories.values()) {
 				category.setIsFavorite(false);
 			}
@@ -94,7 +99,8 @@ public abstract class CategoryProviderBase implements
 
 	protected void notifyCategoriesChangeListener() {
 		if (this.categoryFavorityChangeListener != null) {
-			this.categoryFavorityChangeListener.onChange(this.categories.values());
+			this.categoryFavorityChangeListener.onChange(this.categories
+					.values());
 		}
 	}
 

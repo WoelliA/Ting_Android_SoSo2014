@@ -16,6 +16,6 @@ public class DummyResultTask<T> extends DelayTask {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		callback.done(this.result);
+		this.callback.done(this.result);
 	}
 }

@@ -6,21 +6,20 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginFragment extends FragmentBase{
-	
+public class LoginFragment extends LoginFragmentBase {
+
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
 	@Inject
@@ -31,24 +30,39 @@ public class LoginFragment extends FragmentBase{
 	private String mPassword;
 
 	// UI references.
-	private EditText mEmailView;
+	private EditText mUsernameView;
 	private EditText mPasswordView;
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_login, container, false);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+		this.mUsernameView = (EditText) this.findViewById(R.id.username);
+		this.mUsernameView.setText(this.mUserName);
+		Button registerButton = (Button) this.findViewById(R.id.action_register);
+		registerButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				 LoginFragment.this.handler.showRegister();
+				
+			}
+		});
 		
-		this.mEmailView = (EditText) this.findViewById(R.id.email);
-		this.mEmailView.setText(this.mUserName);
+		Button forgotPWButton = (Button) this.findViewById(R.id.action_forgot_password);
+		forgotPWButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				LoginFragment.this.handler.showForgotPW();
+				
+			}
+		});
 
 		this.mPasswordView = (EditText) this.findViewById(R.id.password);
 		this.mPasswordView
@@ -62,11 +76,7 @@ public class LoginFragment extends FragmentBase{
 						}
 						return false;
 					}
-				});
-
-		this.mLoginFormView = this.findViewById(R.id.login_form);
-		this.mLoginStatusView = this.findViewById(R.id.login_status);
-		this.mLoginStatusMessageView = (TextView) this.findViewById(R.id.login_status_message);
+				});		
 
 		this.findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
@@ -77,18 +87,16 @@ public class LoginFragment extends FragmentBase{
 				});
 	}
 
-	private View findViewById(int id) {
-		return this.getView().findViewById(id);
-	}
 	
-public void attemptLogin() {
-		
+
+	public void attemptLogin() {
+
 		// Reset errors.
-		this.mEmailView.setError(null);
+		this.mUsernameView.setError(null);
 		this.mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-		this.mUserName = this.mEmailView.getText().toString();
+		this.mUserName = this.mUsernameView.getText().toString();
 		this.mPassword = this.mPasswordView.getText().toString();
 
 		boolean cancel = false;
@@ -96,21 +104,24 @@ public void attemptLogin() {
 
 		// Check for a valid password.
 		if (TextUtils.isEmpty(this.mPassword)) {
-			this.mPasswordView.setError(this.getString(R.string.error_field_required));
+			this.mPasswordView.setError(this
+					.getString(R.string.error_field_required));
 			focusView = this.mPasswordView;
 			cancel = true;
 		} else if (this.mPassword.length() < 4) {
-			this.mPasswordView.setError(this.getString(R.string.error_invalid_password));
+			this.mPasswordView.setError(this
+					.getString(R.string.error_invalid_password));
 			focusView = this.mPasswordView;
 			cancel = true;
 		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(this.mUserName)) {
-			this.mEmailView.setError(this.getString(R.string.error_field_required));
-			focusView = this.mEmailView;
+			this.mUsernameView.setError(this
+					.getString(R.string.error_field_required));
+			focusView = this.mUsernameView;
 			cancel = true;
-		} 
+		}
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -118,61 +129,24 @@ public void attemptLogin() {
 			focusView.requestFocus();
 		} else {
 			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			this.mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			this.showProgress(true);
-			this.controller.login(this.mUserName, this.mPassword, new SimpleDoneCallback<LoginResult>() {
-				
-				@Override
-				public void done(LoginResult result) {
-					LoginFragment.this.showProgress(false);
-					boolean success = result.getIsRightLogin();
-					if (success) {
-						LoginFragment.this.getActivity().finish();
-					} else {
-						LoginFragment.this.mPasswordView
-								.setError(LoginFragment.this.getString(R.string.error_incorrect_password));
-						LoginFragment.this.mPasswordView.requestFocus();
-					}
-				}
-			});
+			// perform the user login attempt.			
+			this.controller.login(this.mUserName, this.mPassword,
+					new SimpleDoneCallback<LoginResult>() {
+
+						@Override
+						public void done(LoginResult result) {
+
+							boolean success = result.getIsRightLogin();
+							if (success) {
+								LoginFragment.this.getActivity().finish();
+							} else {
+								LoginFragment.this.mPasswordView.setError(LoginFragment.this
+										.getString(R.string.error_incorrect_password));
+								LoginFragment.this.mPasswordView.requestFocus();
+							}
+						}
+					});
 		}
 	}
 
-private void showProgress(final boolean show) {
-	// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-	// for very easy animations. If available, use these APIs to fade-in
-	// the progress spinner.
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-		int shortAnimTime = this.getResources().getInteger(
-				android.R.integer.config_shortAnimTime);
-
-		this.mLoginStatusView.setVisibility(View.VISIBLE);
-		this.mLoginStatusView.animate().setDuration(shortAnimTime)
-				.alpha(show ? 1 : 0)
-				.setListener(new AnimatorListenerAdapter() {
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						LoginFragment.this.mLoginStatusView.setVisibility(show ? View.VISIBLE
-								: View.GONE);
-					}
-				});
-
-		this.mLoginFormView.setVisibility(View.VISIBLE);
-		this.mLoginFormView.animate().setDuration(shortAnimTime)
-				.alpha(show ? 0 : 1)
-				.setListener(new AnimatorListenerAdapter() {
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						LoginFragment.this.mLoginFormView.setVisibility(show ? View.GONE
-								: View.VISIBLE);
-					}
-				});
-	} else {
-		// The ViewPropertyAnimator APIs are not available, so simply show
-		// and hide the relevant UI components.
-		this.mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-		this.mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-	}
-}
 }

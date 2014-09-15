@@ -8,7 +8,6 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 import com.parse.ParseQuery.CachePolicy;
 import com.parse.ParseUser;
 
@@ -20,7 +19,6 @@ import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class ParseBoardsProvider implements IBoardsService {
 
@@ -103,7 +101,7 @@ public class ParseBoardsProvider implements IBoardsService {
 	public <T> void search(final SearchRequest request,
 			final IDoneCallback<SearchResult<T>> callback) {
 		ParseQuery<ParseObject> query = ParseQueryHelper.getSearchQuery(
-				BOARD_CLASS_NAME, request, searchableFields);
+				BOARD_CLASS_NAME, request, this.searchableFields);
 
 		query.findInBackground(new FindCallback<ParseObject>() {
 
@@ -139,15 +137,15 @@ public class ParseBoardsProvider implements IBoardsService {
 
 	@Override
 	public void saveBoard(BoardEditRequest request, IDoneCallback<Void> callback) {
-		boardRef.put(BOARD_TITLE_KEY, request.getTitle());
-		boardRef.put(BOARD_DESCRIPTION_KEY, request.getDescription());
+		this.boardRef.put(BOARD_TITLE_KEY, request.getTitle());
+		this.boardRef.put(BOARD_DESCRIPTION_KEY, request.getDescription());
 
-		boardRef.add(
+		this.boardRef.add(
 				BOARD_CATEGORY_KEY,
 				ParseObject.createWithoutData("category",
 						request.getCategoryId()));
 
-		boardRef.saveInBackground(new SaveCallbackWrap(callback));
+		this.boardRef.saveInBackground(new SaveCallbackWrap(callback));
 	}
 
 }

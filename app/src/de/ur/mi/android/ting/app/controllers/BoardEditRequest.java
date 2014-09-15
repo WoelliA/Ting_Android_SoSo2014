@@ -15,19 +15,19 @@ public class BoardEditRequest  {
 	}
 
 	public Object getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public Object getDescription() {
-		return description;
+		return this.description;
 	}
 	
 	public String getId(){
-		return id;
+		return this.id;
 	}
 	
 	public String getCategoryId(){
-		return categoryId;
+		return this.categoryId;
 	}
 
 }

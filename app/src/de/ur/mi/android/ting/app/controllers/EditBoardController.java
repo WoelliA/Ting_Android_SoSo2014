@@ -5,7 +5,6 @@ import java.util.Collection;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
-import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IConnectivity;
@@ -41,7 +40,7 @@ public class EditBoardController {
 
 	public void setView(final EditBoardView view) {
 		this.view = view;
-		categoryProvider
+		this.categoryProvider
 				.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 					@Override
 					public void done(Collection<Category> result) {
@@ -52,11 +51,11 @@ public class EditBoardController {
 
 	public void init(String boardId) {
 		this.boardId = boardId;
-		boardsService.getBoard(boardId, new SimpleDoneCallback<Board>() {
+		this.boardsService.getBoard(boardId, new SimpleDoneCallback<Board>() {
 
 			@Override
 			public void done(Board board) {
-				view.showBoardDetails(board);
+				EditBoardController.this.view.showBoardDetails(board);
 			}
 		});
 	}
@@ -68,7 +67,7 @@ public class EditBoardController {
 		final LoadingContext loading = Notify.current().showLoading(
 				R.string.loading_saving_board);
 
-		final BoardEditRequest request = new BoardEditRequest(boardId, title,
+		final BoardEditRequest request = new BoardEditRequest(this.boardId, title,
 				description, category.getId());
 
 		IDoneCallback<Void> callback = new SimpleDoneCallback<Void>() {
@@ -77,7 +76,7 @@ public class EditBoardController {
 			public void done(Void searchResult) {
 				loading.close();
 				Notify.current().showToast(R.string.success_saving_board);
-				view.onBoardSaved(request);
+				EditBoardController.this.view.onBoardSaved(request);
 			}
 
 			@Override
@@ -88,9 +87,9 @@ public class EditBoardController {
 		};
 
 		if (this.boardId == null) {
-			boardsService.createBoard(request, callback);
+			this.boardsService.createBoard(request, callback);
 		} else {
-			boardsService.saveBoard(request, callback);
+			this.boardsService.saveBoard(request, callback);
 		}
 
 	}

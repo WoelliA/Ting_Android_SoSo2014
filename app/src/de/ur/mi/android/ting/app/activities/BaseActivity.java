@@ -1,6 +1,5 @@
 package de.ur.mi.android.ting.app.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import de.ur.mi.android.ting.app.IInjector;

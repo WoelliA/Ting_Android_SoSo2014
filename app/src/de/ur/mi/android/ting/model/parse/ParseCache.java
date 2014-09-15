@@ -7,7 +7,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import de.ur.mi.android.ting.utilities.cache.SoftRefMemoryCache;
-import de.ur.mi.android.ting.utilities.cache.WeakRefMemoryCache;
 
 public class ParseCache extends SoftRefMemoryCache<String, ParseObject>{
 	
@@ -15,8 +14,9 @@ public class ParseCache extends SoftRefMemoryCache<String, ParseObject>{
 	private static ParseCache current;
 
 	public static ParseCache current(){
-		if(current == null)
+		if(current == null) {
 			current = new ParseCache();
+		}
 		return current;
 	}
 	

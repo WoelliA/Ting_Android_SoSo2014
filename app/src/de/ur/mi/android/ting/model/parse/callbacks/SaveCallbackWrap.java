@@ -16,9 +16,9 @@ public class SaveCallbackWrap extends SaveCallback {
 	@Override
 	public void done(ParseException e) {
 		if (e == null) {
-			callback.done(null);
+			this.callback.done(null);
 		} else {
-			callback.fail(e);
+			this.callback.fail(e);
 		}
 
 	}

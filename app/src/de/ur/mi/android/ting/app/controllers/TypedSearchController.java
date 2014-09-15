@@ -2,7 +2,6 @@ package de.ur.mi.android.ting.app.controllers;
 
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.model.ISearchService;
-import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.PagingResult;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;

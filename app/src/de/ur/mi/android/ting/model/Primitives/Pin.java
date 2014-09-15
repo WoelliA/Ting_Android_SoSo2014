@@ -55,22 +55,23 @@ public class Pin extends UniqueBase implements IHasCategory {
 	}
 
 	public PinAffiliation getAffiliation(LocalUser user) {
-		if (affiliation != null)
-			return affiliation;
+		if (this.affiliation != null) {
+			return this.affiliation;
+		}
 
 		if (user.getLikedPins().contains(this)) {
-			affiliation = PinAffiliation.Liked;
+			this.affiliation = PinAffiliation.Liked;
 		} else if (this.board != null && user.getOwnedBoards().contains(this.board)){
-			affiliation = PinAffiliation.Owned;
+			this.affiliation = PinAffiliation.Owned;
 		} else {
-			affiliation = PinAffiliation.None;
+			this.affiliation = PinAffiliation.None;
 		}
 
 		return this.affiliation;
 	}
 
 	public void setAffiliation(PinAffiliation pinAffiliation) {
-		affiliation = pinAffiliation;		
+		this.affiliation = pinAffiliation;		
 	}
 
 }

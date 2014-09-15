@@ -19,13 +19,13 @@ public class NotifyRequiresLogin {
 
 	public void show() {
 		Notify.current().showYesNoDialog(R.string.action_login,
-				contentResId, R.string.action_login,
+				this.contentResId, R.string.action_login,
 				new SimpleYesNoCallback() {
 
 					@Override
 					public void onYes() {
-						Intent intent = new Intent(context, LoginActivity.class);
-						context.startActivity(intent);
+						Intent intent = new Intent(NotifyRequiresLogin.this.context, LoginActivity.class);
+						NotifyRequiresLogin.this.context.startActivity(intent);
 					}
 				});
 	}

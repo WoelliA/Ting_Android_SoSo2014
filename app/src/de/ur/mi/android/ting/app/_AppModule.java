@@ -7,7 +7,6 @@ import dagger.Provides;
 import de.ur.mi.android.ting.app.activities.MainActivity;
 import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.ICategoryProvider;
-import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IAppStart;
 import de.ur.mi.android.ting.utilities.IDoneCallback;

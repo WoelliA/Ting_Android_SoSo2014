@@ -5,24 +5,31 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/board_title"
+        android:id="@+id/textview_board_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/textview_board_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ToggleButton
-        android:visibility="gone"
-        android:id="@+id/board_follow_toggle"
-        android:layout_width="wrap_content"
+        android:id="@+id/togglebutton_follow_board"
+        style="@style/ting_toggle_button_style"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textOff="@string/button_text_board_follow"
-        android:textOn="@string/button_text_board_unfollow" />
+        android:textOn="@string/button_text_board_unfollow"
+        android:visibility="gone" />
 
     <Button
-        android:visibility="gone"
         android:id="@+id/button_edit_board"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_edit_board_text" />
+        android:text="@string/button_edit_board_text"
+        android:visibility="gone" />
 
 </LinearLayout>

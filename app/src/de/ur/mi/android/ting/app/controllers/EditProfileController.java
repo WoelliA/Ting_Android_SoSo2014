@@ -2,12 +2,9 @@ package de.ur.mi.android.ting.app.controllers;
 
 import java.io.ByteArrayOutputStream;
 
-import com.parse.ParseFile;
-
 import android.graphics.Bitmap;
 import android.net.Uri;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.User;
@@ -36,7 +33,7 @@ public class EditProfileController {
 		}
 
 		public String getEmail() {
-			return email;
+			return this.email;
 		}
 	}
 
@@ -62,17 +59,17 @@ public class EditProfileController {
 
 	public void setView(EditProfileView view) {
 		this.view = view;
-		this.view.displayUserProfile(user, user.getEmail());
+		this.view.displayUserProfile(this.user, this.user.getEmail());
 	}
 
 	public void onProfileImageChanged(Uri imageUri) {
-		imageloader.loadImage(imageUri.toString(),
+		this.imageloader.loadImage(imageUri.toString(),
 				new SimpleDoneCallback<Bitmap>() {
 
 					@Override
 					public void done(Bitmap result) {
-						newProfileImage = result;
-						view.displayProfileImage(result);
+						EditProfileController.this.newProfileImage = result;
+						EditProfileController.this.view.displayProfileImage(result);
 					}
 				});
 
@@ -97,10 +94,10 @@ public class EditProfileController {
 					@Override
 					public void done(Void result) {
 						super.done(result);
-						user.setInfo(new User("", editProfileResult.getName(),
+						EditProfileController.this.user.setInfo(new User("", editProfileResult.getName(),
 								editProfileResult.getInfo(), ""),
 								editProfileResult.getEmail());
-						newProfileImage = null;
+						EditProfileController.this.newProfileImage = null;
 					}
 				});
 

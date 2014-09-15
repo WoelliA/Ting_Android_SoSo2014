@@ -1,6 +1,10 @@
 package de.ur.mi.android.ting.model;
 
+import java.util.List;
+
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
+import de.ur.mi.android.ting.app.fragments.RegisterRequest;
+import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.User;
@@ -22,4 +26,15 @@ public interface IUserService extends ITypedSearchService<User> {
 	public void setPinLike(Pin pin, boolean isliked);
 
 	public void logout();
+
+	public void setIsFavoriteCategory(Category category, boolean isFavorite);
+
+	public void getFavoriteCategories(IDoneCallback<List<Category>> callback);
+
+	public void setFollowBoard(String boardId, boolean follow);
+
+	public void register(RegisterRequest registerRequest,
+			IDoneCallback<Boolean> callback);
+
 }
+				

@@ -22,11 +22,12 @@ public abstract class MemoryCache<K, T> {
 
 			@Override
 			public void run() {
-				for (K key : keys()) {
+				for (K key : MemoryCache.this.keys()) {
 					try {
 
-						if (get(key) == null)
-							remove(key);
+						if (MemoryCache.this.get(key) == null) {
+							MemoryCache.this.remove(key);
+						}
 					} finally {
 					}
 				}
@@ -41,7 +42,7 @@ public abstract class MemoryCache<K, T> {
 
 	public T get(K key) {
 		T result = null;
-		Reference<T> reference = softMap.get(key);
+		Reference<T> reference = this.softMap.get(key);
 		if (reference != null) {
 			result = reference.get();
 		}
@@ -49,34 +50,35 @@ public abstract class MemoryCache<K, T> {
 	}
 
 	public boolean has(K key) {
-		if (softMap.containsKey(key)) {
-			Reference<T> ref = softMap.get(key);
+		if (this.softMap.containsKey(key)) {
+			Reference<T> ref = this.softMap.get(key);
 			if (ref != null) {
-				if (ref.get() != null)
+				if (ref.get() != null) {
 					return true;
+				}
 			}
 		}
 		return false;
 	}
 
 	public boolean put(K key, T value) {
-		softMap.put(key, createReference(value));
+		this.softMap.put(key, this.createReference(value));
 		return true;
 	}
 
 	public T remove(K key) {
-		Reference<T> bmpRef = softMap.remove(key);
+		Reference<T> bmpRef = this.softMap.remove(key);
 		return bmpRef == null ? null : bmpRef.get();
 	}
 
 	public Collection<K> keys() {
-		synchronized (softMap) {
-			return new HashSet<K>(softMap.keySet());
+		synchronized (this.softMap) {
+			return new HashSet<K>(this.softMap.keySet());
 		}
 	}
 
 	public void clear() {
-		softMap.clear();
+		this.softMap.clear();
 	}
 
 	/** Creates {@linkplain Reference not strong} reference of value */

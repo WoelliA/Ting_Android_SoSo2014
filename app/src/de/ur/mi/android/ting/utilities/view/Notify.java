@@ -1,11 +1,5 @@
 package de.ur.mi.android.ting.utilities.view;
 
-import java.util.List;
-
-import javax.security.auth.callback.ConfirmationCallback;
-
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -32,11 +26,11 @@ public class Notify implements INotify {
 
 	@Override
 	public void show(int titleResourceId, int contentResourceId, NotifyKind kind) {
-		if (!canNotify()) {
+		if (!this.canNotify()) {
 			return;
 		}
 		if (kind == NotifyKind.SUCCESS) {
-			showToast(titleResourceId);
+			this.showToast(titleResourceId);
 			return;
 		}
 		AlertDialog.Builder dialogDialog = new AlertDialog.Builder(this.context);
@@ -61,14 +55,15 @@ public class Notify implements INotify {
 
 	@Override
 	public void showToast(int textResourceId) {
-		this.showToast(context.getString(textResourceId));
+		this.showToast(this.context.getString(textResourceId));
 	}
 
 	@Override
 	public void showToast(String content) {
-		if (!canNotify())
+		if (!this.canNotify()) {
 			return;
-		Toast toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+		}
+		Toast toast = Toast.makeText(this.context, content, Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
@@ -96,27 +91,30 @@ public class Notify implements INotify {
 		private ProgressDialog dialog;
 
 		public LoadingContext(Context context, int titleResourceId) {
-			if (canNotify()) {
+			if (Notify.this.canNotify()) {
 				this.dialog = new ProgressDialog(context);
-				if (titleResourceId > 0)
+				if (titleResourceId > 0) {
 					this.dialog.setTitle(titleResourceId);
+				}
 				this.dialog.setCancelable(false);
 				this.dialog.show();
 			}
 		}
 
 		public void close() {
-			if (dialog != null)
+			if (this.dialog != null) {
 				this.dialog.cancel();
+			}
 		}
 
 	}
 
 	public void showYesNoDialog(int titleResId, int contentResId,
 			int yesButtonTextResId, final IYesNoCallback callback) {
-		if (!canNotify())
+		if (!this.canNotify()) {
 			return;
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		}
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
 		builder.setTitle(titleResId);
 		if (contentResId > 0) {
 			builder.setMessage(contentResId);
@@ -130,6 +128,7 @@ public class Notify implements INotify {
 					}
 				}).setNegativeButton(android.R.string.cancel,
 				new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						callback.onNo();
 					}

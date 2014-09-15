@@ -3,24 +3,16 @@ package de.ur.mi.android.ting.app.viewResolvers;
 import javax.inject.Inject;
 
 import android.content.Context;
-import android.content.Intent;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.ViewSwitcher;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.activities.ShareActivity;
-import de.ur.mi.android.ting.app.activities.ShareActivity.ShareStage;
 import de.ur.mi.android.ting.app.controllers.PinController;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.utilities.IImageLoader;
@@ -37,7 +29,7 @@ public class PinViewResolver extends ViewResolver<Pin> {
 
 	public PinViewResolver(Context context) {
 		super(R.layout.pin_layout, context);
-		controller.setup(context);
+		this.controller.setup(context);
 	}
 
 	@Override
@@ -70,7 +62,7 @@ public class PinViewResolver extends ViewResolver<Pin> {
 	private void setupControls(View view, final Pin pin) {
 		ViewGroup controls = (ViewGroup) this.findViewById(view,
 				R.id.pin_controls);
-		if (controller.getIsOwned(pin)) {
+		if (this.controller.getIsOwned(pin)) {
 			controls.setVisibility(View.GONE);
 			return;
 		}
@@ -80,13 +72,13 @@ public class PinViewResolver extends ViewResolver<Pin> {
 		reTing.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				controller.reting(pin);
+				PinViewResolver.this.controller.reting(pin);
 			}
 		});
 
 		ToggleButton like = (ToggleButton) this.findViewById(view,
 				R.id.button_like);
-		like.setChecked(controller.getIsLiked(pin));
+		like.setChecked(this.controller.getIsLiked(pin));
 
 		like.setOnClickListener(new OnClickListener() {
 
@@ -94,11 +86,12 @@ public class PinViewResolver extends ViewResolver<Pin> {
 			public void onClick(View v) {
 				ToggleButton button = (ToggleButton) v;
 				if (button.isChecked()) {
-					boolean success = controller.like(pin);
-					if (!success)
+					boolean success = PinViewResolver.this.controller.like(pin);
+					if (!success) {
 						button.setChecked(success);
+					}
 				} else {
-					controller.unlike(pin, context);
+					PinViewResolver.this.controller.unlike(pin, PinViewResolver.this.context);
 				}
 
 			}
@@ -110,7 +103,7 @@ public class PinViewResolver extends ViewResolver<Pin> {
 
 			@Override
 			public void onClick(View v) {
-				controller.share(pin, context);
+				PinViewResolver.this.controller.share(pin, PinViewResolver.this.context);
 			}
 		});
 

@@ -18,18 +18,18 @@ public class LoadIndicatingNotifyingCallback<T> extends NotifyingCallback<T>{
 		this.initLoading();
 	}
 	private void initLoading() {
-		loadingContext = Notify.current().showLoading(-1);		
+		this.loadingContext = Notify.current().showLoading(-1);		
 	}
 	
 	@Override
 	public void done(T result) {
-		loadingContext.close();
+		this.loadingContext.close();
 		super.done(result);
 	}
 
 	@Override
 	public void fail(Exception e) {
-		loadingContext.close();
+		this.loadingContext.close();
 		super.fail(e);
 	}
 }

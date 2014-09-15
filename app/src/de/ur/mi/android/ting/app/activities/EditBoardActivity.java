@@ -14,11 +14,9 @@ import de.ur.mi.android.ting.model.SpecialCategories;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
-import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
@@ -43,16 +40,16 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit_board);
+		this.setContentView(R.layout.activity_edit_board);
 
-		int type = getIntent().getExtras().getInt(TYPE_KEY);
+		int type = this.getIntent().getExtras().getInt(TYPE_KEY);
 
-		initUi();
+		this.initUi();
 
-		controller.setView(this);
+		this.controller.setView(this);
 		if (type == TYPE_EDIT) {
-			String boardId = getIntent().getExtras().getString(BOARD_ID_KEY);
-			controller.init(boardId);
+			String boardId = this.getIntent().getExtras().getString(BOARD_ID_KEY);
+			this.controller.init(boardId);
 		}
 	}
 
@@ -90,7 +87,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 			return;
 		}
 		String description = this.descriptionView.getText().toString();
-		controller.saveBoard(title, description, (Category) selectedItem);
+		this.controller.saveBoard(title, description, (Category) selectedItem);
 	}
 
 	@Override
@@ -108,13 +105,13 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 	@Override
 	public void setupCategories(Collection<Category> result) {
 		ViewResolver<Category> resolver = new SimpleCategoryViewResolver(this);
-		adapter = new ViewCreationDelegatingListAdapter<Category>(this,
+		this.adapter = new ViewCreationDelegatingListAdapter<Category>(this,
 				resolver);
 
-		adapter.add(new SpecialCategories.SpecialCategory(0, this
+		this.adapter.add(new SpecialCategories.SpecialCategory(0, this
 				.getString(R.string.label_select_category)));
-		adapter.addAll(result);
-		this.categorySelect.setAdapter(adapter);
+		this.adapter.addAll(result);
+		this.categorySelect.setAdapter(this.adapter);
 	}
 
 	private class SimpleCategoryViewResolver extends CategoryViewResolver {

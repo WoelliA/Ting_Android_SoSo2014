@@ -6,7 +6,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:paddingBottom="30dp" >
+        android:layout_above="@+id/button_save" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,6 +35,7 @@
             </LinearLayout>
 
             <TextView
+                style="@style/label_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_username" >

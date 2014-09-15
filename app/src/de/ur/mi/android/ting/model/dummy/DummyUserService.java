@@ -1,13 +1,14 @@
 package de.ur.mi.android.ting.model.dummy;
 
-import com.parse.ParseObject;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
-import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.app.fragments.RegisterRequest;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
+import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
@@ -20,11 +21,9 @@ public class DummyUserService implements IUserService {
 
 	private LocalUser user;
 	boolean isRightLogin;
-	private ICategoryProvider categoryProvider;
 
-	public DummyUserService(LocalUser user, ICategoryProvider categoryProvider) {
+	public DummyUserService(LocalUser user) {
 		this.user = user;
-		this.categoryProvider = categoryProvider;
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public class DummyUserService implements IUserService {
 				super.onPostExecute(result);
 			}
 		};
-		task.execute(); 
+		task.execute();
 	}
 
 	@Override
@@ -85,6 +84,47 @@ public class DummyUserService implements IUserService {
 
 	@Override
 	public void logout() {
+	}
+
+	@Override
+	public void setIsFavoriteCategory(Category category, boolean isFavorite) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void getFavoriteCategories(final IDoneCallback<List<Category>> callback) {
+
+		DelayTask task = new DelayTask() {
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				Random random = new Random();
+				List<Category> favorites = new ArrayList<Category>();
+//				for (Category category : DummyCategoryProvider.super
+//						.getCategories()) {
+//					int r = random.nextInt();
+//					if (r % 4 == 0) {
+//						favorites.add(category);
+//					}
+//				}
+				callback.done(favorites);
+			}
+		};
+		task.execute();
+
+	}
+
+	@Override
+	public void setFollowBoard(String boardId, boolean follow) {
+		
+	}
+
+	@Override
+	public void register(RegisterRequest registerRequest,
+			IDoneCallback<Boolean> callback) {
+		DummyResultTask<Boolean> task = new DummyResultTask<Boolean>(true, callback);
+		
 	}
 
 }

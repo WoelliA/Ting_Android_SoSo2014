@@ -13,7 +13,6 @@ import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.SpecialCategories;
 import de.ur.mi.android.ting.model._IModelModule;
 import de.ur.mi.android.ting.model.IPinService;
-import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 
@@ -25,9 +24,9 @@ public class _DummyModelModule implements _IModelModule {
 	@Override
 	@Provides
 	@Singleton
-	public ICategoryProvider provideICategoryProvider(LocalUser user) {
+	public ICategoryProvider provideICategoryProvider(LocalUser user, IUserService userService) {
 		if(this.categoryProvider == null) {
-			this.categoryProvider = new DummyCategoryProvider(user);
+			this.categoryProvider = new DummyCategoryProvider(user, userService);
 		}
 		return this.categoryProvider;
 	}
@@ -58,9 +57,8 @@ public class _DummyModelModule implements _IModelModule {
 
 	@Override
 	@Provides
-	public IUserService provideIUserService(LocalUser user,
-			ICategoryProvider categoryProvider) {
-		return new DummyUserService(user, categoryProvider);
+	public IUserService provideIUserService(LocalUser user) {
+		return new DummyUserService(user);
 	}
 
 	@Override

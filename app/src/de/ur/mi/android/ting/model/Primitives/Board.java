@@ -53,14 +53,6 @@ public class Board extends UniqueBase implements IHasCategory {
 		return this.owner;
 	}
 
-	public void setIsUserFollowing(boolean isFollowing) {
-		this.isFollowing = isFollowing;
-	}
-
-	public boolean getIsUserFollowing() {
-		return this.isFollowing;
-	}
-
 	public void setName(String string) {
 		this.title = string;
 
@@ -75,22 +67,28 @@ public class Board extends UniqueBase implements IHasCategory {
 	}
 
 	public BoardAffiliation getBoardAffiliation(LocalUser user) {
-		if (this.affiliation != null)
+		if (this.affiliation != null) {
 			return this.affiliation;
+		}
 		if (this.owner != null && this.owner.equals(user)) {
-			affiliation = BoardAffiliation.Owner;
+			this.affiliation = BoardAffiliation.Owner;
 		} else if (this.contributors != null
 				&& this.contributors.contains(user)) {
-			affiliation = BoardAffiliation.Contributor;
+			this.affiliation = BoardAffiliation.Contributor;
 		} else if (user.getFollowedBoards().contains(this)) {
-			affiliation = BoardAffiliation.Follower;
-		} else {
-			affiliation = BoardAffiliation.None;
+			this.affiliation = BoardAffiliation.Follower;
+		} else { 
+			this.affiliation = BoardAffiliation.None;
 		}
-		return affiliation;
+		return this.affiliation;
 	}
 
 	public enum BoardAffiliation {
 		Owner, Contributor, Follower, None
+	}
+
+	public void setAffilliation(BoardAffiliation newAffiliation) {
+		this.affiliation = newAffiliation;
+		
 	}
 }

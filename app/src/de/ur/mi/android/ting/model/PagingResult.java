@@ -1,7 +1,6 @@
 package de.ur.mi.android.ting.model;
 
 import java.util.Collection;
-import java.util.List;
 
 public class PagingResult<T> {
 	protected Collection<T> results;

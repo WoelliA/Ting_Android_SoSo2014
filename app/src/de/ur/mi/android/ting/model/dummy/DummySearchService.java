@@ -3,7 +3,6 @@ package de.ur.mi.android.ting.model.dummy;
 import java.util.ArrayList;
 
 import de.ur.mi.android.ting.model.ISearchService;
-import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;

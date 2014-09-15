@@ -1,5 +1,8 @@
 package de.ur.mi.android.ting.model.primitives;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public abstract class UniqueBase implements IUnique {
 	protected String id;
 
@@ -30,5 +33,16 @@ public abstract class UniqueBase implements IUnique {
 			return this.id.hashCode();
 		}
 		return super.hashCode();
+	}
+
+	public static Collection<String> getIds(Collection<? extends IUnique> uniques) {
+		ArrayList<String> ids = new ArrayList<String>();
+		if(uniques != null){
+			for (IUnique unique : uniques) {
+				ids.add(unique.getId());
+			}
+		}		
+		return ids;
+		
 	}
 }

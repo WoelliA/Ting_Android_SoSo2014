@@ -11,9 +11,9 @@ public class PagingRequestBase {
 	}	
 	
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 	public int getOffset() {
-		return offset;
+		return this.offset;
 	}
 }

@@ -17,7 +17,6 @@ import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
-import de.ur.mi.android.ting.utilities.view.IYesNoCallback;
 import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.SimpleYesNoCallback;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
@@ -81,7 +80,7 @@ public class CategoryViewResolver extends ViewResolver<Category> {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
-			if (!user.getIsLogedIn()) {
+			if (!CategoryViewResolver.this.user.getIsLogedIn()) {
 				if (isChecked) {
 					Notify.current().showYesNoDialog(R.string.action_login,
 
@@ -90,9 +89,9 @@ public class CategoryViewResolver extends ViewResolver<Category> {
 
 								@Override
 								public void onYes() {
-									Intent intent = new Intent(context,
+									Intent intent = new Intent(CategoryViewResolver.this.context,
 											LoginActivity.class);
-									context.startActivity(intent);
+									CategoryViewResolver.this.context.startActivity(intent);
 								}
 							});
 					buttonView.setChecked(false);

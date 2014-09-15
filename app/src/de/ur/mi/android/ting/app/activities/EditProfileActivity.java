@@ -1,29 +1,18 @@
 package de.ur.mi.android.ting.app.activities;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
 import javax.inject.Inject;
-import javax.security.auth.callback.ConfirmationCallback;
-
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.controllers.EditProfileController;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileView;
-import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
-import de.ur.mi.android.ting.utilities.view.Notify;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.storage.StorageManager;
-import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -50,16 +39,16 @@ public class EditProfileActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_profile);
 		this.initUi();
-		controller.setView(this);
+		this.controller.setView(this);
 	}
 
 	@Override
 	public void onBackPressed() {
-		onBackPressed(false);
+		this.onBackPressed(false);
 	}
 
 	private void onBackPressed(boolean force) {
-		if (force || controller.hasNotChanged(getEditProfileResult())) {
+		if (force || this.controller.hasNotChanged(this.getEditProfileResult())) {
 			super.onBackPressed();
 			return;
 		}
@@ -68,12 +57,14 @@ public class EditProfileActivity extends BaseActivity implements
 		builder.setMessage(R.string.dialog_unsaved_changes_content)
 				.setPositiveButton(R.string.button_proceed_text,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								onBackPressed(true);
+								EditProfileActivity.this.onBackPressed(true);
 							}
 						})
 				.setNegativeButton(android.R.string.cancel,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 
 							}
@@ -88,7 +79,7 @@ public class EditProfileActivity extends BaseActivity implements
 		if (requestCode == SELECT_PHOTO) {
 			if (resultCode == RESULT_OK) {
 				final Uri imageUri = data.getData();
-				controller.onProfileImageChanged(imageUri);
+				this.controller.onProfileImageChanged(imageUri);
 			}
 		}
 	}
@@ -114,7 +105,7 @@ public class EditProfileActivity extends BaseActivity implements
 
 	@Override
 	public void displayUserProfile(User user, String email) {
-		imageloader.loadImage(user.getProfilePictureUri(),
+		this.imageloader.loadImage(user.getProfilePictureUri(),
 				this.profileimageView);
 		this.usernameView.setText(user.getName());
 		this.emailView.setText(email);
@@ -129,17 +120,17 @@ public class EditProfileActivity extends BaseActivity implements
 					Intent.ACTION_PICK,
 					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			intent.setType("image/*");
-			startActivityForResult(intent, SELECT_PHOTO);
+			this.startActivityForResult(intent, SELECT_PHOTO);
 			break;
 		case R.id.button_save:
-			EditProfileResult editProfileResult = getEditProfileResult();
+			EditProfileResult editProfileResult = this.getEditProfileResult();
 			if (editProfileResult.getName().trim().length() == 0) {
 				this.usernameView.setError(this
 						.getString(R.string.error_field_required));
 				return;
 			}
 
-			controller.onSaveProfile(editProfileResult);
+			this.controller.onSaveProfile(editProfileResult);
 		}
 	}
 

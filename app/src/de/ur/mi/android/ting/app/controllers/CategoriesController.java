@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ISpecialCategories;
+import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
@@ -17,6 +21,7 @@ import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.widget.ArrayAdapter;
 
+@Singleton
 public class CategoriesController implements
 		IBiChangeListener<Category, Boolean> {
 
@@ -38,10 +43,14 @@ public class CategoriesController implements
 
 	protected Category feedCategory;
 
+	private IUserService userService;
+
+	@Inject
 	public CategoriesController(ICategoryProvider categoryProvider,
-			IConnectivity connectivity, ISpecialCategories specialCategories,
-			LocalUser user) {
+			IUserService userService, IConnectivity connectivity,
+			ISpecialCategories specialCategories, LocalUser user) {
 		this.categoryProvider = categoryProvider;
+		this.userService = userService;
 		this.connectivity = connectivity;
 		this.specialCategories = specialCategories;
 		this.user = user;
@@ -50,18 +59,19 @@ public class CategoriesController implements
 			@Override
 			public void onChange(LoginResult changed) {
 				if (!changed.getIsRightLogin()) {
-					 removeFeedCategory();
-					 if(feedCategory.equals(selectedCategory)){
-						 onCategorySelected(adapter.getItem(0));
-					 }
+					this.removeFeedCategory();
+					if (CategoriesController.this.feedCategory.equals(CategoriesController.this.selectedCategory)) {
+						CategoriesController.this.onCategorySelected(CategoriesController.this.adapter.getItem(0));
+					}
 				}
 			}
 
 			private void removeFeedCategory() {
-				Category first = adapter.getItem(0);
+				Category first = CategoriesController.this.adapter.getItem(0);
 
-				if (first.equals(feedCategory))
-					adapter.remove(first);
+				if (first.equals(CategoriesController.this.feedCategory)) {
+					CategoriesController.this.adapter.remove(first);
+				}
 			}
 		});
 		this.categoryProvider
@@ -84,15 +94,15 @@ public class CategoriesController implements
 						CategoriesController.this.categories = new ArrayList<Category>(
 								result);
 
-						categories.add(0,
-								specialCategories.getEverythingCategory());
-						if (user.getIsLogedIn()) {
-							feedCategory = specialCategories.getFeedCategory();
+						CategoriesController.this.categories.add(0,
+								CategoriesController.this.specialCategories.getEverythingCategory());
+						if (CategoriesController.this.user.getIsLogedIn()) {
+							CategoriesController.this.feedCategory = CategoriesController.this.specialCategories.getFeedCategory();
 
-							categories.add(0, feedCategory);
+							CategoriesController.this.categories.add(0, CategoriesController.this.feedCategory);
 						}
 						CategoriesController.this.initAdapter();
-						if (selectedCategory == null) {
+						if (CategoriesController.this.selectedCategory == null) {
 							CategoriesController.this
 									.onCategorySelected(CategoriesController.this.categories
 											.get(0));
@@ -126,19 +136,9 @@ public class CategoriesController implements
 		}
 	}
 
-	public void onCategoryIsFavoriteChanged(Category category,
-			boolean isFavorite) {
-		if (category.getIsFavorite() == isFavorite) {
-			return;
-		}
-		this.categoryProvider.saveIsFavoriteCategory(category,
-				category.getIsFavorite());
-		this.adjustPosition(category, category.getIsFavorite());
-	}
-
 	public void setAdapter(ArrayAdapter<Category> adapter) {
 		this.adapter = adapter;
-		this.initAdapter();
+		this.initCategories();
 	}
 
 	private void adjustPosition(Category category, boolean isChecked) {
@@ -163,7 +163,6 @@ public class CategoriesController implements
 				}
 			}
 		}
-
 	}
 
 	public void setSelectedCategoryChangeListener(
@@ -180,7 +179,7 @@ public class CategoriesController implements
 
 	@Override
 	public void onChange(Category category, Boolean u) {
-		this.categoryProvider.saveIsFavoriteCategory(category,
+		this.userService.setIsFavoriteCategory(category,
 				category.getIsFavorite());
 		this.adjustPosition(category, u);
 	}

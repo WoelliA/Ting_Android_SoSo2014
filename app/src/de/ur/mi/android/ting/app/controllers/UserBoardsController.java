@@ -1,8 +1,6 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import java.util.Collection;
-import java.util.List;
-
 import de.ur.mi.android.ting.app.fragments.ICollectionView;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.primitives.Board;

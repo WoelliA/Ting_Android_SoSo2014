@@ -59,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/button_margin"
                 android:layout_weight="1"
-                android:background="@drawable/like_button_selector"
-                android:textColor="@drawable/like_text_selector"
+                android:background="@drawable/ting_toggleselector"
+                android:textColor="@drawable/ting_toggle_text_selector"
                 android:textOff="@string/button_like"
                 android:textOn="@string/button_liked"
                 android:textSize="@dimen/pin_controls_textsize" />

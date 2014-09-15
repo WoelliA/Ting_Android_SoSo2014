@@ -12,7 +12,6 @@ import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.Pin;
-import de.ur.mi.android.ting.model.primitives.UniqueBase;
 import de.ur.mi.android.ting.model.primitives.User;
 
 @Singleton

@@ -36,7 +36,7 @@ public class User extends UniqueBase {
 	}
 
 	public String getInfo() {
-		return info;
+		return this.info;
 	}
 
 	public void setInfo(String info) {

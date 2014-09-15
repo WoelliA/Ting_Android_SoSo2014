@@ -1,6 +1,5 @@
 package de.ur.mi.android.ting.model.parse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -14,7 +13,7 @@ import com.parse.ParseQuery;
 
 import de.ur.mi.android.ting.model.CategoryProviderBase;
 import de.ur.mi.android.ting.model.ICategoryProvider;
-import de.ur.mi.android.ting.model.ISpecialCategories;
+import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
@@ -23,32 +22,8 @@ import de.ur.mi.android.ting.utilities.IDoneCallback;
 public class ParseCategoryProvider extends CategoryProviderBase implements
 		ICategoryProvider {
 
-	public ParseCategoryProvider(LocalUser user) {
-		super(user);
-	}
-
-	private List<Category> createCategories(List<ParseObject> arg) {
-		ArrayList<Category> categories = new ArrayList<Category>();
-		for (ParseObject parseObject : arg) {
-			Category category = ParseHelper.createCategory(parseObject);
-			categories.add(category);
-		}
-		return categories;
-	}
-
-	@Override
-	public void getFavoriteCategories(LocalUser user,
-			IDoneCallback<List<Category>> callback) {
-		// TODO add favorite category for parse
-
-	}
-
-	@Override
-	public void saveIsFavoriteCategory(Category category, boolean isChecked) {
-		if (!this.user.getIsLogedIn()) {
-			return;
-		}
-
+	public ParseCategoryProvider(LocalUser user, IUserService userService) {
+		super(user, userService);
 	}
 
 	@Override
@@ -64,10 +39,7 @@ public class ParseCategoryProvider extends CategoryProviderBase implements
 			@Override
 			public void done(List<ParseObject> arg, ParseException ex) {
 				if (ex == null) {
-					ArrayList<Category> categories = new ArrayList<Category>();
-					categories.addAll(ParseCategoryProvider.this
-							.createCategories(arg));
-					callback.done(categories);
+					callback.done(ParseHelper.createCategories(arg));
 
 				} else {
 					Log.e("Parse Categories Exception", ex.getMessage());

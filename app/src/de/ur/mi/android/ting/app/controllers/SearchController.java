@@ -6,7 +6,6 @@ import java.util.List;
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.ISearchService;
-import de.ur.mi.android.ting.model.ITypedSearchService;
 import de.ur.mi.android.ting.model.primitives.SearchType;
 
 public class SearchController {

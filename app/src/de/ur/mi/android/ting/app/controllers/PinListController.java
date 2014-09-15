@@ -1,6 +1,5 @@
 package de.ur.mi.android.ting.app.controllers;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;

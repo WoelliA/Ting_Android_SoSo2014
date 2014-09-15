@@ -169,14 +169,14 @@ public class ShareController {
 
 	public void setupPinShare(String pinId) {
 		this.sharedPinId = pinId;
-		pinService.getPin(pinId, new SimpleDoneCallback<Pin>() {
+		this.pinService.getPin(pinId, new SimpleDoneCallback<Pin>() {
 
 			@Override
 			public void done(Pin result) {
 				PinData data = new PinData(result.getTitle(), result
 						.getDescription(), new LoadedImageData(result
 						.getImageUri(), null), result.getLinkUri());
-				view.setPinData(data);
+				ShareController.this.view.setPinData(data);
 			}
 		});
 	}

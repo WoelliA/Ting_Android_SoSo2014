@@ -12,8 +12,9 @@ public class GraphInjector implements IInjector {
 
 	@Override
 	public void inject(Object obj) {
-		if(obj.getClass().isAnonymousClass())
+		if(obj.getClass().isAnonymousClass()) {
 			return;
+		}
 		
 		if (obj instanceof IInjectable) {
 			if (((IInjectable) obj).skipInject()) {

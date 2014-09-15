@@ -2,26 +2,16 @@ package de.ur.mi.android.ting.model.parse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import android.util.Log;
 
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
-
-import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
-import de.ur.mi.android.ting.model.primitives.PagingRequestBase;
 import de.ur.mi.android.ting.model.primitives.Pin;
-import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.User;
-import de.ur.mi.android.ting.utilities.cache.WeakRefMemoryCache;
 
 public class ParseHelper {
 
@@ -57,8 +47,9 @@ public class ParseHelper {
 	}
 
 	public static Board createBoard(ParseObject o) {
-		if (o == null)
+		if (o == null) {
 			return null;
+		}
 		cache().put(o);
 
 		Board board = new Board(o.getObjectId());
@@ -111,8 +102,9 @@ public class ParseHelper {
 
 	public static Collection<User> createUsers(
 			List<? extends ParseObject> objects) {
-		if (objects == null)
+		if (objects == null) {
 			return null;
+		}
 		ArrayList<User> users = new ArrayList<User>();
 		for (ParseObject parseObject : objects) {
 			User user = createUser(parseObject);
@@ -135,6 +127,27 @@ public class ParseHelper {
 			boards.add(createBoard(object));
 		}
 		return boards;
+	}
+
+	public static List<Category> createCategories(List<ParseObject> objects) {
+		ArrayList<Category> categories = new ArrayList<Category>();
+		if (objects != null) {
+			for (ParseObject parseObject : objects) {
+				categories.add(ParseHelper.createCategory(parseObject));
+			}
+		}
+		return categories;
+	}
+
+	public static Collection<ParseObject> toParseObjects(String classname,
+			Collection<String> ids) {
+		List<ParseObject> objects = new ArrayList<ParseObject>();
+		if (ids != null) {
+			for (String id : ids) {
+				objects.add(ParseObject.createWithoutData(classname, id));
+			}
+		}
+		return objects;
 	}
 
 }

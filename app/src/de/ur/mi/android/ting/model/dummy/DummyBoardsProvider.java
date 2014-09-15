@@ -2,15 +2,12 @@ package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import de.ur.mi.android.ting.app.controllers.BoardEditRequest;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
-import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class DummyBoardsProvider implements IBoardsService {
 

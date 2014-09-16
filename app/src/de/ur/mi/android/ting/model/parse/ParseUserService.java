@@ -4,19 +4,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.app.Activity;
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.app.fragments.RegisterRequest;
+import de.ur.mi.android.ting.app.fragments.Service;
+import de.ur.mi.android.ting.app.fragments.ServiceLoginResultType;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
@@ -49,19 +56,22 @@ public class ParseUserService implements IUserService {
 				boolean isSuccess = u != null;
 				LoginResult lr = new LoginResult(isSuccess);
 				if (isSuccess) {
-					ParseUserService.this.setUserInfo(u);
+					ParseUserService.this.setUserInfo(u, true);
 				}
-				ParseUserService.this.localuser.setIsLoggedIn(isSuccess);
 				callback.done(lr);
 			}
 		});
 	}
 
-	protected void setUserInfo(ParseUser u) {
+	protected void setUserInfo(ParseUser u, boolean isExistingUser) {
+		ParseUserService.this.localuser.setIsLoggedIn(true);
 		this.localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
-		this.tryAddBoardsFollowed(u);
-		this.tryAddLikedPins(u);
-		this.tryAddOwnedBoards();
+		if (isExistingUser) {
+
+			this.tryAddBoardsFollowed(u);
+			this.tryAddLikedPins(u);
+			this.tryAddOwnedBoards();
+		}
 	}
 
 	private void tryAddOwnedBoards() {
@@ -126,7 +136,7 @@ public class ParseUserService implements IUserService {
 		ParseUser user = ParseUser.getCurrentUser();
 		boolean isLoggedIn = user != null;
 		if (isLoggedIn) {
-			this.setUserInfo(user);
+			this.setUserInfo(user, true);
 		}
 		this.localuser.setIsLoggedIn(isLoggedIn);
 		return isLoggedIn;
@@ -268,7 +278,7 @@ public class ParseUserService implements IUserService {
 	@Override
 	public void register(RegisterRequest request,
 			final IDoneCallback<Boolean> callback) {
-		ParseUser user = new ParseUser();
+		final ParseUser user = new ParseUser();
 		user.setUsername(request.getName());
 		user.setPassword(request.getPassword());
 		user.setEmail(request.getEmail());
@@ -281,6 +291,7 @@ public class ParseUserService implements IUserService {
 			@Override
 			public void done(ParseException e) {
 				if (e == null) {
+					ParseUserService.this.setUserInfo(user, false);
 					callback.done(true);
 				} else {
 					callback.fail(e);
@@ -288,4 +299,36 @@ public class ParseUserService implements IUserService {
 			}
 		});
 	}
+
+	@Override
+	public void loginThirdParty(Service service, Activity activity,
+			final IDoneCallback<ServiceLoginResultType> callback) {
+		LogInCallback logInCallback = new LogInCallback() {
+
+			@Override
+			public void done(ParseUser user, ParseException e) {
+				if (user != null) {
+					boolean isnew = user.isNew();
+					if (isnew) {
+						ParseUserService.this.setUserInfo(user, false);
+						callback.done(ServiceLoginResultType.Register);
+					} else {
+						ParseUserService.this.setUserInfo(user, true);
+						callback.done(ServiceLoginResultType.Login);
+					}
+
+				}
+
+			}
+		};
+		switch (service) {
+		case Facebook:
+			ParseFacebookUtils.logIn(activity, logInCallback);
+			break;
+		case Twitter:
+			ParseTwitterUtils.logIn(activity, logInCallback);
+		}
+
+	}
+
 }

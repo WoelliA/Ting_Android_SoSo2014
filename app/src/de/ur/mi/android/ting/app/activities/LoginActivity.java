@@ -2,6 +2,9 @@ package de.ur.mi.android.ting.app.activities;
 
 import java.util.ArrayList;
 
+import com.parse.ParseFacebookUtils;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +34,12 @@ public class LoginActivity extends BaseActivity implements ILoginHandler {
 		
 
 	
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	@Override

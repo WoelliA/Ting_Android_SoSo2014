@@ -1,12 +1,17 @@
 package de.ur.mi.android.ting.app.activities;
 
+import java.io.ObjectOutputStream.PutField;
+
 import javax.inject.Inject;
+
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.controllers.EditProfileController;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileView;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
+import de.ur.mi.android.ting.utilities.view.Notify;
+import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,11 +38,17 @@ public class EditProfileActivity extends BaseActivity implements
 	public IImageLoader imageloader;
 	private EditText emailView;
 	private EditText infoView;
+	private boolean isTutorial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_profile);
+
+		Intent intent = getIntent();
+		isTutorial = (boolean) intent.getBooleanExtra(Constants.ISTUTORIAL_KEY,
+				false);
+
 		this.initUi();
 		this.controller.setView(this);
 	}
@@ -84,6 +95,16 @@ public class EditProfileActivity extends BaseActivity implements
 		}
 	}
 
+	private boolean navigate() {
+		if (isTutorial) {
+			Intent intent = new Intent(this, EditBoardActivity.class);
+			intent.putExtra(Constants.ISTUTORIAL_KEY, true);
+			this.startActivity(intent);
+			return true;
+		}
+		return false;
+	}
+
 	private void initUi() {
 		this.usernameView = (EditText) this
 				.findViewById(R.id.edittext_username);
@@ -123,6 +144,7 @@ public class EditProfileActivity extends BaseActivity implements
 			this.startActivityForResult(intent, SELECT_PHOTO);
 			break;
 		case R.id.button_save:
+
 			EditProfileResult editProfileResult = this.getEditProfileResult();
 			if (editProfileResult.getName().trim().length() == 0) {
 				this.usernameView.setError(this
@@ -131,6 +153,8 @@ public class EditProfileActivity extends BaseActivity implements
 			}
 
 			this.controller.onSaveProfile(editProfileResult);
+			navigate();
+			break;
 		}
 	}
 
@@ -141,5 +165,14 @@ public class EditProfileActivity extends BaseActivity implements
 		EditProfileResult editProfileResult = new EditProfileResult(username,
 				email, info);
 		return editProfileResult;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (isTutorial) {
+			Notify.current().show(R.string.welcome_dialog_title,
+					R.string.welcome_dialog_edit_profile, NotifyKind.INFO);
+		}
 	}
 }

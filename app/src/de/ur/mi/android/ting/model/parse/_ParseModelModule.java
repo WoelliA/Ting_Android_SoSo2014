@@ -7,6 +7,8 @@ import javax.inject.Singleton;
 import android.content.Context;
 
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseTwitterUtils;
 
 import dagger.Module;
 import dagger.Provides;
@@ -34,6 +36,8 @@ public class _ParseModelModule implements _IModelModule {
 	public _ParseModelModule(Context context) {
 		// Parse.enableLocalDatastore(context);
 		Parse.initialize(context, applicationId, clientKey);
+		ParseFacebookUtils.initialize("235547439794245");
+		ParseTwitterUtils.initialize("7lqEeDTEdYEW2U7mO7Psyg", "lE1SB6OjqBWyOzYFl0fMIhJxElZWNRDaNArjZeck");
 	}
 
 	@Override

@@ -15,8 +15,10 @@ import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.view.Notify;
+import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,8 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
 	public static final String TYPE_KEY = "type";
 	public static final String BOARD_ID_KEY = "boardId";
+	
+	private boolean isTutorial;
 
 	@Inject
 	public EditBoardController controller;
@@ -42,6 +46,8 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_board);
 
+		Intent intent = getIntent();
+		isTutorial = (boolean) intent.getBooleanExtra(Constants.ISTUTORIAL_KEY, false);
 		int type = this.getIntent().getExtras().getInt(TYPE_KEY);
 
 		this.initUi();
@@ -73,6 +79,15 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 				});
 	}
 
+	private boolean navigate() {
+		if(isTutorial){
+			Intent intent = new Intent(this, MainActivity.class);
+			this.startActivity(intent);
+			return true;
+		}
+		return false;
+	}
+	
 	protected void saveBoard() {
 		String title = this.titleView.getText().toString();
 
@@ -87,7 +102,9 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 			return;
 		}
 		String description = this.descriptionView.getText().toString();
+		
 		this.controller.saveBoard(title, description, (Category) selectedItem);
+		navigate();
 	}
 
 	@Override
@@ -119,7 +136,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		public SimpleCategoryViewResolver(Context context) {
 			super(R.layout.category_layout, context, null);
 		}
-
+ 
 		@Override
 		protected void decorateView(View view, Category category,
 				ViewGroup parent) {
@@ -132,6 +149,15 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		@Override
 		public boolean skipInject() {
 			return true;
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (isTutorial) {
+			Notify.current().show(R.string.welcome_dialog_title,
+					R.string.welcome_dialog_edit_board, NotifyKind.INFO);
 		}
 	}
 }

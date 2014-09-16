@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.app.Activity;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.app.fragments.RegisterRequest;
+import de.ur.mi.android.ting.app.fragments.Service;
+import de.ur.mi.android.ting.app.fragments.ServiceLoginResultType;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
@@ -126,5 +129,14 @@ public class DummyUserService implements IUserService {
 		DummyResultTask<Boolean> task = new DummyResultTask<Boolean>(true, callback);
 		
 	}
+
+	@Override
+	public void loginThirdParty(Service service, Activity activity,
+			IDoneCallback<ServiceLoginResultType> simpleDoneCallback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }

@@ -2,10 +2,15 @@ package de.ur.mi.android.ting.app.fragments;
 
 import javax.inject.Inject;
 
+import com.parse.ParseFacebookUtils;
+
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.activities.Constants;
+import de.ur.mi.android.ting.app.activities.EditProfileActivity;
 import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -18,7 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginFragment extends LoginFragmentBase {
+public class LoginFragment extends LoginFragmentBase implements OnClickListener {
 
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
@@ -32,6 +37,7 @@ public class LoginFragment extends LoginFragmentBase {
 	// UI references.
 	private EditText mUsernameView;
 	private EditText mPasswordView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -44,23 +50,25 @@ public class LoginFragment extends LoginFragmentBase {
 
 		this.mUsernameView = (EditText) this.findViewById(R.id.username);
 		this.mUsernameView.setText(this.mUserName);
-		Button registerButton = (Button) this.findViewById(R.id.action_register);
+		Button registerButton = (Button) this
+				.findViewById(R.id.action_register);
 		registerButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				 LoginFragment.this.handler.showRegister();
-				
+				LoginFragment.this.handler.showRegister();
+
 			}
 		});
-		
-		Button forgotPWButton = (Button) this.findViewById(R.id.action_forgot_password);
+
+		Button forgotPWButton = (Button) this
+				.findViewById(R.id.action_forgot_password);
 		forgotPWButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				LoginFragment.this.handler.showForgotPW();
-				
+
 			}
 		});
 
@@ -76,7 +84,7 @@ public class LoginFragment extends LoginFragmentBase {
 						}
 						return false;
 					}
-				});		
+				});
 
 		this.findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
@@ -85,9 +93,50 @@ public class LoginFragment extends LoginFragmentBase {
 						LoginFragment.this.attemptLogin();
 					}
 				});
+
+		this.findViewById(R.id.action_twitter_login).setOnClickListener(this);
+		this.findViewById(R.id.action_facebook_login).setOnClickListener(this);
+	}
+	
+	
+	@Override
+	public void onClick(View v) {
+		SimpleDoneCallback<ServiceLoginResultType> callback = new SimpleDoneCallback<ServiceLoginResultType>() {
+
+			@Override
+			public void done(ServiceLoginResultType result) {
+				onThirdPartyLogin(result);
+			}
+		};
+		
+		switch(v.getId()){
+		case R.id.action_facebook_login: 
+			this.controller.loginThirdParty(Service.Facebook, this.getActivity(), callback);
+			break;
+		case R.id.action_twitter_login:
+			this.controller.loginThirdParty(Service.Twitter, this.getActivity(), callback);
+			break;
+		} 		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
 	}
 
-	
+	private void onThirdPartyLogin(ServiceLoginResultType result) {
+		if (result == ServiceLoginResultType.Login) {
+			getActivity().finish();
+		}
+		else{
+			Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+			intent.putExtra(Constants.ISTUTORIAL_KEY, true);
+			getActivity().startActivity(intent);
+		}
+
+
+	}
 
 	public void attemptLogin() {
 
@@ -129,7 +178,7 @@ public class LoginFragment extends LoginFragmentBase {
 			focusView.requestFocus();
 		} else {
 			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.			
+			// perform the user login attempt.
 			this.controller.login(this.mUserName, this.mPassword,
 					new SimpleDoneCallback<LoginResult>() {
 
@@ -148,5 +197,6 @@ public class LoginFragment extends LoginFragmentBase {
 					});
 		}
 	}
+
 
 }

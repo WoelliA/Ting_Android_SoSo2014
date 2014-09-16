@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.fragments.Gender;
 import de.ur.mi.android.ting.app.fragments.RegisterRequest;
+import de.ur.mi.android.ting.app.fragments.Service;
+import de.ur.mi.android.ting.app.fragments.ServiceLoginResultType;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
@@ -100,5 +104,12 @@ public class LoginController implements IChangeListener<LoginResult> {
 		genderList.add(new Gender("vUjCdGSa2k", "Male"));
 		callback.done(genderList);
 
+	}
+
+	public void loginThirdParty(Service service,
+			Activity activity, IDoneCallback<ServiceLoginResultType> callback) {
+		if (!this.connectivity.hasWebAccess(true)) {
+		}
+		this.userService.loginThirdParty(service, activity, callback);
 	}
 }

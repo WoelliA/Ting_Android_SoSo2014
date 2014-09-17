@@ -14,6 +14,7 @@ import de.ur.mi.android.ting.app.fragments.Service;
 import de.ur.mi.android.ting.app.fragments.ServiceLoginResultType;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
@@ -59,16 +60,16 @@ public class LoginController implements IChangeListener<LoginResult> {
 
 	@Override
 	public void onChange(LoginResult loginres) {
-		if (loginres.getIsRightLogin()) {
+		if (loginres.getIsRightLogin() && !loginres.isNew()) {
 			Notify.current().showToast("Welcome " + this.user.getName());
-		} else {
+		} else if(!loginres.getIsRightLogin()) {
 			Notify.current().showToast(R.string.logged_out);
 		}
 	}
 
 	public void logout() {
 		this.userService.logout();
-		this.user.setIsLoggedIn(false);
+		this.user.setIsLoggedIn(false, false);
 	}
 
 	public void register(RegisterRequest registerRequest,
@@ -106,8 +107,8 @@ public class LoginController implements IChangeListener<LoginResult> {
 
 	}
 
-	public void loginThirdParty(Service service,
-			Activity activity, IDoneCallback<ServiceLoginResultType> callback) {
+	public void loginThirdParty(Service service, Activity activity,
+			IDoneCallback<ServiceLoginResultType> callback) {
 		if (!this.connectivity.hasWebAccess(true)) {
 		}
 		this.userService.loginThirdParty(service, activity, callback);

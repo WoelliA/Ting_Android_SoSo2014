@@ -20,8 +20,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 
-public class ShareActivity extends BaseActivity implements
+public class ShareActivity extends ActionBarActivityBase implements
 		IShareSetupView {
 
 	public static final String PIN_ID_KEY = "pinIdKey";
@@ -35,9 +36,21 @@ public class ShareActivity extends BaseActivity implements
 	private String pinId;
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, MainActivity.class);
+			this.startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_share);
+		this.getSupportActionBar().setHomeButtonEnabled(true);
 
 		this.controller.setView(this);
 
@@ -159,7 +172,7 @@ public class ShareActivity extends BaseActivity implements
 
 	@Override
 	public void setPinData(PinData data) {
-		this.selectedPinData = data;		
+		this.selectedPinData = data;
 	}
 
 }

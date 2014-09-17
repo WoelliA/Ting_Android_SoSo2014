@@ -54,7 +54,7 @@ public class ParseUserService implements IUserService {
 			@Override
 			public void done(ParseUser u, ParseException e) {
 				boolean isSuccess = u != null;
-				LoginResult lr = new LoginResult(isSuccess);
+				LoginResult lr = new LoginResult(isSuccess, false);
 				if (isSuccess) {
 					ParseUserService.this.setUserInfo(u, true);
 				}
@@ -63,15 +63,14 @@ public class ParseUserService implements IUserService {
 		});
 	}
 
-	protected void setUserInfo(ParseUser u, boolean isExistingUser) {
-		ParseUserService.this.localuser.setIsLoggedIn(true);
+	protected void setUserInfo(ParseUser u, boolean isNew) {
 		this.localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
-		if (isExistingUser) {
-
+		if (!isNew) {
 			this.tryAddBoardsFollowed(u);
 			this.tryAddLikedPins(u);
 			this.tryAddOwnedBoards();
 		}
+		ParseUserService.this.localuser.setIsLoggedIn(true, isNew);
 	}
 
 	private void tryAddOwnedBoards() {
@@ -138,7 +137,7 @@ public class ParseUserService implements IUserService {
 		if (isLoggedIn) {
 			this.setUserInfo(user, true);
 		}
-		this.localuser.setIsLoggedIn(isLoggedIn);
+		this.localuser.setIsLoggedIn(isLoggedIn, false);
 		return isLoggedIn;
 	}
 
@@ -304,23 +303,18 @@ public class ParseUserService implements IUserService {
 	public void loginThirdParty(Service service, Activity activity,
 			final IDoneCallback<ServiceLoginResultType> callback) {
 		LogInCallback logInCallback = new LogInCallback() {
-
 			@Override
 			public void done(ParseUser user, ParseException e) {
 				if (user != null) {
 					boolean isnew = user.isNew();
-					if (isnew) {
-						ParseUserService.this.setUserInfo(user, false);
-						callback.done(ServiceLoginResultType.Register);
-					} else {
-						ParseUserService.this.setUserInfo(user, true);
-						callback.done(ServiceLoginResultType.Login);
-					}
-
+					ParseUserService.this.setUserInfo(user, isnew);
+					ServiceLoginResultType type = isnew ? ServiceLoginResultType.Register
+							: ServiceLoginResultType.Login;
+					callback.done(type);
 				}
-
 			}
 		};
+
 		switch (service) {
 		case Facebook:
 			ParseFacebookUtils.logIn(activity, logInCallback);

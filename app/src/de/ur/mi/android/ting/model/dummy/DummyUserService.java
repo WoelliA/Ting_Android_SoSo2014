@@ -39,10 +39,10 @@ public class DummyUserService implements IUserService {
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				DummyUserService.this.user
-						.setIsLoggedIn(DummyUserService.this.isRightLogin);
+						.setIsLoggedIn(DummyUserService.this.isRightLogin, false);
 				DummyUserService.this.user.setInfo(new DummyUser(1), "w@w.de");
 				callback.done(new LoginResult(
-						DummyUserService.this.isRightLogin));
+						DummyUserService.this.isRightLogin, false));
 			}
 		};
 		loginTask.execute();
@@ -50,7 +50,7 @@ public class DummyUserService implements IUserService {
 
 	@Override
 	public boolean checkIsLoggedIn() {
-		this.user.setIsLoggedIn(DummyConfig.IS_USER_LOGGED_DEFAULT);
+		this.user.setIsLoggedIn(DummyConfig.IS_USER_LOGGED_DEFAULT, false);
 		this.user.setInfo(new DummyUser(1), "w@w.de");
 		return this.user.getIsLogedIn();
 	}
@@ -96,7 +96,8 @@ public class DummyUserService implements IUserService {
 	}
 
 	@Override
-	public void getFavoriteCategories(final IDoneCallback<List<Category>> callback) {
+	public void getFavoriteCategories(
+			final IDoneCallback<List<Category>> callback) {
 
 		DelayTask task = new DelayTask() {
 			@Override
@@ -104,13 +105,13 @@ public class DummyUserService implements IUserService {
 				super.onPostExecute(result);
 				Random random = new Random();
 				List<Category> favorites = new ArrayList<Category>();
-//				for (Category category : DummyCategoryProvider.super
-//						.getCategories()) {
-//					int r = random.nextInt();
-//					if (r % 4 == 0) {
-//						favorites.add(category);
-//					}
-//				}
+				// for (Category category : DummyCategoryProvider.super
+				// .getCategories()) {
+				// int r = random.nextInt();
+				// if (r % 4 == 0) {
+				// favorites.add(category);
+				// }
+				// }
 				callback.done(favorites);
 			}
 		};
@@ -120,23 +121,22 @@ public class DummyUserService implements IUserService {
 
 	@Override
 	public void setFollowBoard(String boardId, boolean follow) {
-		
+
 	}
 
 	@Override
 	public void register(RegisterRequest registerRequest,
 			IDoneCallback<Boolean> callback) {
-		DummyResultTask<Boolean> task = new DummyResultTask<Boolean>(true, callback);
-		
+		DummyResultTask<Boolean> task = new DummyResultTask<Boolean>(true,
+				callback);
+
 	}
 
 	@Override
 	public void loginThirdParty(Service service, Activity activity,
 			IDoneCallback<ServiceLoginResultType> simpleDoneCallback) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	
+	}
 
 }

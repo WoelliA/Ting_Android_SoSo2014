@@ -24,6 +24,7 @@ public class LocalUser extends User {
 	private List<Board> followedBoards = new ArrayList<Board>();
 	private HashSet<Pin> likedPins = new HashSet<Pin>();
 	private HashSet<Board> ownedBoards = new HashSet<Board>();
+	private boolean isNew;
 	private static LocalUser current;
 
 	public LocalUser() {
@@ -36,8 +37,9 @@ public class LocalUser extends User {
 		return this.isLoggedIn;
 	}
 
-	public void setIsLoggedIn(boolean isLoggedIn) {
-		LoginResult loginResult = new LoginResult(isLoggedIn);
+	public void setIsLoggedIn(boolean isLoggedIn, boolean isNew) {
+		this.isNew = isNew;
+		LoginResult loginResult = new LoginResult(isLoggedIn, isNew);
 		if (this.isLoggedIn != isLoggedIn) {
 			// only notify on change
 			this.notifyLoginChangeListeners(loginResult);
@@ -65,7 +67,7 @@ public class LocalUser extends User {
 	}
 
 	public String getEmail() {
-		return this.email;
+		return this.email == null ? "" : this.email;
 	}
 
 	public void setFavoriteCategories(List<Category> categories) {
@@ -107,5 +109,9 @@ public class LocalUser extends User {
 	
 	public void setOwnedBoards(Collection<Board> boards){
 		this.ownedBoards = new HashSet<Board>(boards);
+	}
+
+	public boolean isNew() {
+		return this.isNew;
 	}
 }

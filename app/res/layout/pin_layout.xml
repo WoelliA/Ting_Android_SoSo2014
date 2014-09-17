@@ -47,40 +47,54 @@
             android:text="Last year, the permanently fired-up Welsh indie-poppers released No Blues, their first album in a couple of years, a long stretch for a band as prolific as this"
             android:textSize="@dimen/pin_content_text_size" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/pin_controls"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content" >
 
-            <ToggleButton
-                android:id="@+id/button_like"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/button_margin"
-                android:layout_weight="1"
-                android:background="@drawable/ting_toggleselector"
-                android:textColor="@drawable/ting_toggle_text_selector"
-                android:textOff="@string/button_like"
-                android:textOn="@string/button_liked"
-                android:textSize="@dimen/pin_controls_textsize" />
+                android:layout_toStartOf="@+id/button_openlink"
+                android:orientation="horizontal" >
+
+                <ToggleButton
+                    android:id="@+id/button_like"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/button_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/ting_toggleselector"
+                    android:textColor="@drawable/ting_toggle_text_selector"
+                    android:textOff="@string/button_like"
+                    android:textOn="@string/button_liked"
+                    android:textSize="@dimen/pin_controls_textsize" />
+
+                <Button
+                    android:id="@+id/button_reting"
+                    style="@style/pin_control_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/button_reting" />
+
+                <Button
+                    android:id="@+id/button_share"
+                    style="@style/pin_control_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/button_share" />
+            </LinearLayout>
 
             <Button
-                android:id="@+id/button_reting"
+                android:id="@+id/button_openlink"
                 style="@style/pin_control_style"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_reting" />
-
-            <Button
-                android:id="@+id/button_share"
-                style="@style/pin_control_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_share" />
-        </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:text="@string/button_openlink" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -10,7 +10,7 @@ import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public abstract class PagingController<T> implements IPaging<T> {
 
-	private ArrayAdapter<T> adapter;
+	protected PagingListAdapterBase<T> adapter;
 
 	
 	@Override
@@ -42,5 +42,6 @@ public abstract class PagingController<T> implements IPaging<T> {
 			return;
 		}
 		this.adapter.clear();
+		this.adapter.notifyHasMore();
 	}
 }

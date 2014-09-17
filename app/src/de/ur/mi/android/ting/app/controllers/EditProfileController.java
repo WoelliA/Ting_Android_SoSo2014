@@ -59,6 +59,9 @@ public class EditProfileController {
 
 	public void setView(EditProfileView view) {
 		this.view = view;
+		if (user.isNew()) {
+			user.setName("");
+		}
 		this.view.displayUserProfile(this.user, this.user.getEmail());
 	}
 
@@ -69,7 +72,8 @@ public class EditProfileController {
 					@Override
 					public void done(Bitmap result) {
 						EditProfileController.this.newProfileImage = result;
-						EditProfileController.this.view.displayProfileImage(result);
+						EditProfileController.this.view
+								.displayProfileImage(result);
 					}
 				});
 
@@ -94,8 +98,9 @@ public class EditProfileController {
 					@Override
 					public void done(Void result) {
 						super.done(result);
-						EditProfileController.this.user.setInfo(new User("", editProfileResult.getName(),
-								editProfileResult.getInfo(), ""),
+						EditProfileController.this.user.setInfo(
+								new User("", editProfileResult.getName(),
+										editProfileResult.getInfo(), ""),
 								editProfileResult.getEmail());
 						EditProfileController.this.newProfileImage = null;
 					}

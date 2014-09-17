@@ -31,7 +31,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
 	public static final String TYPE_KEY = "type";
 	public static final String BOARD_ID_KEY = "boardId";
-	
+
 	private boolean isTutorial;
 
 	@Inject
@@ -47,14 +47,16 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		this.setContentView(R.layout.activity_edit_board);
 
 		Intent intent = getIntent();
-		isTutorial = (boolean) intent.getBooleanExtra(Constants.ISTUTORIAL_KEY, false);
-		int type = this.getIntent().getExtras().getInt(TYPE_KEY);
+		isTutorial = (boolean) intent.getBooleanExtra(Constants.ISTUTORIAL_KEY,
+				false);
+		int type = this.getIntent().getExtras().getInt(TYPE_KEY, 1);
 
 		this.initUi();
 
 		this.controller.setView(this);
 		if (type == TYPE_EDIT) {
-			String boardId = this.getIntent().getExtras().getString(BOARD_ID_KEY);
+			String boardId = this.getIntent().getExtras()
+					.getString(BOARD_ID_KEY);
 			this.controller.init(boardId);
 		}
 	}
@@ -80,14 +82,14 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 	}
 
 	private boolean navigate() {
-		if(isTutorial){
+		if (isTutorial) {
 			Intent intent = new Intent(this, MainActivity.class);
 			this.startActivity(intent);
 			return true;
 		}
 		return false;
 	}
-	
+
 	protected void saveBoard() {
 		String title = this.titleView.getText().toString();
 
@@ -102,7 +104,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 			return;
 		}
 		String description = this.descriptionView.getText().toString();
-		
+
 		this.controller.saveBoard(title, description, (Category) selectedItem);
 		navigate();
 	}
@@ -136,7 +138,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		public SimpleCategoryViewResolver(Context context) {
 			super(R.layout.category_layout, context, null);
 		}
- 
+
 		@Override
 		protected void decorateView(View view, Category category,
 				ViewGroup parent) {
@@ -145,13 +147,13 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 					.findViewById(view, R.id.category_favorite_button);
 			button.setVisibility(View.INVISIBLE);
 		}
-
+		
 		@Override
 		public boolean skipInject() {
 			return true;
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();

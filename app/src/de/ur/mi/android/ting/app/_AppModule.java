@@ -2,9 +2,12 @@ package de.ur.mi.android.ting.app;
 
 import java.util.Collection;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.activities.MainActivity;
+import de.ur.mi.android.ting.app.activities.ShareActivity;
 import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.primitives.Category;
@@ -21,9 +24,11 @@ public class _AppModule {
 	@Provides
 	IAppStart provideIAppStart() {
 		return new IAppStart() {
-
 			@Override
-			public Class<MainActivity> getStartActivityClass() {
+			public Class<?> getStartActivityClass(Intent intent) {
+				if(intent.getAction().equals(Intent.ACTION_SEND)){
+					return ShareActivity.class;
+				}
 				return MainActivity.class;
 			}
 		};

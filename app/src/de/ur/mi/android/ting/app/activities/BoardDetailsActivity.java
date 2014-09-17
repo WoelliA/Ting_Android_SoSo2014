@@ -3,6 +3,7 @@ package de.ur.mi.android.ting.app.activities;
 import javax.inject.Inject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -88,5 +89,10 @@ public class BoardDetailsActivity extends BaseActivity implements
 			}
 		});
 
+	}
+
+	@Override
+	public Context getContext() {
+		return this;
 	}
 }

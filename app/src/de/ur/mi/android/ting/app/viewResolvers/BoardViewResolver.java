@@ -75,14 +75,22 @@ public class BoardViewResolver extends ViewResolver<Board> {
 				followToggle
 						.setChecked(affiliation == BoardAffiliation.Follower);
 				followToggle.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						boolean follow = ((CompoundButton)v).isChecked();
-						BoardViewResolver.this.controller.setFollowBoard(board, follow);						
+						boolean follow = ((CompoundButton) v).isChecked();
+						boolean success = BoardViewResolver.this.controller
+								.setFollowBoard(board, follow);
+						if (!success)
+							followToggle.setChecked(false);
 					}
 				});
 				switcher.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public Context getContext() {
+				return context;
 			}
 
 		}, board);

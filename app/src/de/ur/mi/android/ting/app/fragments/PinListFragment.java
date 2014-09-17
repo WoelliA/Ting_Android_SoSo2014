@@ -28,13 +28,14 @@ public class PinListFragment extends FragmentBase {
 		return inflater.inflate(R.layout.fragment_pinlist, container, false);
 	}
 
+	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onResume() {
 		if(this.controller == null){
 			return;
 		}
 		this.initPinListUI();
+		super.onResume();
 	}
 
 	private void initPinListUI() {

@@ -3,11 +3,14 @@ package de.ur.mi.android.ting.app.viewResolvers;
 import javax.inject.Inject;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -76,7 +79,7 @@ public class PinViewResolver extends ViewResolver<Pin> {
 			}
 		});
 
-		ToggleButton like = (ToggleButton) this.findViewById(view,
+		CompoundButton like = (CompoundButton) this.findViewById(view,
 				R.id.button_like);
 		like.setChecked(this.controller.getIsLiked(pin));
 
@@ -91,7 +94,8 @@ public class PinViewResolver extends ViewResolver<Pin> {
 						button.setChecked(success);
 					}
 				} else {
-					PinViewResolver.this.controller.unlike(pin, PinViewResolver.this.context);
+					PinViewResolver.this.controller.unlike(pin,
+							PinViewResolver.this.context);
 				}
 
 			}
@@ -103,7 +107,30 @@ public class PinViewResolver extends ViewResolver<Pin> {
 
 			@Override
 			public void onClick(View v) {
-				PinViewResolver.this.controller.share(pin, PinViewResolver.this.context);
+				PinViewResolver.this.controller.share(pin,
+						PinViewResolver.this.context);
+			}
+		});
+
+		String linkUrl = pin.getLinkUri();
+		View browserButton = this.findViewById(view, R.id.button_openlink);
+		if (linkUrl == null || linkUrl.trim().length() == 0) {
+			browserButton.setVisibility(View.GONE);
+			return;
+		}
+
+		Uri url = Uri.parse(linkUrl);
+		if (url == null) {
+			browserButton.setVisibility(View.GONE);
+			return;
+		}
+		browserButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(pin.getLinkUri()));
+				getContext().startActivity(intent);
 			}
 		});
 

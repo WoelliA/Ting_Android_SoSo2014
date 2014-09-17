@@ -31,7 +31,7 @@ public class TypedSearchController<T> extends PagingController<T> implements
 			return;
 		}
 		this.query = newQuery;
-		this.reset();
+		this.reset();		
 	}
 
 	@Override

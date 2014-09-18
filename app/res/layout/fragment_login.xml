@@ -53,6 +53,8 @@
                 android:orientation="horizontal" >
 
                 <Button
+                    
+                    style="@style/ting_button_style"
                     android:id="@+id/sign_in_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,6 +65,8 @@
                     android:text="@string/action_sign_in" />
 
                 <Button
+                    
+                    style="@style/ting_button_style"
                     android:id="@+id/action_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

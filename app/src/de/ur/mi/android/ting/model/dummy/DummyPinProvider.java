@@ -18,7 +18,9 @@ public class DummyPinProvider implements IPinService {
 	@Override
 	public void getPinsForCategory(Category category, final PinRequest request,
 			final IPinReceivedCallback callback) {
-		DelayTask pinTask = new DelayTask() {
+		
+		
+		DelayTask pinTask = new DelayTask(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds) {
 
 			@Override
 			protected void onPostExecute(Void result) {
@@ -50,7 +52,7 @@ public class DummyPinProvider implements IPinService {
 	@Override
 	public void getPinsForBoard(String boardId, final PinRequest request,
 			final IDoneCallback<Collection<Pin>> callback) {
-		DelayTask task = new DelayTask() {
+		DelayTask task = new DelayTask(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds) {
 			@Override
 			protected void onPostExecute(Void result) {
 				callback.done(DummyPinProvider.this.createDummyPins(request));

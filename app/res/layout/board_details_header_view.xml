@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-    
+
     <TextView
         android:id="@+id/textview_board_description"
         android:layout_width="wrap_content"
@@ -27,6 +27,7 @@
 
     <Button
         android:id="@+id/button_edit_board"
+        style="@style/ting_button_style"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_edit_board_text"

@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream.PutField;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.Tutorial;
 import de.ur.mi.android.ting.app.controllers.EditProfileController;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileView;
@@ -38,17 +39,14 @@ public class EditProfileActivity extends BaseActivity implements
 	public IImageLoader imageloader;
 	private EditText emailView;
 	private EditText infoView;
-	private boolean isTutorial;
+	private Tutorial tutorial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_profile);
 
-		Intent intent = getIntent();
-		isTutorial = (boolean) intent.getBooleanExtra(Constants.ISTUTORIAL_KEY,
-				false);
-
+		this.tutorial = Tutorial.getTutorial(getIntent());
 		this.initUi();
 		this.controller.setView(this);
 	}
@@ -93,16 +91,6 @@ public class EditProfileActivity extends BaseActivity implements
 				this.controller.onProfileImageChanged(imageUri);
 			}
 		}
-	}
-
-	private boolean navigate() {
-		if (isTutorial) {
-			Intent intent = new Intent(this, EditBoardActivity.class);
-			intent.putExtra(Constants.ISTUTORIAL_KEY, true);
-			this.startActivity(intent);
-			return true;
-		}
-		return false;
 	}
 
 	private void initUi() {
@@ -153,9 +141,11 @@ public class EditProfileActivity extends BaseActivity implements
 			}
 
 			this.controller.onSaveProfile(editProfileResult);
-			navigate();
+			if (this.tutorial != null)
+				tutorial.proceed(this);
 			break;
 		}
+
 	}
 
 	private EditProfileResult getEditProfileResult() {
@@ -165,14 +155,5 @@ public class EditProfileActivity extends BaseActivity implements
 		EditProfileResult editProfileResult = new EditProfileResult(username,
 				email, info);
 		return editProfileResult;
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (isTutorial) {
-			Notify.current().show(R.string.welcome_dialog_title,
-					R.string.welcome_dialog_edit_profile, NotifyKind.INFO);
-		}
 	}
 }

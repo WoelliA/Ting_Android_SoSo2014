@@ -28,12 +28,11 @@ public class LoginActivity extends BaseActivity implements ILoginHandler {
 
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_login);
-		this.fillFragemtnList();
+		this.fillFragmentList();
 		this.pager = (ViewPager) this.findViewById(R.id.login_pager);
 		FragmentManager supportFragmentManager = this
 				.getSupportFragmentManager();
 		this.pager.setAdapter(new LoginFragmentAdapter(supportFragmentManager));
-
 	}
 
 	@Override
@@ -44,22 +43,20 @@ public class LoginActivity extends BaseActivity implements ILoginHandler {
 
 	@Override
 	protected void onResume() {
-		this.injectView();
+		this.injectHandler();
 		super.onResume();
 	}
 
-	private void injectView() {
+	private void injectHandler() {
 		for (LoginFragmentBase fragment : this.fragmentList) {
 			fragment.setHandler(this);
 		}
-
 	}
 
-	private void fillFragemtnList() {
+	private void fillFragmentList() {
 		this.fragmentList.add(new LoginFragment());
 		this.fragmentList.add(new RegisterFragment());
 		this.fragmentList.add(new ForgotPWFragment());
-
 	}
 
 	private class LoginFragmentAdapter extends FragmentStatePagerAdapter {
@@ -75,22 +72,17 @@ public class LoginActivity extends BaseActivity implements ILoginHandler {
 
 		@Override
 		public int getCount() {
-
 			return LoginActivity.this.fragmentList.size();
 		}
-
 	}
 
 	@Override
 	public void showRegister() {
 		this.pager.setCurrentItem(1, true);
-
 	}
 
 	@Override
 	public void showForgotPW() {
 		this.pager.setCurrentItem(2, true);
-
 	}
-
 }

@@ -34,7 +34,7 @@ public class DummyUserService implements IUserService {
 			final IDoneCallback<LoginResult> callback) {
 		this.isRightLogin = userName.equals("right@right.de")
 				&& password.equals("right");
-		DelayTask loginTask = new DelayTask() {
+		DelayTask loginTask = new DelayTask(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds) {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
@@ -57,7 +57,7 @@ public class DummyUserService implements IUserService {
 
 	@Override
 	public void getUser(String userId, final SimpleDoneCallback<User> callback) {
-		DelayTask task = new DelayTask() {
+		DelayTask task = new DelayTask(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds) {
 			@Override
 			protected void onPostExecute(Void result) {
 				callback.done(new DummyUser(10));
@@ -99,7 +99,7 @@ public class DummyUserService implements IUserService {
 	public void getFavoriteCategories(
 			final IDoneCallback<List<Category>> callback) {
 
-		DelayTask task = new DelayTask() {
+		DelayTask task = new DelayTask(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds) {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);

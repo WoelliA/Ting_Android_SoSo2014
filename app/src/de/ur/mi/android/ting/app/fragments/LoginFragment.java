@@ -101,43 +101,16 @@ public class LoginFragment extends LoginFragmentBase implements OnClickListener 
 	
 	@Override
 	public void onClick(View v) {
-		SimpleDoneCallback<ServiceLoginResultType> callback = new SimpleDoneCallback<ServiceLoginResultType>() {
-
-			@Override
-			public void done(ServiceLoginResultType result) {
-				onThirdPartyLogin(result);
-			}
-		};
-		
 		switch(v.getId()){
 		case R.id.action_facebook_login: 
-			this.controller.loginThirdParty(Service.Facebook, this.getActivity(), callback);
+			this.controller.loginThirdParty(Service.Facebook, this.getActivity());
 			break;
 		case R.id.action_twitter_login:
-			this.controller.loginThirdParty(Service.Twitter, this.getActivity(), callback);
+			this.controller.loginThirdParty(Service.Twitter, this.getActivity());
 			break;
 		} 		
 	}
 	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		
-	}
-
-	private void onThirdPartyLogin(ServiceLoginResultType result) {
-		if (result == ServiceLoginResultType.Login) {
-			getActivity().finish();
-		}
-		else{
-			Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-			intent.putExtra(Constants.ISTUTORIAL_KEY, true);
-			getActivity().startActivity(intent);
-		}
-
-
-	}
-
 	public void attemptLogin() {
 
 		// Reset errors.

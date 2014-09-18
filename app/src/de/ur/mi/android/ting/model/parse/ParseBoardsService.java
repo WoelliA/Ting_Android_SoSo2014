@@ -1,10 +1,14 @@
 package de.ur.mi.android.ting.model.parse;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -16,11 +20,12 @@ import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.parse.callbacks.SaveCallbackWrap;
 import de.ur.mi.android.ting.model.primitives.Board;
+import de.ur.mi.android.ting.model.primitives.PagingRequestBase;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
 import de.ur.mi.android.ting.model.primitives.SearchResult;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
 
-public class ParseBoardsProvider implements IBoardsService {
+public class ParseBoardsService implements IBoardsService {
 
 	private LocalUser localuser;
 
@@ -34,7 +39,7 @@ public class ParseBoardsProvider implements IBoardsService {
 
 	protected ParseObject boardRef;
 
-	public ParseBoardsProvider(LocalUser user) {
+	public ParseBoardsService(LocalUser user) {
 		this.localuser = user;
 	}
 
@@ -78,7 +83,7 @@ public class ParseBoardsProvider implements IBoardsService {
 
 					@Override
 					public void done(ParseObject object, ParseException e) {
-						ParseBoardsProvider.this.boardRef = object;
+						ParseBoardsService.this.boardRef = object;
 						callback.done(ParseHelper.createBoard(object));
 					}
 				}))
@@ -90,7 +95,7 @@ public class ParseBoardsProvider implements IBoardsService {
 
 				@Override
 				public void done(ParseObject object, ParseException e) {
-					ParseBoardsProvider.this.boardRef = object;
+					ParseBoardsService.this.boardRef = object;
 					callback.done(ParseHelper.createBoard(object));
 				}
 			});
@@ -146,6 +151,24 @@ public class ParseBoardsProvider implements IBoardsService {
 						request.getCategoryId()));
 
 		this.boardRef.saveInBackground(new SaveCallbackWrap(callback));
+	}
+
+	public void getFavoriteBoardsForCategories(PagingRequestBase request,
+			Collection<String> categoryIds,
+			final IDoneCallback<Collection<Board>> callback) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+
+		params.put("categoryIds", categoryIds);
+		params.put("from", "" + request.getOffset());
+		params.put("count", "" + request.getCount());
+
+		ParseCloud.callFunctionInBackground("getPopularBoardsForCategories",
+				params, new FunctionCallback<List<ParseObject>>() {
+					@Override
+					public void done(List<ParseObject> objects, ParseException e) {
+						callback.done(ParseHelper.createBoards(objects));
+					}
+				});
 	}
 
 }

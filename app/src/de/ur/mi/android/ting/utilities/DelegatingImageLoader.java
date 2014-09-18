@@ -29,6 +29,9 @@ public class DelegatingImageLoader implements IImageLoader {
 
 	@Override
 	public void loadImage(String uri, ImageView imageView) {
+		if (this.isNoImageUri(uri)) {
+			return;
+		}
 		DisplayImageOptions options = this.buildOptions().build();
 		this.loader.displayImage(uri, imageView, options);
 	}
@@ -43,18 +46,27 @@ public class DelegatingImageLoader implements IImageLoader {
 	@Override
 	public void loadImage(String imageUri, ImageView picture,
 			ViewSwitcher switcher, View loadingView) {
-
+		if (this.isNoImageUri(imageUri)) {
+			return;
+		}
 		ImageLoadRequest request = new ImageLoadRequest(imageUri, picture,
 				switcher, loadingView);
 		DisplayImageOptions options = this.buildOptions().build();
 		request.execute(this.loader, options);
 	}
 
+	private boolean isNoImageUri(String imageUri) {
+		return imageUri == null || imageUri.trim().length() == 0;
+	}
+
 	@Override
 	public void loadImage(String imageUri,
 			final IDoneCallback<Bitmap> doneCallback) {
-
-		DisplayImageOptions options = this.buildOptions().imageScaleType(ImageScaleType.NONE).build();
+		if (isNoImageUri(imageUri)) {
+			return;
+		}
+		DisplayImageOptions options = this.buildOptions()
+				.imageScaleType(ImageScaleType.NONE).build();
 		this.loader.loadImage(imageUri, options,
 				new SimpleImageLoadingListener() {
 					@Override

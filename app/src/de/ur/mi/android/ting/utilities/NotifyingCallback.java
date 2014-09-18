@@ -17,7 +17,10 @@ public class NotifyingCallback<T> extends SimpleDoneCallback<T> {
 
 	@Override
 	public void done(T result) {
-		if (this.successMessage == null) {
+		if (this.successMessage == null || this.successMessage.trim().length() == 0) {
+			if(this.successResourceId <= 0){
+				return;
+			}
 			Notify.current().showToast(this.successResourceId);
 		} else {
 			Notify.current().showToast(this.successMessage);

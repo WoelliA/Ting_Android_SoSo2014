@@ -19,7 +19,6 @@ public class BoardDetailsController extends PagingController<Pin> implements
 
 	
 	public static interface IBoardDetailsView extends IBoardView {
-		void displayBoardInfo(Board result);
 	}
 
 	private IBoardsService boardsService;
@@ -38,17 +37,7 @@ public class BoardDetailsController extends PagingController<Pin> implements
 
 	public void init(final IBoardDetailsView view, String boardId) {
 		this.boardId = boardId;
-		this.boardsService.getBoard(this.boardId,
-				new SimpleDoneCallback<Board>() {
-
-
-					@Override
-					public void done(Board result) {
-						BoardDetailsController.this.board = result;
-						view.displayBoardInfo(result);
-						BoardDetailsController.this.boardcontroller.setup(view, result);
-					}
-				});
+		this.boardcontroller.setup(view, boardId);
 	}
 
 	@Override

@@ -68,12 +68,8 @@ public class MainActivity extends ActionBarActivityBase implements
 						MainActivity.this.setTitle(name);
 					}
 				});
-	}
 
-	@Override
-	protected void onResume() {
 		this.categoryController.setSelectedCategoryChangeListener(this);
-		super.onResume();
 	}
 
 	@Override

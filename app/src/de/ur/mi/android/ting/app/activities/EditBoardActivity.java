@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.Tutorial;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
 import de.ur.mi.android.ting.app.controllers.BoardEditRequest;
 import de.ur.mi.android.ting.app.controllers.EditBoardController;
@@ -32,23 +33,20 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 	public static final String TYPE_KEY = "type";
 	public static final String BOARD_ID_KEY = "boardId";
 
-	private boolean isTutorial;
-
 	@Inject
 	public EditBoardController controller;
 	private EditText titleView;
 	private EditText descriptionView;
 	private Spinner categorySelect;
 	private ViewCreationDelegatingListAdapter<Category> adapter;
+	private Tutorial tutorial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_board);
 
-		Intent intent = getIntent();
-		isTutorial = (boolean) intent.getBooleanExtra(Constants.ISTUTORIAL_KEY,
-				false);
+		this.tutorial = Tutorial.getTutorial(getIntent());
 		int type = this.getIntent().getExtras().getInt(TYPE_KEY, 1);
 
 		this.initUi();
@@ -81,15 +79,6 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 				});
 	}
 
-	private boolean navigate() {
-		if (isTutorial) {
-			Intent intent = new Intent(this, MainActivity.class);
-			this.startActivity(intent);
-			return true;
-		}
-		return false;
-	}
-
 	protected void saveBoard() {
 		String title = this.titleView.getText().toString();
 
@@ -106,7 +95,10 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		String description = this.descriptionView.getText().toString();
 
 		this.controller.saveBoard(title, description, (Category) selectedItem);
-		navigate();
+		
+		if (this.tutorial != null) {
+			this.tutorial.proceed(this);
+		}
 	}
 
 	@Override
@@ -147,19 +139,10 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 					.findViewById(view, R.id.category_favorite_button);
 			button.setVisibility(View.INVISIBLE);
 		}
-		
+
 		@Override
 		public boolean skipInject() {
 			return true;
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (isTutorial) {
-			Notify.current().show(R.string.welcome_dialog_title,
-					R.string.welcome_dialog_edit_board, NotifyKind.INFO);
 		}
 	}
 }

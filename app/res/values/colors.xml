@@ -2,8 +2,8 @@
 <resources>
 
     <color name="highlight_color">#00b7e1</color>
-    <color name="pin_button_background_color">#f5f5f5</color>
-    <color name="pin_button_text_color">#646464</color>
+    <color name="pin_button_background_color">#e5e5e5</color>
+    <color name="pin_button_text_color">#393939</color>
     <color name="pin_headline_text_color">#3e3e3e</color>
     <color name="pin_content_text_color">#4c4c4c</color>
     <color name="pin_divider_background_color">#e7e7e7</color>

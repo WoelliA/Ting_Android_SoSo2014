@@ -1,5 +1,11 @@
 package de.ur.mi.android.ting.app;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+
 import android.app.Application;
 import android.content.Context;
 import dagger.ObjectGraph;
@@ -10,6 +16,7 @@ import de.ur.mi.android.ting.app.viewResolvers._ResolverModule;
 import de.ur.mi.android.ting.model.dummy._DummyModelModule;
 import de.ur.mi.android.ting.model.parse._ParseModelModule;
 import de.ur.mi.android.ting.utilities._UtilitiesModule;
+import de.ur.mi.android.ting.utilities.cache.WeakRefMemoryCache;
 
 public class TingApp extends Application implements IMainInjector {
 
@@ -20,7 +27,19 @@ public class TingApp extends Application implements IMainInjector {
 	private ObjectGraph applicationGraph;
 
 	private static Context context;
+	
+	private List<WeakReference<IChangeListener<Context>>> contextChangedListeners = new ArrayList<WeakReference<IChangeListener<Context>>>();
 
+	private static TingApp current;
+
+	public TingApp() {
+		current = this;
+	}
+	
+	public static TingApp current(){
+		return current;
+	}
+	
 	@Override
 	public void onCreate() {
 		Object[] modules = this.getModules();
@@ -70,9 +89,23 @@ public class TingApp extends Application implements IMainInjector {
 
 	public static void setActivityContext(Context context) {
 		TingApp.context = context;		
+		TingApp.current.notifyContextChangeListeners(context);
 	}
 	
 	public static Context getActivityContext(){
 		return TingApp.context;
+	}
+	
+	private void notifyContextChangeListeners(Context context){
+		for (WeakReference<IChangeListener<Context>> weakReference : contextChangedListeners) {
+			IChangeListener<Context> listener = weakReference.get();
+			if(listener != null){
+				listener.onChange(context);
+			}
+		}
+	}
+
+	public void addContextChangedListener(IChangeListener<Context> listener) {
+		contextChangedListeners.add(new WeakReference<IChangeListener<Context>>(listener));
 	}
 }

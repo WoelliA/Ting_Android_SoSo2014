@@ -13,14 +13,8 @@ public class DummyBoardsProvider implements IBoardsService {
 
 	@Override
 	public void getBoard(String boardId, final IDoneCallback<Board> callback) {
-		DelayTask task = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				callback.done(new DummyBoard(100));
-				super.onPostExecute(result);
-			}
-		};
-		task.execute();
+		DummyResultTask<Board> task = new DummyResultTask<Board>(
+				new DummyBoard(100), callback);
 	}
 
 	@Override
@@ -33,19 +27,13 @@ public class DummyBoardsProvider implements IBoardsService {
 	@Override
 	public void getUserBoards(String id,
 			final IDoneCallback<Collection<Board>> callback) {
-		DelayTask delayTask = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				Collection<Board> boards = new ArrayList<Board>();
-				for (int i = 0; i < 10; i++) {
-					DummyBoard dummyBoard = new DummyBoard(i);
-					boards.add(dummyBoard);
-				}
-				callback.done(boards);
-				super.onPostExecute(result);
-			}
-		};
-		delayTask.execute();
+		Collection<Board> boards = new ArrayList<Board>();
+		for (int i = 0; i < 10; i++) {
+			DummyBoard dummyBoard = new DummyBoard(i);
+			boards.add(dummyBoard);
+		}
+		DummyResultTask<Collection<Board>> task = new DummyResultTask<Collection<Board>>(
+				boards, callback);
 	}
 
 	@Override
@@ -61,15 +49,7 @@ public class DummyBoardsProvider implements IBoardsService {
 	@Override
 	public void createBoard(BoardEditRequest request,
 			final IDoneCallback<Void> callback) {
-		DelayTask task = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				callback.done(null);
-			}
-		};
-		task.execute();
-		
+		DummyResultTask<Void> task = new DummyResultTask<Void>(null, callback);
 	}
 
 }

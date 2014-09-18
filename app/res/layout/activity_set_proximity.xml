@@ -36,24 +36,23 @@
             android:orientation="horizontal" >
 
             <Button
+                
+                    style="@style/ting_button_style"
                 android:id="@+id/button_get_position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@color/pin_button_background_color"
-                android:text="@string/button_get_position"
-                android:textColor="@color/pin_button_text_color" />
+                android:text="@string/button_get_position" />
 
             <Button
+                    style="@style/ting_button_style"
                 android:id="@+id/button_save_reminder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@color/pin_button_background_color"
-                android:text="@string/button_save_reminder"
-                android:textColor="@color/pin_button_text_color" />
+                android:text="@string/button_save_reminder"/>
         </LinearLayout>
     
 </LinearLayout>

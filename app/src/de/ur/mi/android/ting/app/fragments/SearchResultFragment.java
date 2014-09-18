@@ -25,6 +25,10 @@ public class SearchResultFragment<T> extends FragmentBase {
 	private IPaging<T> pagingController;
 
 	private ISelectedListener<T> selectedListener;
+	
+	public SearchResultFragment(){
+		
+	}
 
 	public SearchResultFragment(String title, ViewResolver<T> viewResolver,
 			IPaging<T> pagingController, ISelectedListener<T> onSelect) {

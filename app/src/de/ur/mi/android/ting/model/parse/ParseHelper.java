@@ -31,9 +31,7 @@ public class ParseHelper {
 			String url = file.getUrl();
 			profilePictureUrl = url;
 		}
-		if (profilePictureUrl == null || profilePictureUrl == "") {
-			profilePictureUrl = "assets://images/defaultprofile.png";
-		}
+		
 		User user = new User(parseObject.getObjectId());
 		user.setProfilePictureUrl(profilePictureUrl);
 		if (parseObject.has("username")) {
@@ -65,6 +63,9 @@ public class ParseHelper {
 		}
 		if (o.has("owner")) {
 			board.setOwner(ParseHelper.createUser(o.getParseObject("owner")));
+		}
+		if (o.has("followers_count")) {
+			board.setFollowersCount(o.getInt("followers_count"));
 		}
 		return board;
 	}

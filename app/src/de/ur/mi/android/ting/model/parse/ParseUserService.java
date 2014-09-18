@@ -56,7 +56,7 @@ public class ParseUserService implements IUserService {
 				boolean isSuccess = u != null;
 				LoginResult lr = new LoginResult(isSuccess, false);
 				if (isSuccess) {
-					ParseUserService.this.setUserInfo(u, true);
+					ParseUserService.this.setUserInfo(u, false);
 				}
 				callback.done(lr);
 			}
@@ -74,7 +74,7 @@ public class ParseUserService implements IUserService {
 	}
 
 	private void tryAddOwnedBoards() {
-		IBoardsService boardsService = new ParseBoardsProvider(this.localuser);
+		IBoardsService boardsService = new ParseBoardsService(this.localuser);
 		boardsService
 				.getLocalUserBoards(new SimpleDoneCallback<Collection<Board>>() {
 
@@ -135,9 +135,8 @@ public class ParseUserService implements IUserService {
 		ParseUser user = ParseUser.getCurrentUser();
 		boolean isLoggedIn = user != null;
 		if (isLoggedIn) {
-			this.setUserInfo(user, true);
+			this.setUserInfo(user, false);
 		}
-		this.localuser.setIsLoggedIn(isLoggedIn, false);
 		return isLoggedIn;
 	}
 
@@ -290,7 +289,7 @@ public class ParseUserService implements IUserService {
 			@Override
 			public void done(ParseException e) {
 				if (e == null) {
-					ParseUserService.this.setUserInfo(user, false);
+					ParseUserService.this.setUserInfo(user, true);
 					callback.done(true);
 				} else {
 					callback.fail(e);

@@ -44,7 +44,8 @@
 
                     <Button
                         android:id="@+id/button_change_link"
-                        style="?android:attr/buttonStyleSmall"
+                    style="@style/ting_button_style"
+                    android:padding="4dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -72,6 +73,8 @@
     </ScrollView>
 
     <Button
+        
+                    style="@style/ting_button_style"
         android:id="@+id/editpin_pinbutton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

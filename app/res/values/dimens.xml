@@ -15,4 +15,5 @@
 	<dimen name="activity_content_padding">10dp</dimen>
 	<dimen name="button_margin">2dp</dimen>
 	<dimen name="pin_controls_textsize">12dp</dimen>
+	<dimen name="ting_button_margin_side">8dp</dimen>
 </resources>

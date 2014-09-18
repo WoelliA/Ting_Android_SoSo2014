@@ -59,7 +59,7 @@ public class _ParseModelModule implements _IModelModule {
 	@Override
 	@Provides
 	public IBoardsService provideIBoardsProvider(LocalUser user) {
-		return new ParseBoardsProvider(user);
+		return new ParseBoardsService(user);
 	}
 
 	@Override

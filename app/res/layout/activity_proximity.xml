@@ -5,12 +5,12 @@
     android:orientation="vertical" >
 
     <Button
+        
+                    style="@style/ting_button_style"
         android:id="@+id/button_add_reminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_add_reminder"
-        android:background="@color/pin_button_background_color"
-        android:textColor="@color/pin_button_text_color" />
+        android:text="@string/button_add_reminder" />
 
     <ListView
         android:id="@+id/reminder_list"

@@ -51,7 +51,7 @@ public class DummySearchService implements ISearchService {
 	@Override
 	public <T> void search(final SearchRequest request,
 			final IDoneCallback<SearchResult<T>> callback) {
-		DelayTask delayTask = new DelayTask() {
+		DelayTask delayTask = new DelayTask(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds) {
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);

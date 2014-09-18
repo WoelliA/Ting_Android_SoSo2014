@@ -13,6 +13,7 @@ public class Board extends UniqueBase implements IHasCategory {
 	private boolean isFollowing;
 
 	BoardAffiliation affiliation;
+	private int followersCount;
 
 	protected Board(String id, Category category, String title,
 			String description, User owner, List<User> contributors) {
@@ -90,5 +91,13 @@ public class Board extends UniqueBase implements IHasCategory {
 	public void setAffilliation(BoardAffiliation newAffiliation) {
 		this.affiliation = newAffiliation;
 		
+	}
+
+	public void setFollowersCount(int count) {
+		this.followersCount = count;
+	}
+	
+	public int getFollowersCount(){
+		return this.followersCount;
 	}
 }

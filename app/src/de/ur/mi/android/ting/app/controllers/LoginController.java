@@ -5,9 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IChangeListener;
+import de.ur.mi.android.ting.app.Tutorial;
+import de.ur.mi.android.ting.app.activities.Constants;
+import de.ur.mi.android.ting.app.activities.EditProfileActivity;
 import de.ur.mi.android.ting.app.fragments.Gender;
 import de.ur.mi.android.ting.app.fragments.RegisterRequest;
 import de.ur.mi.android.ting.app.fragments.Service;
@@ -18,6 +23,7 @@ import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.LoadIndicatingNotifyingCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.Notify.LoadingContext;
@@ -40,6 +46,7 @@ public class LoginController implements IChangeListener<LoginResult> {
 			final IDoneCallback<LoginResult> callback) {
 		if (!this.connectivity.hasWebAccess(true)) {
 			callback.fail(new NoInternetException());
+			return;
 		}
 		final LoadingContext loading = Notify.current().showLoading(
 				R.string.login_progress_signing_in);
@@ -62,7 +69,7 @@ public class LoginController implements IChangeListener<LoginResult> {
 	public void onChange(LoginResult loginres) {
 		if (loginres.getIsRightLogin() && !loginres.isNew()) {
 			Notify.current().showToast("Welcome " + this.user.getName());
-		} else if(!loginres.getIsRightLogin()) {
+		} else if (!loginres.getIsRightLogin()) {
 			Notify.current().showToast(R.string.logged_out);
 		}
 	}
@@ -76,21 +83,23 @@ public class LoginController implements IChangeListener<LoginResult> {
 			final SimpleDoneCallback<Boolean> callback) {
 		if (!this.connectivity.hasWebAccess(true)) {
 			callback.fail(new NoInternetException());
+			return;
 		}
-		final LoadingContext showLoading = Notify.current().showLoading(
+		
+		final LoadingContext loading = Notify.current().showLoading(
 				R.string.registering);
 		this.userService.register(registerRequest,
 				new SimpleDoneCallback<Boolean>() {
 
 					@Override
 					public void done(Boolean result) {
-						showLoading.close();
+						loading.close();
 						callback.done(result);
 					}
 
 					@Override
 					public void fail(Exception e) {
-						showLoading.close();
+						loading.close();
 						Notify.current().showToast(e.getMessage());
 					}
 
@@ -98,7 +107,6 @@ public class LoginController implements IChangeListener<LoginResult> {
 	}
 
 	public void getGenders(IDoneCallback<Collection<Gender>> callback) {
-
 		List<Gender> genderList = new ArrayList<Gender>();
 		genderList.add(new Gender("4aA196ySIV", "Transgender"));
 		genderList.add(new Gender("7uUFa5pgwW", "Female"));
@@ -107,10 +115,19 @@ public class LoginController implements IChangeListener<LoginResult> {
 
 	}
 
-	public void loginThirdParty(Service service, Activity activity,
-			IDoneCallback<ServiceLoginResultType> callback) {
+	public void loginThirdParty(Service service, final Activity activity) {
 		if (!this.connectivity.hasWebAccess(true)) {
+			return;
 		}
-		this.userService.loginThirdParty(service, activity, callback);
+		this.userService.loginThirdParty(service, activity, new LoadIndicatingNotifyingCallback<ServiceLoginResultType>(""){
+			@Override
+			public void done(ServiceLoginResultType result) {
+				if (result == ServiceLoginResultType.Register){
+					Tutorial.current().proceed(activity);
+				}
+				activity.finish();
+				super.done(result);
+			}
+		});
 	}
 }

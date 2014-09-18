@@ -33,6 +33,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 		super.onDestroy();
 	}
 	
+	
 	@Override
 	protected void onResume() {		
 		super.onResume();

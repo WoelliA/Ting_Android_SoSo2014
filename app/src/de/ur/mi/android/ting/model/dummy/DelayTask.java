@@ -4,10 +4,16 @@ import android.os.AsyncTask;
 
 public abstract class DelayTask extends AsyncTask<Void, Void, Void>{
 
+	private long delayInMilliseconds;
+
+	public DelayTask(int delayInMilliseconds) {
+		this.delayInMilliseconds = delayInMilliseconds;
+	}
+	
 	@Override
 	protected Void doInBackground(Void... params) {
 		try {
-			Thread.sleep(DummyConfig.DUMMY_SIMULATED_NETWORK_DELAY_inmilliseconds);
+			Thread.sleep(this.delayInMilliseconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

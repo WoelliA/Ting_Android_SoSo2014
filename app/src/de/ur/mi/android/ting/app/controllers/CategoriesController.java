@@ -9,15 +9,21 @@ import javax.inject.Singleton;
 
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
+import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
+import de.ur.mi.android.ting.model.parse.ParseBoardsService;
+import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.PagingRequestBase;
+import de.ur.mi.android.ting.model.primitives.UniqueBase;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.IConnectivity;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.widget.ArrayAdapter;
 
@@ -45,6 +51,7 @@ public class CategoriesController implements
 
 	private IUserService userService;
 
+
 	@Inject
 	public CategoriesController(ICategoryProvider categoryProvider,
 			IUserService userService, IConnectivity connectivity,
@@ -60,8 +67,11 @@ public class CategoriesController implements
 			public void onChange(LoginResult changed) {
 				if (!changed.getIsRightLogin()) {
 					this.removeFeedCategory();
-					if (CategoriesController.this.feedCategory.equals(CategoriesController.this.selectedCategory)) {
-						CategoriesController.this.onCategorySelected(CategoriesController.this.adapter.getItem(0));
+					if (CategoriesController.this.feedCategory
+							.equals(CategoriesController.this.selectedCategory)) {
+						CategoriesController.this
+								.onCategorySelected(CategoriesController.this.adapter
+										.getItem(0));
 					}
 				}
 			}
@@ -93,13 +103,16 @@ public class CategoriesController implements
 					public void done(Collection<Category> result) {
 						CategoriesController.this.categories = new ArrayList<Category>(
 								result);
-
+						
 						CategoriesController.this.categories.add(0,
-								CategoriesController.this.specialCategories.getEverythingCategory());
+								CategoriesController.this.specialCategories
+										.getEverythingCategory());
 						if (CategoriesController.this.user.getIsLogedIn()) {
-							CategoriesController.this.feedCategory = CategoriesController.this.specialCategories.getFeedCategory();
+							CategoriesController.this.feedCategory = CategoriesController.this.specialCategories
+									.getFeedCategory();
 
-							CategoriesController.this.categories.add(0, CategoriesController.this.feedCategory);
+							CategoriesController.this.categories.add(0,
+									CategoriesController.this.feedCategory);
 						}
 						CategoriesController.this.initAdapter();
 						if (CategoriesController.this.selectedCategory == null) {
@@ -107,7 +120,7 @@ public class CategoriesController implements
 									.onCategorySelected(CategoriesController.this.categories
 											.get(0));
 						}
-					}
+					} 
 				});
 	}
 

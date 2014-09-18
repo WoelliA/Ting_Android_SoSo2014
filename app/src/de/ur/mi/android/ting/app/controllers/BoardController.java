@@ -4,11 +4,13 @@ import javax.inject.Inject;
 
 import android.content.Context;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Board.BoardAffiliation;
 import de.ur.mi.android.ting.utilities.IConnectivity;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import de.ur.mi.android.ting.utilities.view.Notify;
 
 public class BoardController {
@@ -18,6 +20,8 @@ public class BoardController {
 
 		void showDefaultState(BoardAffiliation affiliation);
 
+		void displayBoardInfo(Board result);
+
 		Context getContext();
 	}
 
@@ -25,23 +29,25 @@ public class BoardController {
 	private IUserService userService;
 	private IConnectivity connectivity;
 	private IBoardView view;
+	private IBoardsService boardsService;
 
 	@Inject
-	public BoardController(LocalUser user, IUserService userService, IConnectivity connectivity) {
+	public BoardController(LocalUser user, IUserService userService, IConnectivity connectivity, IBoardsService boardsService) {
 		this.user = user;
 		this.userService = userService;
 		this.connectivity = connectivity;
+		this.boardsService = boardsService;
 	}
 
 	public void setup(IBoardView view, Board board) {
 		this.view = view;
+		view.displayBoardInfo(board);
 		BoardAffiliation affiliation = board.getBoardAffiliation(this.user);
 		if (affiliation == BoardAffiliation.Owner) {
 			view.showOwnerState();
 		} else {
 			view.showDefaultState(affiliation);
 		}
-
 	}
 
 	public boolean setFollowBoard(Board board, boolean follow) {
@@ -56,5 +62,16 @@ public class BoardController {
 		this.user.getFollowedBoards().add(board);
 		this.userService.setFollowBoard(board.getId(),follow);
 		return true;
+	}
+
+	public void setup(final IBoardView view, String boardId) {
+		this.boardsService.getBoard(boardId, new SimpleDoneCallback<Board>() {
+
+			@Override
+			public void done(Board result) {
+				setup(view, result);				
+			}
+		});
+		
 	}
 }

@@ -10,7 +10,7 @@
         android:id="@+id/user_profile_picture"
         android:layout_width="@dimen/profile_searchresult_image"
         android:layout_height="@dimen/profile_searchresult_image"
-        android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+        android:src="@drawable/defaultprofile" />
 
     <LinearLayout
         android:layout_marginStart="5dip"

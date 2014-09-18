@@ -17,7 +17,7 @@ public class PinListFragment extends FragmentBase {
 
 	public PinListFragment() {
 	}
-	
+
 	public PinListFragment(PinListController controller) {
 		this.controller = controller;
 	}
@@ -28,14 +28,13 @@ public class PinListFragment extends FragmentBase {
 		return inflater.inflate(R.layout.fragment_pinlist, container, false);
 	}
 
-	
 	@Override
-	public void onResume() {
-		if(this.controller == null){
+	public void onStart() {
+		super.onStart();
+		if (this.controller == null) {
 			return;
 		}
 		this.initPinListUI();
-		super.onResume();
 	}
 
 	private void initPinListUI() {

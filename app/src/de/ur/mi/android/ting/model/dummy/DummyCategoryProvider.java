@@ -22,16 +22,11 @@ public class DummyCategoryProvider extends CategoryProviderBase implements
 	@Override
 	protected void getAllCategoriesImpl(
 			final IDoneCallback<List<Category>> callback) {
-		DelayTask task = new DelayTask() {
-			@Override
-			protected void onPostExecute(Void result) {
-				List<Category> categories = new ArrayList<Category>();
-				for (int i = 0; i < 20; i++) {
-					categories.add(new DummyCategory(i));
-				}
-				callback.done(categories);
-			}
-		};
-		task.execute();
+		List<Category> categories = new ArrayList<Category>();
+		for (int i = 0; i < 20; i++) {
+			categories.add(new DummyCategory(i));
+		}
+		DummyResultTask<List<Category>> task = new DummyResultTask<List<Category>>(
+				categories, callback);
 	}
 }

@@ -93,6 +93,11 @@ public class BoardViewResolver extends ViewResolver<Board> {
 				return context;
 			}
 
+			@Override
+			public void displayBoardInfo(Board result) {
+				// this already happened				
+			}
+
 		}, board);
 	}
 

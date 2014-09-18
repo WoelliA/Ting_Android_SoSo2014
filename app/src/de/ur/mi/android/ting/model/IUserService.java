@@ -12,6 +12,7 @@ import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.model.primitives.Pin;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IDoneCallback;
+import de.ur.mi.android.ting.utilities.LoadIndicatingNotifyingCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public interface IUserService extends ITypedSearchService<User> {
@@ -43,6 +44,10 @@ public interface IUserService extends ITypedSearchService<User> {
 			Service service,
 			Activity activity,
 			IDoneCallback<ServiceLoginResultType> simpleDoneCallback);
+
+	public void restorePassword(
+			String email,
+			IDoneCallback<Void> callback);
 
 }
 				

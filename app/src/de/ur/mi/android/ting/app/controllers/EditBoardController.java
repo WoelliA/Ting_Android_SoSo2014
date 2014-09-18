@@ -51,13 +51,18 @@ public class EditBoardController {
 
 	public void init(String boardId) {
 		this.boardId = boardId;
-		this.boardsService.getBoard(boardId, new SimpleDoneCallback<Board>() {
+		if (boardId != null && boardId.trim().length() != 0) {
 
-			@Override
-			public void done(Board board) {
-				EditBoardController.this.view.showBoardDetails(board);
-			}
-		});
+			this.boardsService.getBoard(boardId,
+					new SimpleDoneCallback<Board>() {
+
+						@Override
+						public void done(Board board) {
+							EditBoardController.this.view
+									.showBoardDetails(board);
+						}
+					});
+		}
 	}
 
 	public void saveBoard(String title, String description, Category category) {
@@ -67,8 +72,8 @@ public class EditBoardController {
 		final LoadingContext loading = Notify.current().showLoading(
 				R.string.loading_saving_board);
 
-		final BoardEditRequest request = new BoardEditRequest(this.boardId, title,
-				description, category.getId());
+		final BoardEditRequest request = new BoardEditRequest(this.boardId,
+				title, description, category.getId());
 
 		IDoneCallback<Void> callback = new SimpleDoneCallback<Void>() {
 

@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import android.app.Activity;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
@@ -16,6 +18,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 import com.parse.SignUpCallback;
 
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
@@ -92,7 +95,7 @@ public class ParseUserService implements IUserService {
 
 				@Override
 				public void done(List<ParseObject> objects, ParseException e) {
- 					if (objects == null || e != null) {
+					if (objects == null || e != null) {
 						return;
 					}
 					Collection<Pin> likedPins = ParseHelper.createPins(objects);
@@ -320,6 +323,23 @@ public class ParseUserService implements IUserService {
 			ParseTwitterUtils.logIn(activity, logInCallback);
 		}
 
+	}
+
+	@Override
+	public void restorePassword(String email, final IDoneCallback<Void> callback) {
+
+		ParseUser.requestPasswordResetInBackground(email,
+				new RequestPasswordResetCallback() {
+
+					@Override
+					public void done(ParseException e) {
+						if (e == null) {
+							callback.done(null);
+						} else
+							callback.fail(e);
+
+					}
+				});
 	}
 
 }

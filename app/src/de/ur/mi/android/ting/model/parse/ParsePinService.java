@@ -1,11 +1,13 @@
 package de.ur.mi.android.ting.model.parse;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -13,8 +15,10 @@ import com.parse.FunctionCallback;
 import com.parse.GetCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import com.parse.ParseQuery.CachePolicy;
 import com.parse.ParseUser;
 
@@ -243,12 +247,39 @@ public class ParsePinService implements IPinService {
 	}
 
 	@Override
-	public void createPin(PinData result, String sharedPinId,
-			Board selectedBoard, IDoneCallback<Void> callback) {
+	public void createPin(final PinData result, final String sharedPinId,
+			final Board selectedBoard, final IDoneCallback<Void> callback) {
 		ParseObject pin = ParseObject.create("pin");
+		
+		String imageUrl = result.getImageData().getimageUrl();
+		if(this.isWebUrl(imageUrl)){
+			pin.put("image", result.getImageData().getimageUrl());			
+		} else {
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			result.getImageData().getBitmap().compress(Bitmap.CompressFormat.PNG, 100,
+					stream);
+			byte[] byteArray = stream.toByteArray();
+			
+			final ParseFile file = new ParseFile(byteArray);
+			file.saveInBackground(new SaveCallback() {
+				
+				@Override
+				public void done(ParseException e) {
+					if(e == null){
+						result.getImageData().setImageUrl(file.getUrl());
+						createPin(result, sharedPinId, selectedBoard, callback);
+					} else 
+						callback.fail(e);
+					
+				}
+			});
+			return;
+			
+		}
+		
+		
 		pin.put("title", result.getTitle());
 		pin.put("description", result.getDescription());
-		pin.put("image", result.getImageData().getimageUrl());
 		pin.put("category", ParseObject.createWithoutData("category",
 				selectedBoard.getCategory().getId()));
 		pin.put("url", result.getLinkUrl());
@@ -263,5 +294,9 @@ public class ParsePinService implements IPinService {
 
 		pin.saveInBackground(new SaveCallbackWrap(callback));
 
+	}
+
+	private boolean isWebUrl(String imageUrl) {
+		return imageUrl.startsWith("http") || imageUrl.startsWith("www.");
 	}
 }

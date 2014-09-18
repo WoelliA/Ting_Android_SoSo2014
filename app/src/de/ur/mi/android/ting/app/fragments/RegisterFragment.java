@@ -31,37 +31,46 @@ public class RegisterFragment extends LoginFragmentBase {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		controller.setContext(getActivity());
 		Button registerButton = (Button) this
 				.findViewById(R.id.action_register);
 		registerButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String userName = RegisterFragment.this.userNameView.getText().toString();
-				String email = RegisterFragment.this.emailView.getText().toString();
-				String password = RegisterFragment.this.passwordView.getText().toString();
-				Gender gender = (Gender) RegisterFragment.this.spinner.getSelectedItem();
+				String userName = RegisterFragment.this.userNameView.getText()
+						.toString();
+				String email = RegisterFragment.this.emailView.getText()
+						.toString();
+				String password = RegisterFragment.this.passwordView.getText()
+						.toString();
+				Gender gender = (Gender) RegisterFragment.this.spinner
+						.getSelectedItem();
 
 				if (userName.trim().length() == 0) {
-					RegisterFragment.this.userNameView.setError(RegisterFragment.this.getActivity().getString(
-							R.string.error_field_required));
+					RegisterFragment.this.userNameView
+							.setError(RegisterFragment.this.getActivity()
+									.getString(R.string.error_field_required));
 					return;
 				}
 				if (password.trim().length() <= 6) {
-					RegisterFragment.this.passwordView.setError(RegisterFragment.this.getActivity().getString(
-							R.string.error_invalid_password));
+					RegisterFragment.this.passwordView
+							.setError(RegisterFragment.this.getActivity()
+									.getString(R.string.error_invalid_password));
 					return;
 				}
-				RegisterFragment.this.controller.register(new RegisterRequest(userName, email,
-						password, gender), new SimpleDoneCallback<Boolean>() {
+				RegisterFragment.this.controller.register(new RegisterRequest(
+						userName, email, password, gender),
+						new SimpleDoneCallback<Boolean>() {
 
-					@Override
-					public void done(Boolean result) {
-						if(result) {
-							RegisterFragment.this.getActivity().finish();
-						}
-					}
-				});
+							@Override
+							public void done(Boolean result) {
+								if (result) {
+									RegisterFragment.this.getActivity()
+											.finish();
+								}
+							}
+						});
 			}
 		});
 		this.userNameView = (EditText) this.findViewById(R.id.username);
@@ -83,20 +92,22 @@ public class RegisterFragment extends LoginFragmentBase {
 				item1.setText(gender.getName());
 			}
 		};
-		this.adapter = new ViewCreationDelegatingListAdapter<Gender>(this.getActivity(),
-				resolver);
+		this.adapter = new ViewCreationDelegatingListAdapter<Gender>(
+				this.getActivity(), resolver);
 		this.spinner.setAdapter(this.adapter);
-		this.controller.getGenders(new SimpleDoneCallback<Collection<Gender>>() {
+		this.controller
+				.getGenders(new SimpleDoneCallback<Collection<Gender>>() {
 
-			@Override
-			public void done(Collection<Gender> result) {
-				if (result != null) {
-					RegisterFragment.this.adapter.add(new Gender(null, "Please select gender"));
-					RegisterFragment.this.adapter.addAll(result);
-				}
+					@Override
+					public void done(Collection<Gender> result) {
+						if (result != null) {
+							RegisterFragment.this.adapter.add(new Gender(null,
+									"Please select gender"));
+							RegisterFragment.this.adapter.addAll(result);
+						}
 
-			}
-		});
+					}
+				});
 
 	}
 

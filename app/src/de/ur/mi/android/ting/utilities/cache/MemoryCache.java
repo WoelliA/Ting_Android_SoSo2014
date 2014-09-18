@@ -36,8 +36,8 @@ public abstract class MemoryCache<K, T> {
 		}, delay, delay);
 	}
 
-	private long getDelay() {
-		return 50000;
+	protected long getDelay() {
+		return 60000;
 	}
 
 	public T get(K key) {

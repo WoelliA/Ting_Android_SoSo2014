@@ -47,9 +47,10 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
 		this.initUi();
 		this.controller.setView(this);
-		String boardId = this.getIntent().getExtras().getString(BOARD_ID_KEY);
-		this.controller.init(boardId);
-
+		if(this.getIntent().getExtras() != null){
+			String boardId = this.getIntent().getExtras().getString(BOARD_ID_KEY);
+			this.controller.init(boardId);			
+		}
 	}
 
 	private void initUi() {

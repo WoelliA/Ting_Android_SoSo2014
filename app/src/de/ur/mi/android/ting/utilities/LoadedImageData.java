@@ -20,4 +20,9 @@ public class LoadedImageData {
 	public Bitmap getBitmap(){
 		return this.bitmap;
 	}
+
+	public void setImageUrl(String url) {
+		this.imageUrl = url;
+		
+	}
 }

@@ -139,4 +139,11 @@ public class DummyUserService implements IUserService {
 
 	}
 
+	@Override
+	public void restorePassword(String email, IDoneCallback<Void> callback) {
+		DummyResultTask<Void> task = new DummyResultTask<Void>(null,
+				callback);
+		
+	}
+
 }

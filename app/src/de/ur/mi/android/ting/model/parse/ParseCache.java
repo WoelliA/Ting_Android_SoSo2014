@@ -23,7 +23,7 @@ public class ParseCache extends SoftRefMemoryCache<String, ParseObject>{
 	public boolean put(ParseObject object){
 		String id = object.getObjectId();
 		ParseObject olderObject = this.get(id);
-		if(olderObject != null && !olderObject.isDataAvailable()){
+		if(olderObject == null || !olderObject.isDataAvailable()){
 			return this.put(object.getObjectId(), object);
 		}
 

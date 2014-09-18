@@ -4,8 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-
 import android.app.Application;
 import android.content.Context;
 import dagger.ObjectGraph;
@@ -16,7 +14,6 @@ import de.ur.mi.android.ting.app.viewResolvers._ResolverModule;
 import de.ur.mi.android.ting.model.dummy._DummyModelModule;
 import de.ur.mi.android.ting.model.parse._ParseModelModule;
 import de.ur.mi.android.ting.utilities._UtilitiesModule;
-import de.ur.mi.android.ting.utilities.cache.WeakRefMemoryCache;
 
 public class TingApp extends Application implements IMainInjector {
 
@@ -97,7 +94,7 @@ public class TingApp extends Application implements IMainInjector {
 	}
 	
 	private void notifyContextChangeListeners(Context context){
-		for (WeakReference<IChangeListener<Context>> weakReference : contextChangedListeners) {
+		for (WeakReference<IChangeListener<Context>> weakReference : this.contextChangedListeners) {
 			IChangeListener<Context> listener = weakReference.get();
 			if(listener != null){
 				listener.onChange(context);
@@ -106,6 +103,6 @@ public class TingApp extends Application implements IMainInjector {
 	}
 
 	public void addContextChangedListener(IChangeListener<Context> listener) {
-		contextChangedListeners.add(new WeakReference<IChangeListener<Context>>(listener));
+		this.contextChangedListeners.add(new WeakReference<IChangeListener<Context>>(listener));
 	}
 }

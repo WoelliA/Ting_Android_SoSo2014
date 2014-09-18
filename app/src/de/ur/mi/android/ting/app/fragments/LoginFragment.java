@@ -2,15 +2,10 @@ package de.ur.mi.android.ting.app.fragments;
 
 import javax.inject.Inject;
 
-import com.parse.ParseFacebookUtils;
-
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.activities.Constants;
-import de.ur.mi.android.ting.app.activities.EditProfileActivity;
 import de.ur.mi.android.ting.app.controllers.LoginController;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;

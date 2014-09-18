@@ -13,7 +13,6 @@ import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Board.BoardAffiliation;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
-import de.ur.mi.android.ting.utilities.view.Notify;
 
 public class BoardController implements IBoardController {
 	public static interface IBoardView {
@@ -64,11 +63,11 @@ public class BoardController implements IBoardController {
 	}
 
 	public boolean setFollowBoard(Board board, boolean follow) {
-		if(!connectivity.hasWebAccess(true)){
+		if(!this.connectivity.hasWebAccess(true)){
 			return false;
 		}
 		if(!this.user.getIsLogedIn()){
-			new NotifyRequiresLogin(view.getContext(), R.string.needs_login_followboard).show();
+			new NotifyRequiresLogin(this.view.getContext(), R.string.needs_login_followboard).show();
 			return false;
 		}
 		board.setAffilliation(BoardAffiliation.Follower);
@@ -83,7 +82,7 @@ public class BoardController implements IBoardController {
 
 			@Override
 			public void done(Board result) {
-				setup(view, result);				
+				BoardController.this.setup(view, result);				
 			}
 		});
 		

@@ -16,10 +16,8 @@ import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.view.Notify;
-import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,18 +32,18 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
 	@Inject
 	public EditBoardController controller;
-	private EditText titleView;
+	private EditText titleView; 
 	private EditText descriptionView;
 	private Spinner categorySelect;
 	private ViewCreationDelegatingListAdapter<Category> adapter;
 	private Tutorial tutorial;
-
+ 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_board);
 
-		this.tutorial = Tutorial.getTutorial(getIntent());
+		this.tutorial = Tutorial.getTutorial(this.getIntent());
 
 		this.initUi();
 		this.controller.setView(this);

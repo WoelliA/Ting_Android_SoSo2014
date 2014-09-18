@@ -80,7 +80,7 @@ public class BoardDetailsActivity extends BaseActivity implements
 			
 			@Override
 			public void onClick(View v) {
-				controller.showEditBoard(getContext(),board);		
+				BoardDetailsActivity.this.controller.showEditBoard(BoardDetailsActivity.this.getContext(),BoardDetailsActivity.this.board);		
 			}
 		});
 	}

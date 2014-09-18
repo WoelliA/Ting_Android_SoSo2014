@@ -3,7 +3,6 @@ package de.ur.mi.android.ting.app;
 import java.util.Collection;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app.activities.MainActivity;

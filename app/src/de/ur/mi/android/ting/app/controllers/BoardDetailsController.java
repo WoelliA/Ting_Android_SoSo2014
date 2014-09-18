@@ -21,7 +21,7 @@ public class BoardDetailsController extends PagingController<Pin> implements
 
 	public static interface IBoardDetailsView extends IBoardView {
 	}
-
+ 
 	private IBoardsService boardsService;
 	private IPinService pinService;
 
@@ -66,7 +66,7 @@ public class BoardDetailsController extends PagingController<Pin> implements
 
 	@Override
 	public void showEditBoard(Context context, Board board) {
-		boardcontroller.showEditBoard(context, board);
+		this.boardcontroller.showEditBoard(context, board);
 
 	}
 }

@@ -66,11 +66,11 @@ public class BoardViewResolver extends ViewResolver<Board> {
 			@Override
 			public void showOwnerState() {
 				switcher.setDisplayedChild(1);
-				findViewById(view, R.id.button_edit_board).setOnClickListener(new OnClickListener() {
+				BoardViewResolver.this.findViewById(view, R.id.button_edit_board).setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						controller.showEditBoard(getContext(), board);						
+						BoardViewResolver.this.controller.showEditBoard(getContext(), board);						
 					}
 				});
 				switcher.setVisibility(View.VISIBLE);
@@ -88,8 +88,9 @@ public class BoardViewResolver extends ViewResolver<Board> {
 						boolean follow = ((CompoundButton) v).isChecked();
 						boolean success = BoardViewResolver.this.controller
 								.setFollowBoard(board, follow);
-						if (!success)
+						if (!success) {
 							followToggle.setChecked(false);
+						}
 					}
 				});
 				switcher.setVisibility(View.VISIBLE);
@@ -97,7 +98,7 @@ public class BoardViewResolver extends ViewResolver<Board> {
 
 			@Override
 			public Context getContext() {
-				return context;
+				return BoardViewResolver.this.context;
 			}
 
 			@Override

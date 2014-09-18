@@ -2,7 +2,6 @@ package de.ur.mi.android.ting.app;
 
 import android.app.Activity;
 import android.content.Context;
-import de.ur.mi.android.ting.app.activities.EditProfileActivity;
 
 public class TutorialStep {
 
@@ -17,11 +16,11 @@ public class TutorialStep {
 	}
 
 	public String getDialogContent(Context context) {
-		return context.getString(dialogContentResId);
+		return context.getString(this.dialogContentResId);
 	}
 
 	public Class<?> getTargetClass() {
-		return activityClass;
+		return this.activityClass;
 	}
 
 	public int getDialogContentId() {

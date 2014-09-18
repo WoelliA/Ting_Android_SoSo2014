@@ -9,21 +9,15 @@ import javax.inject.Singleton;
 
 import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
-import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
-import de.ur.mi.android.ting.model.parse.ParseBoardsService;
-import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
-import de.ur.mi.android.ting.model.primitives.PagingRequestBase;
-import de.ur.mi.android.ting.model.primitives.UniqueBase;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.IConnectivity;
-import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.widget.ArrayAdapter;
 

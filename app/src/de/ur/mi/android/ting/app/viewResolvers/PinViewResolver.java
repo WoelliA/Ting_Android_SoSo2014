@@ -130,7 +130,7 @@ public class PinViewResolver extends ViewResolver<Pin> {
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
 				intent.setData(Uri.parse(pin.getLinkUri()));
-				getContext().startActivity(intent);
+				PinViewResolver.this.getContext().startActivity(intent);
 			}
 		});
 

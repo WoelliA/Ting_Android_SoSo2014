@@ -59,8 +59,8 @@ public class EditProfileController {
 
 	public void setView(EditProfileView view) {
 		this.view = view;
-		if (user.isNew()) {
-			user.setName("");
+		if (this.user.isNew()) {
+			this.user.setName("");
 		}
 		this.view.displayUserProfile(this.user, this.user.getEmail());
 	}

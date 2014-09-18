@@ -1,7 +1,5 @@
 package de.ur.mi.android.ting.app.activities;
 
-import java.io.ObjectOutputStream.PutField;
-
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
@@ -11,8 +9,6 @@ import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileRe
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileView;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
-import de.ur.mi.android.ting.utilities.view.Notify;
-import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,7 +42,7 @@ public class EditProfileActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_profile);
 
-		this.tutorial = Tutorial.getTutorial(getIntent());
+		this.tutorial = Tutorial.getTutorial(this.getIntent());
 		this.initUi();
 		this.controller.setView(this);
 	}
@@ -141,8 +137,9 @@ public class EditProfileActivity extends BaseActivity implements
 			}
 
 			this.controller.onSaveProfile(editProfileResult);
-			if (this.tutorial != null)
-				tutorial.proceed(this);
+			if (this.tutorial != null) {
+				this.tutorial.proceed(this);
+			}
 			break;
 		}
 

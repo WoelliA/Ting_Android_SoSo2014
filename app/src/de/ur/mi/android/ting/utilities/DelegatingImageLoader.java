@@ -62,7 +62,7 @@ public class DelegatingImageLoader implements IImageLoader {
 	@Override
 	public void loadImage(String imageUri,
 			final IDoneCallback<Bitmap> doneCallback) {
-		if (isNoImageUri(imageUri)) {
+		if (this.isNoImageUri(imageUri)) {
 			return;
 		}
 		DisplayImageOptions options = this.buildOptions()

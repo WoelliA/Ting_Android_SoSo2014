@@ -1,7 +1,6 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import java.util.Collection;
-import android.widget.ArrayAdapter;
 import de.ur.mi.android.ting.app.adapters.PagingListAdapterBase;
 import de.ur.mi.android.ting.model.IPaging;
 import de.ur.mi.android.ting.model.PagingResult;

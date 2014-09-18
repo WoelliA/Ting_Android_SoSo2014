@@ -1,14 +1,12 @@
 package de.ur.mi.android.ting.app;
 
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.activities.BrowseBoardsActivity;
 import de.ur.mi.android.ting.app.activities.EditBoardActivity;
 import de.ur.mi.android.ting.app.activities.EditProfileActivity;
 import de.ur.mi.android.ting.app.activities.MainActivity;
 import de.ur.mi.android.ting.model.dummy.DelayTask;
 import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.NotifyKind;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -27,8 +25,9 @@ public class Tutorial implements IChangeListener<Context> {
 	public static Tutorial getTutorial(Intent intent) {
 		if (intent != null && intent.getExtras() != null) {
 			boolean isTutorial = intent.getExtras().getBoolean(IS_TUTORIAL_KEY);
-			if (isTutorial)
+			if (isTutorial) {
 				return Tutorial.current();
+			}
 		}
 		return null;
 	}
@@ -52,32 +51,32 @@ public class Tutorial implements IChangeListener<Context> {
 	}
 
 	public void proceed(Context context) {
-		if (currentStepNum >= steps.length) {
+		if (this.currentStepNum >= this.steps.length) {
 			Intent intent = new Intent(context, MainActivity.class);
 			context.startActivity(intent);
-			currentStep = null;
+			this.currentStep = null;
 			current = null;
 			return;
 		}
 
-		currentStep = steps[this.currentStepNum];
-		ShowDialog(context);
-		StartActivity(context);
+		this.currentStep = this.steps[this.currentStepNum];
+		this.ShowDialog(context);
+		this.StartActivity(context);
 		this.currentStepNum++;
 	}
 
 	private void StartActivity(Context context) {
-		Intent intent = new Intent(context, currentStep.getTargetClass());
+		Intent intent = new Intent(context, this.currentStep.getTargetClass());
 		intent.putExtra(IS_TUTORIAL_KEY, true);
 		context.startActivity(intent);
 	}
 
 	private void ShowDialog(Context context) {
-		if (currentStep != null && !currentStep.getWasDialogShown()) {
-			if (currentStep.getTargetClass().equals(context.getClass())) {
-				currentStep.setWasDialogShown(true);
+		if (this.currentStep != null && !this.currentStep.getWasDialogShown()) {
+			if (this.currentStep.getTargetClass().equals(context.getClass())) {
+				this.currentStep.setWasDialogShown(true);
 				Notify.current().show(R.string.welcome_dialog_title,
-						currentStep.getDialogContentId(), NotifyKind.INFO);
+						this.currentStep.getDialogContentId(), NotifyKind.INFO);
 			}
 		}
 	}
@@ -87,7 +86,7 @@ public class Tutorial implements IChangeListener<Context> {
 		DelayTask task = new DelayTask(500) {
 			@Override
 			protected void onPostExecute(Void result) {
-				ShowDialog(context);
+				Tutorial.this.ShowDialog(context);
 				super.onPostExecute(result);
 			}
 		};		

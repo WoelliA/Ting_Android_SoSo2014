@@ -3,9 +3,6 @@ package de.ur.mi.android.ting.app.activities;
 import java.util.ArrayList;
 
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseTwitterUtils;
-import com.parse.twitter.Twitter;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

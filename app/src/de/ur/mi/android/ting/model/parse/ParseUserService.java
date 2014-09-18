@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import android.app.Activity;
-import android.util.Log;
-
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -94,7 +92,7 @@ public class ParseUserService implements IUserService {
 
 				@Override
 				public void done(List<ParseObject> objects, ParseException e) {
-					if (objects == null || e != null) {
+ 					if (objects == null || e != null) {
 						return;
 					}
 					Collection<Pin> likedPins = ParseHelper.createPins(objects);

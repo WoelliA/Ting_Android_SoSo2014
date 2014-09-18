@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingListAdapter;
-import de.ur.mi.android.ting.app.controllers.EditBoardController.EditBoardView;
 import de.ur.mi.android.ting.app.controllers.UserDetailsController;
 import de.ur.mi.android.ting.app.viewResolvers.SearchResultResolvers.BoardResolver;
 import de.ur.mi.android.ting.model.LocalUser;

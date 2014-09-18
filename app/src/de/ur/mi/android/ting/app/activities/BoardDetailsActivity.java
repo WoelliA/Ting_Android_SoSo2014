@@ -38,6 +38,8 @@ public class BoardDetailsActivity extends BaseActivity implements
 
 	private ToggleButton followToggle;
 
+	private Board board;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,6 +62,7 @@ public class BoardDetailsActivity extends BaseActivity implements
 
 	@Override
 	public void displayBoardInfo(final Board board) {
+		this.board = board;
 		TextView titleText = (TextView) this.headerView
 				.findViewById(R.id.textview_board_title);
 		titleText.setText(board.getTitle());
@@ -73,6 +76,13 @@ public class BoardDetailsActivity extends BaseActivity implements
 		Button editButton = (Button) this.headerView
 				.findViewById(R.id.button_edit_board);
 		editButton.setVisibility(View.VISIBLE);
+		editButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				controller.showEditBoard(getContext(),board);		
+			}
+		});
 	}
 
 	@Override

@@ -114,8 +114,6 @@ public class UserDetailsActivity extends BaseActivity implements
 			public void onClick(View v) {
 				Intent intent = new Intent(UserDetailsActivity.this,
 						EditBoardActivity.class);
-				intent.putExtra(EditBoardActivity.TYPE_KEY,
-						EditBoardView.TYPE_CREATE);
 				UserDetailsActivity.this.startActivity(intent);
 			}
 		});

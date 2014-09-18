@@ -1,8 +1,10 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import java.util.Collection;
+
 import javax.inject.Inject;
 
+import android.content.Context;
 import de.ur.mi.android.ting.app.controllers.BoardController.IBoardView;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.IPaging;
@@ -15,9 +17,8 @@ import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 
 public class BoardDetailsController extends PagingController<Pin> implements
-		IPaging<Pin> {
+		IPaging<Pin>, IBoardController {
 
-	
 	public static interface IBoardDetailsView extends IBoardView {
 	}
 
@@ -30,7 +31,8 @@ public class BoardDetailsController extends PagingController<Pin> implements
 	private BoardController boardcontroller;
 
 	@Inject
-	public BoardDetailsController(BoardController boardcontroller, IPinService pinService) {
+	public BoardDetailsController(BoardController boardcontroller,
+			IPinService pinService) {
 		this.boardcontroller = boardcontroller;
 		this.pinService = pinService;
 	}
@@ -60,5 +62,11 @@ public class BoardDetailsController extends PagingController<Pin> implements
 
 	public void setFollowBoard(boolean follow) {
 		this.boardcontroller.setFollowBoard(this.board, follow);
+	}
+
+	@Override
+	public void showEditBoard(Context context, Board board) {
+		boardcontroller.showEditBoard(context, board);
+
 	}
 }

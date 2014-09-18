@@ -30,7 +30,6 @@ import android.widget.Spinner;
 
 public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
-	public static final String TYPE_KEY = "type";
 	public static final String BOARD_ID_KEY = "boardId";
 
 	@Inject
@@ -47,16 +46,12 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		this.setContentView(R.layout.activity_edit_board);
 
 		this.tutorial = Tutorial.getTutorial(getIntent());
-		int type = this.getIntent().getExtras().getInt(TYPE_KEY, 1);
 
 		this.initUi();
-
 		this.controller.setView(this);
-		if (type == TYPE_EDIT) {
-			String boardId = this.getIntent().getExtras()
-					.getString(BOARD_ID_KEY);
-			this.controller.init(boardId);
-		}
+		String boardId = this.getIntent().getExtras().getString(BOARD_ID_KEY);
+		this.controller.init(boardId);
+
 	}
 
 	private void initUi() {
@@ -95,7 +90,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		String description = this.descriptionView.getText().toString();
 
 		this.controller.saveBoard(title, description, (Category) selectedItem);
-		
+
 		if (this.tutorial != null) {
 			this.tutorial.proceed(this);
 		}
@@ -105,6 +100,8 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 	public void showBoardDetails(Board board) {
 		this.titleView.setText(board.getTitle());
 		this.descriptionView.setText(board.getDescription());
+		int position = this.adapter.getPosition(board.getCategory());
+		this.categorySelect.setSelection(position);
 	}
 
 	@Override

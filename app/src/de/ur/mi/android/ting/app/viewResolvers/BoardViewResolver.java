@@ -54,7 +54,7 @@ public class BoardViewResolver extends ViewResolver<Board> {
 
 	}
 
-	private void setupControls(View view, final Board board) {
+	private void setupControls(final View view, final Board board) {
 		final ViewSwitcher switcher = (ViewSwitcher) this.findViewById(view,
 				R.id.viewswitcher_board_controls_switcher);
 
@@ -66,6 +66,13 @@ public class BoardViewResolver extends ViewResolver<Board> {
 			@Override
 			public void showOwnerState() {
 				switcher.setDisplayedChild(1);
+				findViewById(view, R.id.button_edit_board).setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						controller.showEditBoard(getContext(), board);						
+					}
+				});
 				switcher.setVisibility(View.VISIBLE);
 			}
 

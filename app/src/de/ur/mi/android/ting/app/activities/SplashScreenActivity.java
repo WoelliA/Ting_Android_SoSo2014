@@ -44,7 +44,10 @@ public class SplashScreenActivity extends BaseActivity {
 
 	protected void proceed() {
 		Intent startIntent = this.getIntent();
-		startIntent.setClass(this, this.appStart.getStartActivityClass(startIntent));
-		this.startActivity(startIntent);
+		
+		Class<?> targetActivity = this.appStart.getStartActivityClass(startIntent);
+		Intent intent = new Intent(this, targetActivity);
+		intent.putExtras(startIntent);
+		this.startActivity(intent);
 	}
 }

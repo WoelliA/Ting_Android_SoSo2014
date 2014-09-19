@@ -64,7 +64,7 @@ public class CategoriesController implements
 			@Override
 			public void onChange(LoginResult changed) {
 				if (!changed.getIsRightLogin()) {
-					this.removeFeedCategory();
+					removeFeedCategory();
 					if (CategoriesController.this.feedCategory
 							.equals(CategoriesController.this.selectedCategory)) {
 						CategoriesController.this
@@ -72,15 +72,7 @@ public class CategoriesController implements
 										.getItem(0));
 					}
 				}
-			}
-
-			private void removeFeedCategory() {
-				Category first = CategoriesController.this.adapter.getItem(0);
-
-				if (first.equals(CategoriesController.this.feedCategory)) {
-					CategoriesController.this.adapter.remove(first);
-				}
-			}
+			}			
 		});
 		this.categoryProvider
 				.setCategoriesChangedListener(new IChangeListener<Collection<Category>>() {
@@ -91,6 +83,14 @@ public class CategoriesController implements
 				});
 	}
 
+	private void removeFeedCategory() {
+		Category first = this.adapter.getItem(0);
+
+		if (first.getName().equals(this.feedCategory.getName())) {
+			this.adapter.remove(first);
+		}
+	}
+	
 	public void initCategories() {
 		if (!this.connectivity.hasWebAccess(true)) {
 			return;

@@ -67,7 +67,7 @@ public class Tutorial implements IChangeListener<Context> {
 			context.startActivity(intent);
 			this.currentStep = null;
 			current = null;
-			return;
+			return; 
 		}
 
 		this.currentStep = this.steps[this.currentStepNum];

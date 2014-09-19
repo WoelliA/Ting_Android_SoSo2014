@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.controllers.CategoriesController;
 import de.ur.mi.android.ting.app.controllers.LoginController;
@@ -23,6 +24,7 @@ import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
+import de.ur.mi.android.ting.model.primitives.LoginResult;
 
 public class MainActivity extends ActionBarActivityBase implements
 		ISelectedListener<Category> {
@@ -48,6 +50,7 @@ public class MainActivity extends ActionBarActivityBase implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
+	
 
 		this.categoryController.setSelectedCategoryChangeListener(this);
 		if(this.categoryController.getSelectedCategory() != null){
@@ -74,10 +77,24 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		this.categoryController.setSelectedCategoryChangeListener(this);
 	}
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		this.initDrawer();
+	}
 
 	@Override
 	protected void onPostResume() {
 		super.onPostResume();
+		this.user.addLoginChangeListener(new IChangeListener<LoginResult>() {
+			
+			@Override
+			public void onChange(LoginResult changed) {
+				adjustOptionsMenu();				
+			}
+		});
+		this.adjustOptionsMenu();
 		if (this.getCurrentFocus() != null) {
 			this.getCurrentFocus().clearFocus();
 		}
@@ -87,11 +104,6 @@ public class MainActivity extends ActionBarActivityBase implements
 		}
 	}
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		this.initDrawer();
-	}
 
 	private void initDrawer() {
 		this.drawerLayout = (DrawerLayout) this
@@ -142,7 +154,6 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		this.menu = menu;
 		this.getMenuInflater().inflate(R.menu.main, menu);
-
 		MenuItem searchViewMenuItem = menu.findItem(R.id.action_search);
 		this.searchView = (SearchView) searchViewMenuItem.getActionView();
 		searchViewMenuItem.collapseActionView();
@@ -152,20 +163,17 @@ public class MainActivity extends ActionBarActivityBase implements
 				.getComponentName()));
 		this.searchView.setSubmitButtonEnabled(true);
 
+		adjustOptionsMenu();
 		return true;
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		Log.i("MainActivity", "onPrepareOptionsMenu");
-		this.adjustOptionsMenu();
-		return super.onPrepareOptionsMenu(menu);
-	}
+
 
 	private void adjustOptionsMenu() {
 		if (this.menu == null) {
 			return;
 		}
+		Log.i(this.getClass().getName(), "adjusting options menu");
 		boolean visible = this.user.getIsLogedIn();
 		this.menu.findItem(R.id.action_login).setVisible(!visible);
 		this.menu.findItem(R.id.action_profile).setVisible(visible);

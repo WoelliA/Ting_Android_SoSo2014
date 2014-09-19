@@ -17,7 +17,7 @@
     <item
         android:id="@+id/action_login"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        resauto:showAsAction="ifRoom"
         android:title="@string/action_login"/>
 
     <!--
@@ -31,12 +31,12 @@
     <item
         android:id="@+id/action_proximity"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        resauto:showAsAction="never"
         android:title="@string/action_proximity"/>
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        resauto:showAsAction="never"
         android:title="@string/action_logout"/>
 
 </menu>

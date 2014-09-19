@@ -48,11 +48,11 @@
             android:textSize="@dimen/pin_content_text_size" />
 
         <RelativeLayout
-            android:id="@+id/pin_controls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
             <LinearLayout
+            android:id="@+id/pin_controls"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/button_openlink"

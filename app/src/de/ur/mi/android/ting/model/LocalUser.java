@@ -40,17 +40,21 @@ public class LocalUser extends User {
 	public void setIsLoggedIn(boolean isLoggedIn, boolean isNew) {
 		this.isNew = isNew;
 		LoginResult loginResult = new LoginResult(isLoggedIn, isNew);
+
 		if (this.isLoggedIn != isLoggedIn) {
 			// only notify on change
+			this.isLoggedIn = isLoggedIn;
 			this.notifyLoginChangeListeners(loginResult);
 		}
+
+		this.isLoggedIn = isLoggedIn;
+		
 		if(!isLoggedIn){
 			this.email = null;
 			this.followedBoards.clear();
 			this.likedPins.clear();
 			this.ownedBoards.clear();
 		}
-		this.isLoggedIn = isLoggedIn;
 	} 
 
 	private void notifyLoginChangeListeners(LoginResult loginResult) {

@@ -63,12 +63,7 @@ public class Tutorial implements IChangeListener<Context> {
 			SimpleEntry<String, ? extends Serializable>... parameters) {
 		if (this.currentStepNum >= this.steps.length) {
 			Intent intent = new Intent(context, MainActivity.class);
-			if (parameters != null) {
-				for (SimpleEntry<String, ? extends Object> simpleEntry : parameters) {
-					Serializable value = (Serializable) simpleEntry.getValue();
-					intent.putExtra(simpleEntry.getKey(), value);
-				}
-			}
+
 			context.startActivity(intent);
 			this.currentStep = null;
 			current = null;
@@ -77,12 +72,18 @@ public class Tutorial implements IChangeListener<Context> {
 
 		this.currentStep = this.steps[this.currentStepNum];
 		this.ShowDialog(context);
-		this.StartActivity(context);
+		this.StartActivity(context, parameters);
 		this.currentStepNum++;
 	}
 
-	private void StartActivity(Context context) {
+	private void StartActivity(Context context, SimpleEntry<String, ? extends Serializable>[] parameters) {
 		Intent intent = new Intent(context, this.currentStep.getTargetClass());
+		if (parameters != null) {
+			for (SimpleEntry<String, ? extends Object> simpleEntry : parameters) {
+				Serializable value = (Serializable) simpleEntry.getValue();
+				intent.putExtra(simpleEntry.getKey(), value);
+			}
+		}
 		intent.putExtra(IS_TUTORIAL_KEY, true);
 		context.startActivity(intent);
 	}

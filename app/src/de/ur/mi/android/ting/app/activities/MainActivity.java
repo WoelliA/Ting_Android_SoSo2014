@@ -50,6 +50,9 @@ public class MainActivity extends ActionBarActivityBase implements
 		this.setContentView(R.layout.activity_main);
 
 		this.categoryController.setSelectedCategoryChangeListener(this);
+		if(this.categoryController.getSelectedCategory() != null){
+			this.setCategory(this.categoryController.getSelectedCategory());
+		}
 
 		this.getSupportFragmentManager().addOnBackStackChangedListener(
 				new OnBackStackChangedListener() {

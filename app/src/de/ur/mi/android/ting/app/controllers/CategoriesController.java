@@ -40,6 +40,10 @@ public class CategoriesController implements
 	private LocalUser user;
 
 	private Category selectedCategory;
+	
+	public Category getSelectedCategory(){
+		return this.selectedCategory;
+	}
 
 	protected Category feedCategory;
 

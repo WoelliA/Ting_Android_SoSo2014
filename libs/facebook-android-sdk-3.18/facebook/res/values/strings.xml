@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
     <string name="com_facebook_loginview_log_out_button">Log out</string>
     <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
@@ -23,7 +23,7 @@
     <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
     <string name="com_facebook_loginview_log_out_action">Log out</string>
     <string name="com_facebook_loginview_cancel_action">Cancel</string>
-    <string name="com_facebook_logo_content_description">Facebook Logo</string>
+    <string name="com_facebook_logo_content_description" >Facebook Logo</string>
     <string name="com_facebook_usersettingsfragment_log_in_button">Log in&#8230;</string>
     <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
     <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>

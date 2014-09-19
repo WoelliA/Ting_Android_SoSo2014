@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -188,8 +189,10 @@ public class ParseUserService implements IUserService {
 	public void saveChangedUser(EditProfileResult editProfileResult,
 			IDoneCallback<Void> callback) {
 		final ParseUser user = ParseUser.getCurrentUser();
-
-		user.setEmail(editProfileResult.getEmail());
+		String email = editProfileResult.getEmail();
+		if(email != null && !TextUtils.isEmpty(email)){
+			user.setEmail(editProfileResult.getEmail());
+		}
 		user.setUsername(editProfileResult.getName());
 		user.put("info", editProfileResult.getInfo());
 
@@ -280,7 +283,10 @@ public class ParseUserService implements IUserService {
 		final ParseUser user = new ParseUser();
 		user.setUsername(request.getName());
 		user.setPassword(request.getPassword());
-		user.setEmail(request.getEmail());
+		String email = request.getEmail();
+		if(!TextUtils.isEmpty(email)){
+			user.setEmail(email);			
+		}
 
 		if (request.getGender() != null && request.getGender().getId() != null) {
 			user.put("gender", ParseObject.createWithoutData("gender", request
@@ -311,6 +317,8 @@ public class ParseUserService implements IUserService {
 					ServiceLoginResultType type = isnew ? ServiceLoginResultType.Register
 							: ServiceLoginResultType.Login;
 					callback.done(type);
+				} else {
+					callback.fail(null);
 				}
 			}
 		};

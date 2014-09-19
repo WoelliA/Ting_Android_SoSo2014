@@ -78,6 +78,8 @@
     <string name="welcome_dialog_edit_profile">Why don´t you start with editing your profile to let others know who you are?</string>
     <string name="welcome_dialog_edit_board">Why don´t you create a board to show others your interests?</string>
     <string name="welcome_dialog_follow_board">You can personalize your experience by following boards with topics you most like and adore!</string>
+   <string name="welcome_dialog_select_interests">You can personalize your experience with Ting by telling us what you are interested in.</string>
+    
     <string name="button_openlink">browser</string>
 
 </resources>

@@ -27,6 +27,8 @@
     android:textColor="#68768a"
     android:textSize="17sp"
     android:paddingLeft="8dip"
+    
+    android:paddingRight="8dip"
     android:paddingBottom="0px"
     android:shadowDx="1"
     android:shadowDy="1"

@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto"
+    xmlns:resauto="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.ur.mi.android.excercises.walkthrough.PageOne" >
 
@@ -7,12 +7,12 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_search"
         android:title="@string/action_search"
-        yourapp:actionViewClass="android.support.v7.widget.SearchView"
-        yourapp:showAsAction="ifRoom"/>
+        resauto:actionViewClass="android.support.v7.widget.SearchView"
+        resauto:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        resauto:showAsAction="never"
         android:title="@string/action_profile"/>
     <item
         android:id="@+id/action_login"

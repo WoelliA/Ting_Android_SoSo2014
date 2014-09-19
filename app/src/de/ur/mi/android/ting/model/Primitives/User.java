@@ -19,7 +19,7 @@ public class User extends UniqueBase {
 	}
 
 	public String getName() {
-		return this.name;
+		return this.name == null ? "" : this.name;
 	}
 	
 	public String getProfilePictureUri() {

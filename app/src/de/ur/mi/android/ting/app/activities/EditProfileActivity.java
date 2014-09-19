@@ -9,6 +9,7 @@ import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileRe
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileView;
 import de.ur.mi.android.ting.model.primitives.User;
 import de.ur.mi.android.ting.utilities.IImageLoader;
+import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -136,10 +137,16 @@ public class EditProfileActivity extends BaseActivity implements
 				return;
 			}
 
-			this.controller.onSaveProfile(editProfileResult);
-			if (this.tutorial != null) {
-				this.tutorial.proceed(this);
-			}
+			this.controller.onSaveProfile(editProfileResult,
+					new SimpleDoneCallback<Void>() {
+
+						@Override
+						public void done(Void result) {
+							if (tutorial != null) {
+								tutorial.proceed(EditProfileActivity.this);
+							}
+						}
+					});
 			break;
 		}
 

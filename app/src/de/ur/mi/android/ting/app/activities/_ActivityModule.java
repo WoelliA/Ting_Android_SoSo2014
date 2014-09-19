@@ -18,7 +18,8 @@ import de.ur.mi.android.ting.utilities.view.Notify;
 		BoardDetailsActivity.class,
 		UserDetailsActivity.class,
 		EditBoardActivity.class,
-		EditProfileActivity.class},
+		EditProfileActivity.class,
+		SelectCategoriesActivity.class},
 		
 
 addsTo = _AndroidModule.class, library = true, complete = false)

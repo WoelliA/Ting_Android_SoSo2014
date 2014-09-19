@@ -29,7 +29,9 @@ public class NotifyingCallback<T> extends SimpleDoneCallback<T> {
 
 	@Override
 	protected boolean handleException(Exception e) {
-		Notify.current().showToast(e.getLocalizedMessage());
+		if(e != null){
+			Notify.current().showToast(e.getLocalizedMessage());
+		}
 		return true;
 	}
 

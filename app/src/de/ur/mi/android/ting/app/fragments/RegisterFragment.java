@@ -5,6 +5,8 @@ import java.util.Collection;
 import javax.inject.Inject;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,6 +61,14 @@ public class RegisterFragment extends LoginFragmentBase {
 									.getString(R.string.error_invalid_password));
 					return;
 				}
+				
+				if(!TextUtils.isEmpty(email)){
+					if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+						emailView.setError(getString(R.string.error_invalid_email));
+						return;
+					}
+				}				
+				
 				RegisterFragment.this.controller.register(new RegisterRequest(
 						userName, email, password, gender),
 						new SimpleDoneCallback<Boolean>() {

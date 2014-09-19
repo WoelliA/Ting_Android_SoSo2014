@@ -45,6 +45,7 @@ public class LocalUser extends User {
 			this.notifyLoginChangeListeners(loginResult);
 		}
 		if(!isLoggedIn){
+			this.email = null;
 			this.followedBoards.clear();
 			this.likedPins.clear();
 			this.ownedBoards.clear();

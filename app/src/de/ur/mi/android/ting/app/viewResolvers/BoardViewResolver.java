@@ -43,10 +43,10 @@ public class BoardViewResolver extends ViewResolver<Board> {
 	protected void decorateView(View view, Board board, ViewGroup parent) {
 		TextView headerText = (TextView) this.findViewById(view,
 				R.id.textview_board_title);
-		TextView descriptionTest = (TextView) this.findViewById(view,
+		TextView descriptionText = (TextView) this.findViewById(view,
 				R.id.textview_board_description);
 		headerText.setText(board.getTitle());
-		descriptionTest.setText(board.getDescription());
+		descriptionText.setText(board.getDescription());
 
 		if (this.showControls) {
 			this.setupControls(view, board);

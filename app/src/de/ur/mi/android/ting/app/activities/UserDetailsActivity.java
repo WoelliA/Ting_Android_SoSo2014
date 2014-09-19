@@ -65,7 +65,8 @@ public class UserDetailsActivity extends BaseActivity implements
 				if (position < 0) {
 					return;
 				}
-				Board board = UserDetailsActivity.this.adapter.getItem(position);
+				Board board = UserDetailsActivity.this.adapter
+						.getItem(position);
 				Intent intent = new Intent(UserDetailsActivity.this,
 						BoardDetailsActivity.class);
 				intent.putExtra(BoardDetailsActivity.BOARD_ID_KEY,
@@ -74,14 +75,15 @@ public class UserDetailsActivity extends BaseActivity implements
 			}
 		});
 		ViewResolver<Board> viewResolver = new BoardResolver(this);
+
+		this.headerView = this.getLayoutInflater().inflate(
+				R.layout.user_details_header_view, null, false);
+		this.listView.addHeaderView(this.headerView, null, false);
+
 		this.adapter = new ViewCreationDelegatingListAdapter<Board>(this,
 				viewResolver);
 		this.listView.setAdapter(this.adapter);
 
-		this.headerView = this.getLayoutInflater().inflate(
-				R.layout.user_details_header_view, null, false);
-
-		this.listView.addHeaderView(this.headerView, null, false);
 
 		if (this.isLocalUserPage) {
 			this.initLocalUserControls();

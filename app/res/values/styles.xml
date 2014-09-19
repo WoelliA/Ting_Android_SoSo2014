@@ -5,21 +5,14 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+		
     </style>
-
-    <style name="ApplicationStyle" parent="android:Theme">
-        <item name="android:buttonStyle">@style/ting_button_style</item>
+    
+    <style name="AppTheme" parent="AppBaseTheme">
+       <item name="android:buttonStyle">@style/ting_button_style</item>
     </style>
 
     <style name="LoginFormContainer">
@@ -29,8 +22,8 @@
     </style>
 
     <style name="header_text_style" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:layout_marginEnd">@dimen/activity_content_padding</item>
-        <item name="android:layout_marginStart">@dimen/activity_content_padding</item>
+        <item name="android:layout_marginRight">@dimen/activity_content_padding</item>
+        <item name="android:layout_marginLeft">@dimen/activity_content_padding</item>
         <item name="android:layout_marginTop">@dimen/activity_content_padding</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:layout_width">wrap_content</item>
@@ -42,8 +35,8 @@
         <item name="android:layout_margin">@dimen/button_margin</item>
         <item name="android:textColor">@color/pin_button_text_color</item>
         <item name="android:textSize">@dimen/pin_controls_textsize</item>
-        <item name="android:paddingEnd">@dimen/ting_button_margin_side</item>
-        <item name="android:paddingStart">@dimen/ting_button_margin_side</item>
+        <item name="android:paddingRight">@dimen/ting_button_margin_side</item>
+        <item name="android:paddingLeft">@dimen/ting_button_margin_side</item>
     </style>
 
     <style name="ting_toggle_button_style">

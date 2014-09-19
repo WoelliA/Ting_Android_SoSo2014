@@ -12,11 +12,12 @@ public class ActionBarActivityBase extends ActionBarActivity implements IInjecto
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		IMainInjector mainInjector = (IMainInjector) this.getApplication();
 
 	    this.activityInjector = mainInjector.plus(this.getModules());
 	    this.activityInjector.inject(this);
-	}
+	} 
 	
 	private Object[] getModules() {
 	    return new Object[] {new _ActivityModule(this) };

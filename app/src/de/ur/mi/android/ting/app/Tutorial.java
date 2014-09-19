@@ -1,14 +1,20 @@
 package de.ur.mi.android.ting.app;
 
+import java.io.Serializable;
+import java.lang.invoke.SerializedLambda;
+import java.util.AbstractMap.SimpleEntry;
+
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.activities.EditBoardActivity;
 import de.ur.mi.android.ting.app.activities.EditProfileActivity;
 import de.ur.mi.android.ting.app.activities.MainActivity;
+import de.ur.mi.android.ting.app.activities.SelectCategoriesActivity;
 import de.ur.mi.android.ting.model.dummy.DelayTask;
 import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.NotifyKind;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 public class Tutorial implements IChangeListener<Context> {
 	private static Tutorial current;
@@ -38,21 +44,31 @@ public class Tutorial implements IChangeListener<Context> {
 	private TutorialStep currentStep;
 
 	private Tutorial() {
-//
-//		new TutorialStep(BrowseBoardsActivity.class,
-//				R.string.welcome_dialog_follow_board),
-		
+		//
+		// new TutorialStep(BrowseBoardsActivity.class,
+		// R.string.welcome_dialog_follow_board),
+		// new TutorialStep(SelectCategoriesActivity.class,
+		// R.string.welcome_dialog_select_interests),
+
 		TingApp.current().addContextChangedListener(this);
 		this.steps = new TutorialStep[] {
 				new TutorialStep(EditProfileActivity.class,
 						R.string.welcome_dialog_edit_profile),
+
 				new TutorialStep(EditBoardActivity.class,
-						R.string.welcome_dialog_edit_board)};
+						R.string.welcome_dialog_edit_board) };
 	}
 
-	public void proceed(Context context) {
+	public void proceed(Context context,
+			SimpleEntry<String, ? extends Serializable>... parameters) {
 		if (this.currentStepNum >= this.steps.length) {
 			Intent intent = new Intent(context, MainActivity.class);
+			if (parameters != null) {
+				for (SimpleEntry<String, ? extends Object> simpleEntry : parameters) {
+					Serializable value = (Serializable) simpleEntry.getValue();
+					intent.putExtra(simpleEntry.getKey(), value);
+				}
+			}
 			context.startActivity(intent);
 			this.currentStep = null;
 			current = null;
@@ -89,7 +105,7 @@ public class Tutorial implements IChangeListener<Context> {
 				Tutorial.this.ShowDialog(context);
 				super.onPostExecute(result);
 			}
-		};		
+		};
 		task.execute();
 	}
 }

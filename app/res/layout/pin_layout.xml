@@ -55,7 +55,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/button_openlink"
+                android:layout_toLeftOf="@+id/button_openlink"
                 android:orientation="horizontal" >
 
                 <ToggleButton
@@ -92,7 +92,7 @@
                 style="@style/ting_button_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:text="@string/button_openlink" />
         </RelativeLayout>
     </LinearLayout>

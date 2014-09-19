@@ -1,14 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto"
+    xmlns:resauto="http://schemas.android.com/apk/res-auto"
     tools:context="de.ur.mi.android.ting.SearchActivity" >
 
         <item
         android:id="@+id/search_action_search"
         android:icon="@drawable/ic_action_search"
         android:title="@string/action_search"
-        yourapp:showAsAction="ifRoom"
-        yourapp:actionViewClass="android.support.v7.widget.SearchView"
+        resauto:showAsAction="ifRoom"
+        resauto:actionViewClass="android.support.v7.widget.SearchView"
         />
 
 </menu>

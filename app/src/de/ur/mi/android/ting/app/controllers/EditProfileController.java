@@ -8,6 +8,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.User;
+import de.ur.mi.android.ting.utilities.IDoneCallback;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.LoadIndicatingNotifyingCallback;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
@@ -79,7 +80,7 @@ public class EditProfileController {
 
 	}
 
-	public boolean onSaveProfile(final EditProfileResult editProfileResult) {
+	public boolean onSaveProfile(final EditProfileResult editProfileResult, final IDoneCallback<Void> callback) {
 		if (this.hasNotChanged(editProfileResult)) {
 			Notify.current().showToast(R.string.success_saving_profile);
 			return false;
@@ -98,6 +99,7 @@ public class EditProfileController {
 					@Override
 					public void done(Void result) {
 						super.done(result);
+						callback.done(null);
 						EditProfileController.this.user.setInfo(
 								new User("", editProfileResult.getName(),
 										editProfileResult.getInfo(), ""),

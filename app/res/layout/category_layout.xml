@@ -10,14 +10,13 @@
         android:id="@+id/category_fragment_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:text="CategoryName"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <ToggleButton
         android:id="@+id/category_favorite_button"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textOn=""
         android:textOff=""

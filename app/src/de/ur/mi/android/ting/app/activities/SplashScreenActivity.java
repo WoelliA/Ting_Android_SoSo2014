@@ -19,7 +19,7 @@ public class SplashScreenActivity extends BaseActivity {
 	public IConnectivity connectivity;
 
 	@Inject
-	public IAppStart appStart;
+	public IAppStart appStart; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class SplashScreenActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void onResume() {
+	protected void onResume() { 
 		super.onResume();
 		if (!this.connectivity.hasWebAccess(true)) {
 			return;

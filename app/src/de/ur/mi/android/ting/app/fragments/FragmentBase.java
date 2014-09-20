@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.fragments;
 
 import android.os.Bundle;
+import android.view.View;
 import de.ur.mi.android.ting.app.IInjector;
 
 public class FragmentBase extends android.support.v4.app.Fragment {
@@ -15,5 +16,9 @@ public class FragmentBase extends android.support.v4.app.Fragment {
 
 	protected boolean skipInject() {
 		return false;
+	}
+	
+	protected View findViewById(int id) {
+		return this.getView().findViewById(id);
 	}
 }

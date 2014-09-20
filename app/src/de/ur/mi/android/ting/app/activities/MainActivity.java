@@ -6,11 +6,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -20,19 +18,19 @@ import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.controllers.CategoriesController;
 import de.ur.mi.android.ting.app.controllers.LoginController;
+import de.ur.mi.android.ting.app.controllers.MainCategoriesController;
 import de.ur.mi.android.ting.app.controllers.PinListController;
 import de.ur.mi.android.ting.app.fragments.PinListFragment;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
 
-public class MainActivity extends ActionBarActivityBase implements
+public class MainActivity extends DrawerActivityBase implements
 		ISelectedListener<Category> {
 
-	private DrawerLayout drawerLayout;
-	private ActionBarDrawerToggle drawerListener;
 	private Menu menu;
-
+	private SearchView searchView;
+	protected String firstTitle;
 	PinListFragment pinContent;
 
 	@Inject
@@ -42,18 +40,15 @@ public class MainActivity extends ActionBarActivityBase implements
 	public LoginController loginController;
 
 	@Inject
-	public CategoriesController categoryController;
-	private SearchView searchView;
-	protected String firstTitle;
+	public MainCategoriesController categoryController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
-	
 
 		this.categoryController.setSelectedCategoryChangeListener(this);
-		if(this.categoryController.getSelectedCategory() != null){
+		if (this.categoryController.getSelectedCategory() != null) {
 			this.setCategory(this.categoryController.getSelectedCategory());
 		}
 
@@ -77,21 +72,15 @@ public class MainActivity extends ActionBarActivityBase implements
 
 		this.categoryController.setSelectedCategoryChangeListener(this);
 	}
-	
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		this.initDrawer();
-	}
 
 	@Override
 	protected void onPostResume() {
 		super.onPostResume();
 		this.user.addLoginChangeListener(new IChangeListener<LoginResult>() {
-			
+
 			@Override
 			public void onChange(LoginResult changed) {
-				adjustOptionsMenu();				
+				MainActivity.this.adjustOptionsMenu();
 			}
 		});
 		this.adjustOptionsMenu();
@@ -102,20 +91,6 @@ public class MainActivity extends ActionBarActivityBase implements
 		if (this.searchView != null) {
 			this.searchView.setIconified(true);
 		}
-	}
-
-
-	private void initDrawer() {
-		this.drawerLayout = (DrawerLayout) this
-				.findViewById(R.id.drawer_layout);
-		this.drawerListener = new ActionBarDrawerToggle(this,
-				this.drawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close);
-		this.drawerLayout.setDrawerListener(this.drawerListener);
-
-		this.getSupportActionBar().setHomeButtonEnabled(true);
-		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		this.drawerListener.syncState();
 	}
 
 	private void setCategory(Category selectedCategory) {
@@ -163,33 +138,35 @@ public class MainActivity extends ActionBarActivityBase implements
 				.getComponentName()));
 		this.searchView.setSubmitButtonEnabled(true);
 
-		adjustOptionsMenu();
+		this.adjustOptionsMenu();
 		return true;
 	}
-
-
 
 	private void adjustOptionsMenu() {
 		if (this.menu == null) {
 			return;
 		}
 		Log.i(this.getClass().getName(), "adjusting options menu");
-		boolean visible = this.user.getIsLogedIn();
-		this.menu.findItem(R.id.action_login).setVisible(!visible);
-		this.menu.findItem(R.id.action_profile).setVisible(visible);
-		this.menu.findItem(R.id.action_proximity).setVisible(visible);
-		this.menu.findItem(R.id.action_logout).setVisible(visible);
+		boolean loggedin = this.user.getIsLogedIn();
+		this.menu.findItem(R.id.action_login).setVisible(!loggedin);
+		this.menu.findItem(R.id.action_profile).setVisible(loggedin);
+		this.menu.findItem(R.id.action_proximity).setVisible(loggedin);
+		this.menu.findItem(R.id.action_logout).setVisible(loggedin);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (this.drawerListener.onOptionsItemSelected(item)) {
+		if (super.onOptionsItemSelected(item)) {
 			return true;
 		}
 
 		Intent intent;
 
 		switch (item.getItemId()) {
+		case R.id.action_explore:
+			intent = new Intent(this, BrowseBoardsActivity.class);
+			this.startActivity(intent);
+			return true;
 		case R.id.action_settings:
 			return true;
 		case R.id.action_login:

@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.IChangeListener;
-import de.ur.mi.android.ting.app.TingApp;
 import de.ur.mi.android.ting.app.Tutorial;
 import de.ur.mi.android.ting.app.fragments.Gender;
 import de.ur.mi.android.ting.app.fragments.RegisterRequest;
@@ -64,7 +63,7 @@ public class LoginController implements IChangeListener<LoginResult> {
 
 	@Override
 	public void onChange(LoginResult loginres) {
-		if (loginres.getIsRightLogin() && !loginres.isNew()) {
+		if (loginres.getIsRightLogin() && !loginres.hasGenericName()) {
 			Notify.current().showToast("Welcome " + this.user.getName());
 		} else if (!loginres.getIsRightLogin()) {
 			Notify.current().showToast(R.string.logged_out);
@@ -88,7 +87,7 @@ public class LoginController implements IChangeListener<LoginResult> {
 			@Override
 			public void done(Boolean result) {
 				super.done(result);
-				Tutorial.current().proceed(context);
+				Tutorial.current().proceed(LoginController.this.context);
 			}
 		});
 	}
@@ -128,7 +127,7 @@ public class LoginController implements IChangeListener<LoginResult> {
 	}
 
 	public void restorePassword(String email) {
-		if (connectivity.hasWebAccess(true)) {
+		if (this.connectivity.hasWebAccess(true)) {
 			this.userService.restorePassword(email,
 					new LoadIndicatingNotifyingCallback<Void>(
 							R.string.success_password_sent));

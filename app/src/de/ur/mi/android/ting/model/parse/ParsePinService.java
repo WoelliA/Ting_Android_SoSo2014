@@ -267,9 +267,10 @@ public class ParsePinService implements IPinService {
 				public void done(ParseException e) {
 					if(e == null){
 						result.getImageData().setImageUrl(file.getUrl());
-						createPin(result, sharedPinId, selectedBoard, callback);
-					} else 
+						ParsePinService.this.createPin(result, sharedPinId, selectedBoard, callback);
+					} else {
 						callback.fail(e);
+					}
 					
 				}
 			});

@@ -22,7 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
-public class ShareActivity extends ActionBarActivityBase implements
+public class ShareActivity extends BaseActivity implements
 		IShareSetupView {
 
 	public static final String PIN_ID_KEY = "pinIdKey";

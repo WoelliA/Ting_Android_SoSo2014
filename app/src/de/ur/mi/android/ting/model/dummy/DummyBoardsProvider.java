@@ -2,7 +2,9 @@ package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import de.ur.mi.android.ting.app.controllers.BoardEditRequest;
+import de.ur.mi.android.ting.app.controllers.CategoryBoardsRequest;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.SearchRequest;
@@ -42,14 +44,30 @@ public class DummyBoardsProvider implements IBoardsService {
 	}
 
 	@Override
-	public void saveBoard(BoardEditRequest request, IDoneCallback<Void> callback) {
+	public void saveBoard(BoardEditRequest request, IDoneCallback<Board> callback) {
 		this.createBoard(request, callback);
 	}
 
 	@Override
 	public void createBoard(BoardEditRequest request,
-			final IDoneCallback<Void> callback) {
-		DummyResultTask<Void> task = new DummyResultTask<Void>(null, callback);
+			final IDoneCallback<Board> callback) {
+		DummyResultTask<Board> task = new DummyResultTask<Board>(new DummyBoard(1), callback);
+	}
+
+	@Override
+	public void getBoardsForCategories(CategoryBoardsRequest request,
+			IDoneCallback<Collection<Board>> pagingCallback) {;
+		DummyResultTask<Collection<Board>> task = new DummyResultTask<Collection<Board>>(
+				this.createDummyBoards(request.getOffset(), request.getCount()), pagingCallback);
+		
+	}
+
+	private Collection<Board> createDummyBoards(int offset, int count) {
+		Collection<Board> list= new ArrayList<Board>();
+		for (int i = 0; i < count; i++) {
+			list.add(new DummyBoard(i+offset));
+		}
+		return list;
 	}
 
 }

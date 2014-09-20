@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,14 +38,11 @@ public class EditProfileActivity extends BaseActivity implements
 	public IImageLoader imageloader;
 	private EditText emailView;
 	private EditText infoView;
-	private Tutorial tutorial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_profile);
-
-		this.tutorial = Tutorial.getTutorial(this.getIntent());
 		this.initUi();
 		this.controller.setView(this);
 	}
@@ -80,6 +79,22 @@ public class EditProfileActivity extends BaseActivity implements
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		this.getMenuInflater().inflate(R.menu.save, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_save:
+			this.save();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == SELECT_PHOTO) {
@@ -100,8 +115,6 @@ public class EditProfileActivity extends BaseActivity implements
 
 		((Button) this.findViewById(R.id.button_change_image))
 				.setOnClickListener(this);
-		((Button) this.findViewById(R.id.button_save)).setOnClickListener(this);
-
 	}
 
 	@Override
@@ -128,28 +141,29 @@ public class EditProfileActivity extends BaseActivity implements
 			intent.setType("image/*");
 			this.startActivityForResult(intent, SELECT_PHOTO);
 			break;
-		case R.id.button_save:
+		}
+	}
 
-			EditProfileResult editProfileResult = this.getEditProfileResult();
-			if (editProfileResult.getName().trim().length() == 0) {
-				this.usernameView.setError(this
-						.getString(R.string.error_field_required));
-				return;
-			}
-
-			this.controller.onSaveProfile(editProfileResult,
-					new SimpleDoneCallback<Void>() {
-
-						@Override
-						public void done(Void result) {
-							if (tutorial != null) {
-								tutorial.proceed(EditProfileActivity.this);
-							}
-						}
-					});
-			break;
+	protected void save() {
+		EditProfileResult editProfileResult = this.getEditProfileResult();
+		if (editProfileResult.getName().trim().length() == 0) {
+			this.usernameView.setError(this
+					.getString(R.string.error_field_required));
+			return;
 		}
 
+		this.controller.onSaveProfile(editProfileResult,
+				new SimpleDoneCallback<Void>() {
+
+					@Override
+					public void done(Void result) {
+						onSaved();
+					}
+				});
+	}
+
+	protected void onSaved() {
+				
 	}
 
 	private EditProfileResult getEditProfileResult() {

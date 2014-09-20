@@ -32,7 +32,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class SearchActivity extends ActionBarActivityBase implements
+public class SearchActivity extends BaseActivity implements
 		ActionBar.TabListener {
 
 	/**

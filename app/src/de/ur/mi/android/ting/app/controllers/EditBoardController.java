@@ -2,9 +2,12 @@ package de.ur.mi.android.ting.app.controllers;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
+import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.Board;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.utilities.IConnectivity;
@@ -30,12 +33,15 @@ public class EditBoardController {
 	private String boardId;
 	private IConnectivity connectivity;
 	private ICategoryProvider categoryProvider;
+	private LocalUser user;
 
+	@Inject
 	public EditBoardController(IBoardsService boardsService,
-			ICategoryProvider categoryProvider, IConnectivity connectivy) {
+			ICategoryProvider categoryProvider, IConnectivity connectivy, LocalUser user) {
 		this.boardsService = boardsService;
 		this.categoryProvider = categoryProvider;
 		this.connectivity = connectivy;
+		this.user = user;
 	}
 
 	public void setView(final EditBoardView view) {
@@ -75,12 +81,15 @@ public class EditBoardController {
 		final BoardEditRequest request = new BoardEditRequest(this.boardId,
 				title, description, category.getId());
 
-		IDoneCallback<Void> callback = new SimpleDoneCallback<Void>() {
+		IDoneCallback<Board> callback = new SimpleDoneCallback<Board>() {
 
 			@Override
-			public void done(Void searchResult) {
+			public void done(Board board) {
 				loading.close();
 				Notify.current().showToast(R.string.success_saving_board);
+				if(EditBoardController.this.boardId == null){
+					EditBoardController.this.user.getOwnedBoards().add(board);
+				}
 				EditBoardController.this.view.onBoardSaved(request);
 			}
 

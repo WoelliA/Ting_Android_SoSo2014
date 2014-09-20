@@ -42,15 +42,23 @@ public class UserDetailsActivity extends BaseActivity implements
 
 	private boolean isLocalUserPage;
 
+	private String userId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String userId = this.getIntent().getExtras().getString(USER_ID_KEY);
-		this.isLocalUserPage = userId.equals(this.localUser.getId());
+		this.userId = this.getIntent().getExtras().getString(USER_ID_KEY);
+		this.isLocalUserPage = this.userId.equals(this.localUser.getId());
 		this.initUi();
 
-		this.controller.setView(this, userId);
+	}
+	
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		this.controller.setView(this, this.userId);
 	}
 
 	private void initUi() {

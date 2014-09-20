@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
@@ -58,21 +57,21 @@ public class ParseUserService implements IUserService {
 				boolean isSuccess = u != null;
 				LoginResult lr = new LoginResult(isSuccess, false);
 				if (isSuccess) {
-					ParseUserService.this.setUserInfo(u, false);
+					ParseUserService.this.setUserInfo(u, false, false);
 				}
 				callback.done(lr);
 			}
 		});
 	}
 
-	protected void setUserInfo(ParseUser u, boolean isNew) {
+	protected void setUserInfo(ParseUser u, boolean isNew, boolean hasGenericName) {
 		this.localuser.setInfo(ParseHelper.createUser(u), u.getEmail());
 		if (!isNew) {
 			this.tryAddBoardsFollowed(u);
 			this.tryAddLikedPins(u);
 			this.tryAddOwnedBoards();
 		}
-		ParseUserService.this.localuser.setIsLoggedIn(true, isNew);
+		ParseUserService.this.localuser.setIsLoggedIn(true, hasGenericName);
 	}
 
 	private void tryAddOwnedBoards() {
@@ -137,7 +136,7 @@ public class ParseUserService implements IUserService {
 		ParseUser user = ParseUser.getCurrentUser();
 		boolean isLoggedIn = user != null;
 		if (isLoggedIn) {
-			this.setUserInfo(user, false);
+			this.setUserInfo(user, false, false);
 		}
 		return isLoggedIn;
 	}
@@ -296,7 +295,7 @@ public class ParseUserService implements IUserService {
 			@Override
 			public void done(ParseException e) {
 				if (e == null) {
-					ParseUserService.this.setUserInfo(user, true);
+					ParseUserService.this.setUserInfo(user, true, false);
 					callback.done(true);
 				} else {
 					callback.fail(e);
@@ -313,7 +312,7 @@ public class ParseUserService implements IUserService {
 			public void done(ParseUser user, ParseException e) {
 				if (user != null) {
 					boolean isnew = user.isNew();
-					ParseUserService.this.setUserInfo(user, isnew);
+					ParseUserService.this.setUserInfo(user, isnew, true);
 					ServiceLoginResultType type = isnew ? ServiceLoginResultType.Register
 							: ServiceLoginResultType.Login;
 					callback.done(type);
@@ -343,11 +342,25 @@ public class ParseUserService implements IUserService {
 					public void done(ParseException e) {
 						if (e == null) {
 							callback.done(null);
-						} else
+						} else {
 							callback.fail(e);
+						}
 
 					}
 				});
+	}
+
+	@Override
+	public void saveFavoriteCategories(Collection<String> ids) {
+		ParseUser user = ParseUser.getCurrentUser();
+		if(user == null || ids == null){
+			return;
+		}
+		ParseRelation<ParseObject> relation = user.getRelation("favorite_categories");
+		for (String id : ids) {
+			relation.add(ParseObject.createWithoutData("category", id));
+		}
+		user.saveEventually();
 	}
 
 }

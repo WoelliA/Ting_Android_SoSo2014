@@ -78,6 +78,7 @@ public abstract class CategoryProviderBase implements
 						@Override
 						public void done(List<Category> result) {
 							for (Category c : result) {
+								user.setFavoriteCategories(result);
 								Category category = CategoryProviderBase.this.categories
 										.get(c.getId());
 								if (category != null) {

@@ -18,14 +18,14 @@ import de.ur.mi.android.ting.model.primitives.User;
 public class LocalUser extends User {
 
 	private boolean isLoggedIn;
-	private List<Category> favoriteCategories;
+	private Collection<Category> favoriteCategories = new ArrayList<Category>();
 	private List<IChangeListener<LoginResult>> listeners;
 	private String email;
 	private List<Board> followedBoards = new ArrayList<Board>();
 	private HashSet<Pin> likedPins = new HashSet<Pin>();
 	private HashSet<Board> ownedBoards = new HashSet<Board>();
-	private boolean isNew;
 	private static LocalUser current;
+	private boolean hasGenericName;
 
 	public LocalUser() {
 		super(null);
@@ -37,9 +37,9 @@ public class LocalUser extends User {
 		return this.isLoggedIn;
 	}
 
-	public void setIsLoggedIn(boolean isLoggedIn, boolean isNew) {
-		this.isNew = isNew;
-		LoginResult loginResult = new LoginResult(isLoggedIn, isNew);
+	public void setIsLoggedIn(boolean isLoggedIn, boolean hasGenericName) {
+		this.hasGenericName = hasGenericName;
+		LoginResult loginResult = new LoginResult(isLoggedIn, hasGenericName);
 
 		if (this.isLoggedIn != isLoggedIn) {
 			// only notify on change
@@ -75,11 +75,15 @@ public class LocalUser extends User {
 		return this.email == null ? "" : this.email;
 	}
 
-	public void setFavoriteCategories(List<Category> categories) {
-		this.favoriteCategories = categories;
+	public void setFavoriteCategories(Iterable<Category> categories) {
+		this.favoriteCategories = new ArrayList<Category>();
+		for (Category category : categories) {
+			category.setIsFavorite(true);
+			this.favoriteCategories.add(category);
+		}
 	}
 
-	public List<Category> getFavoriteCategories() {
+	public Collection<Category> getFavoriteCategories() {
 		return this.favoriteCategories;
 	}
 
@@ -116,7 +120,7 @@ public class LocalUser extends User {
 		this.ownedBoards = new HashSet<Board>(boards);
 	}
 
-	public boolean isNew() {
-		return this.isNew;
+	public boolean hasGenericName() {
+		return this.hasGenericName;
 	}
 }

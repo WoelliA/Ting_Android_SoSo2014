@@ -6,6 +6,9 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import de.ur.mi.android.ting.app._AndroidModule;
+import de.ur.mi.android.ting.app.activities.tutorial.BrowseBoardsTutorialActivity;
+import de.ur.mi.android.ting.app.activities.tutorial.CreateBoardTutorialActivity;
+import de.ur.mi.android.ting.app.activities.tutorial.EditProfileTutorialActivity;
 import de.ur.mi.android.ting.utilities.view.INotify;
 import de.ur.mi.android.ting.utilities.view.Notify;
 
@@ -19,7 +22,10 @@ import de.ur.mi.android.ting.utilities.view.Notify;
 		UserDetailsActivity.class,
 		EditBoardActivity.class,
 		EditProfileActivity.class,
-		SelectCategoriesActivity.class},
+		BrowseBoardsActivity.class,
+		EditProfileTutorialActivity.class,
+		BrowseBoardsTutorialActivity.class,
+		CreateBoardTutorialActivity.class},
 		
 
 addsTo = _AndroidModule.class, library = true, complete = false)

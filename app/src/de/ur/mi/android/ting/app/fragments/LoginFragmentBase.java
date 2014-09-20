@@ -10,9 +10,7 @@ public class LoginFragmentBase extends FragmentBase {
 		this.handler = handler;
 		
 	}
-	protected View findViewById(int id) {
-		return this.getView().findViewById(id);
-	}
+
 
 }
 

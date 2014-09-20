@@ -105,4 +105,8 @@ public class TingApp extends Application implements IMainInjector {
 	public void addContextChangedListener(IChangeListener<Context> listener) {
 		this.contextChangedListeners.add(new WeakReference<IChangeListener<Context>>(listener));
 	}
+
+	public static boolean isRelease() {
+		return TingApp.current.isReleaseApp;
+	}
 }

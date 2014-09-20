@@ -1,8 +1,11 @@
 package de.ur.mi.android.ting.model.dummy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+
+import com.parse.ParseUser;
 
 import android.app.Activity;
 import de.ur.mi.android.ting.app.controllers.EditProfileController.EditProfileResult;
@@ -144,6 +147,11 @@ public class DummyUserService implements IUserService {
 		DummyResultTask<Void> task = new DummyResultTask<Void>(null,
 				callback);
 		
+	}
+
+	@Override
+	public void saveFavoriteCategories(Collection<String> ids) {
+
 	}
 
 }

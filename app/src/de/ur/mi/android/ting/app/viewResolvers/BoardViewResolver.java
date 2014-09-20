@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.activities.BoardDetailsActivity;
 import de.ur.mi.android.ting.app.controllers.BoardController;
 import de.ur.mi.android.ting.app.controllers.BoardController.IBoardView;
 import de.ur.mi.android.ting.model.primitives.Board;
@@ -13,6 +14,7 @@ import de.ur.mi.android.ting.model.primitives.Board.BoardAffiliation;
 import de.ur.mi.android.ting.utilities.IImageLoader;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,7 +42,16 @@ public class BoardViewResolver extends ViewResolver<Board> {
 	}
 
 	@Override
-	protected void decorateView(View view, Board board, ViewGroup parent) {
+	protected void decorateView(View view, final Board board, ViewGroup parent) {
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getContext(), BoardDetailsActivity.class);
+				intent.putExtra(BoardDetailsActivity.BOARD_ID_KEY, board.getId());
+				getContext().startActivity(intent);
+			}
+		});
 		TextView headerText = (TextView) this.findViewById(view,
 				R.id.textview_board_title);
 		TextView descriptionText = (TextView) this.findViewById(view,
@@ -66,13 +77,16 @@ public class BoardViewResolver extends ViewResolver<Board> {
 			@Override
 			public void showOwnerState() {
 				switcher.setDisplayedChild(1);
-				BoardViewResolver.this.findViewById(view, R.id.button_edit_board).setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						BoardViewResolver.this.controller.showEditBoard(getContext(), board);						
-					}
-				});
+				BoardViewResolver.this.findViewById(view,
+						R.id.button_edit_board).setOnClickListener(
+						new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								BoardViewResolver.this.controller
+										.showEditBoard(getContext(), board);
+							}
+						});
 				switcher.setVisibility(View.VISIBLE);
 			}
 
@@ -103,7 +117,7 @@ public class BoardViewResolver extends ViewResolver<Board> {
 
 			@Override
 			public void displayBoardInfo(Board result) {
-				// this already happened				
+				// this already happened
 			}
 
 		}, board);

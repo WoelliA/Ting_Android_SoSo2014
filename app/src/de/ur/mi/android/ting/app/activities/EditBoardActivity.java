@@ -19,6 +19,8 @@ import de.ur.mi.android.ting.utilities.view.Notify;
 import de.ur.mi.android.ting.utilities.view.ViewResolver;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -32,25 +34,39 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 
 	@Inject
 	public EditBoardController controller;
-	private EditText titleView; 
+	private EditText titleView;
 	private EditText descriptionView;
 	private Spinner categorySelect;
 	private ViewCreationDelegatingListAdapter<Category> adapter;
-	private Tutorial tutorial;
- 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_edit_board);
 
-		this.tutorial = Tutorial.getTutorial(this.getIntent());
 
 		this.initUi();
 		this.controller.setView(this);
-		if(this.getIntent().getExtras() != null){
-			String boardId = this.getIntent().getExtras().getString(BOARD_ID_KEY);
-			this.controller.init(boardId);			
+		if (this.getIntent().getExtras() != null) {
+			String boardId = this.getIntent().getExtras()
+					.getString(BOARD_ID_KEY);
+			this.controller.init(boardId);
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.save, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.menu.save:
+			this.saveBoard();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void initUi() {
@@ -62,15 +78,6 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 				.findViewById(R.id.edit_board_description);
 
 		this.categorySelect.getSelectedItemPosition();
-
-		((Button) this.findViewById(R.id.edit_board_save))
-				.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						EditBoardActivity.this.saveBoard();
-					}
-				});
 	}
 
 	protected void saveBoard() {
@@ -89,10 +96,6 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 		String description = this.descriptionView.getText().toString();
 
 		this.controller.saveBoard(title, description, (Category) selectedItem);
-
-		if (this.tutorial != null) {
-			this.tutorial.proceed(this);
-		}
 	}
 
 	@Override

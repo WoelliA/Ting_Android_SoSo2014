@@ -1,6 +1,7 @@
 package de.ur.mi.android.ting.app.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,82 +17,41 @@ import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.SpecialCategories.SpecialCategory;
 import de.ur.mi.android.ting.model.primitives.Category;
 import de.ur.mi.android.ting.model.primitives.LoginResult;
+import de.ur.mi.android.ting.model.primitives.UniqueBase;
 import de.ur.mi.android.ting.utilities.IBiChangeListener;
 import de.ur.mi.android.ting.utilities.IConnectivity;
 import de.ur.mi.android.ting.utilities.SimpleDoneCallback;
 import android.widget.ArrayAdapter;
 
 @Singleton
-public class CategoriesController implements
-		IBiChangeListener<Category, Boolean> {
+public class CategoriesController {
 
-	private ISelectedListener<Category> selectedCategoryChangedListener;
-
-	private ArrayAdapter<Category> adapter;
-
-	private ICategoryProvider categoryProvider;
-
-	protected List<Category> categories;
-
+	protected ArrayAdapter<Category> adapter;
+	protected ICategoryProvider categoryProvider;
+	private static Category[] categories;
 	private IConnectivity connectivity;
+	protected Category selectedCategory;
+	protected IUserService userService;
+	protected LocalUser user;
 
-	private ISpecialCategories specialCategories;
-
-	private LocalUser user;
-
-	private Category selectedCategory;
-	
-	public Category getSelectedCategory(){
+	public Category getSelectedCategory() {
 		return this.selectedCategory;
 	}
 
-	protected Category feedCategory;
-
-	private IUserService userService;
-
-
 	@Inject
 	public CategoriesController(ICategoryProvider categoryProvider,
-			IUserService userService, IConnectivity connectivity,
-			ISpecialCategories specialCategories, LocalUser user) {
+			IConnectivity connectivity, IUserService userService, LocalUser user) {
 		this.categoryProvider = categoryProvider;
-		this.userService = userService;
 		this.connectivity = connectivity;
-		this.specialCategories = specialCategories;
+		this.userService = userService;
 		this.user = user;
-		this.user.addLoginChangeListener(new IChangeListener<LoginResult>() {
-
-			@Override
-			public void onChange(LoginResult changed) {
-				if (!changed.getIsRightLogin()) {
-					removeFeedCategory();
-					if (CategoriesController.this.feedCategory
-							.equals(CategoriesController.this.selectedCategory)) {
-						CategoriesController.this
-								.onCategorySelected(CategoriesController.this.adapter
-										.getItem(0));
-					}
-				}
-			}			
-		});
-		this.categoryProvider
-				.setCategoriesChangedListener(new IChangeListener<Collection<Category>>() {
-					@Override
-					public void onChange(Collection<Category> changed) {
-						CategoriesController.this.initCategories();
-					}
-				});
 	}
 
-	private void removeFeedCategory() {
-		Category first = this.adapter.getItem(0);
-
-		if (first.getName().equals(this.feedCategory.getName())) {
-			this.adapter.remove(first);
-		}
-	}
-	
 	public void initCategories() {
+		if (categories != null) {
+			this.onCategoriesReceived(Arrays.asList(categories));
+			return;
+		}
 		if (!this.connectivity.hasWebAccess(true)) {
 			return;
 		}
@@ -99,52 +59,24 @@ public class CategoriesController implements
 				.getAllCategories(new SimpleDoneCallback<Collection<Category>>() {
 					@Override
 					public void done(Collection<Category> result) {
-						CategoriesController.this.categories = new ArrayList<Category>(
-								result);
-						
-						CategoriesController.this.categories.add(0,
-								CategoriesController.this.specialCategories
-										.getEverythingCategory());
-						if (CategoriesController.this.user.getIsLogedIn()) {
-							CategoriesController.this.feedCategory = CategoriesController.this.specialCategories
-									.getFeedCategory();
-
-							CategoriesController.this.categories.add(0,
-									CategoriesController.this.feedCategory);
-						}
-						CategoriesController.this.initAdapter();
-						if (CategoriesController.this.selectedCategory == null) {
-							CategoriesController.this
-									.onCategorySelected(CategoriesController.this.categories
-											.get(0));
-						}
-					} 
+						Category[] cs = new Category[result.size()];
+						categories = result.toArray(cs);
+						onCategoriesReceived(result);
+					}
 				});
 	}
 
-	protected void initAdapter() {
-		if (this.adapter == null || this.categories == null) {
-			return;
-		}
-		this.sortFavoritesUp();
-
-		this.adapter.clear();
-		this.adapter.addAll(this.categories);
+	protected void onCategoriesReceived(Collection<Category> result) {
+		this.initAdapter(new ArrayList<Category>(result));
 	}
 
-	private void sortFavoritesUp() {
-		int insertAt = 0;
-		for (int i = 0; i < this.categories.size(); i++) {
-			Category category = this.categories.get(i);
-			if (category instanceof SpecialCategory) {
-				insertAt++;
-				continue;
-			}
-			if (category.getIsFavorite()) {
-				this.categories.remove(category);
-				this.categories.add(insertAt, category);
-			}
+	protected void initAdapter(List<Category> categories) {
+		if (this.adapter == null || categories == null) {
+			return;
 		}
+
+		this.adapter.clear();
+		this.adapter.addAll(categories);
 	}
 
 	public void setAdapter(ArrayAdapter<Category> adapter) {
@@ -152,47 +84,27 @@ public class CategoriesController implements
 		this.initCategories();
 	}
 
-	private void adjustPosition(Category category, boolean isChecked) {
-		if (this.adapter == null) {
-			return;
-		}
+	public void saveFavoriteCategories(final Collection<Category> collection) {
+		this.userService.saveFavoriteCategories(UniqueBase.getIds(collection));
+		user.setFavoriteCategories(collection);
+	}
 
-		this.adapter.remove(category);
+	public Collection<Category> getCategories() {
+		return Arrays.asList(categories);
+	}
 
-		for (int i = 0; i < this.adapter.getCount(); i++) {
-			Category c = this.adapter.getItem(i);
-			if (c.getIsFavorite() || c instanceof SpecialCategory) {
-				continue;
+	public Collection<Category> getCategoriesForIds(
+			Collection<String> categoryIds) {
+
+		ArrayList<Category> list = new ArrayList<Category>();
+		for (int i = 0; i < categories.length; i++) {
+			Category category = categories[i];
+			if (categoryIds.contains(category.getId()))
+				;
+			{
+				list.add(category);
 			}
-			if (isChecked) {
-				this.adapter.insert(category, i);
-				break;
-			} else {
-				if (c.getName().compareTo(category.getName()) > 0) {
-					this.adapter.insert(category, i);
-					break;
-				}
-			}
 		}
+		return list;
 	}
-
-	public void setSelectedCategoryChangeListener(
-			ISelectedListener<Category> selectedListener) {
-		this.selectedCategoryChangedListener = selectedListener;
-	}
-
-	public void onCategorySelected(Category selectedCategory) {
-		this.selectedCategory = selectedCategory;
-		if (this.selectedCategoryChangedListener != null) {
-			this.selectedCategoryChangedListener.onSelected(selectedCategory);
-		}
-	}
-
-	@Override
-	public void onChange(Category category, Boolean u) {
-		this.userService.setIsFavoriteCategory(category,
-				category.getIsFavorite());
-		this.adjustPosition(category, u);
-	}
-
 }

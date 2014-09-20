@@ -162,6 +162,7 @@ public class ShareController {
 					@Override
 					public void done(Void result) {
 						loading.close();
+						Notify.current().showToast(R.string.success_share);
 					}
 				});
 

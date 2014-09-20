@@ -3,16 +3,19 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
 
+
     <!-- Application theme. -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
-		
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light"></style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
     </style>
-    
+
     <style name="AppTheme" parent="AppBaseTheme">
-       <item name="android:buttonStyle">@style/ting_button_style</item>
+        <item name="android:buttonStyle">@style/ting_button_style</item>
     </style>
 
     <style name="LoginFormContainer">

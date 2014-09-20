@@ -60,7 +60,7 @@ public class EditProfileController {
 
 	public void setView(EditProfileView view) {
 		this.view = view;
-		if (this.user.isNew()) {
+		if (this.user.hasGenericName()) {
 			this.user.setName("");
 		}
 		this.view.displayUserProfile(this.user, this.user.getEmail());
@@ -83,6 +83,7 @@ public class EditProfileController {
 	public boolean onSaveProfile(final EditProfileResult editProfileResult, final IDoneCallback<Void> callback) {
 		if (this.hasNotChanged(editProfileResult)) {
 			Notify.current().showToast(R.string.success_saving_profile);
+			callback.done(null);
 			return false;
 		}
 		if (this.newProfileImage != null) {

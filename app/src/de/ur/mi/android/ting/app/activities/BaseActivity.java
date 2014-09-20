@@ -2,12 +2,14 @@ package de.ur.mi.android.ting.app.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import de.ur.mi.android.ting.app.IInjectable;
 import de.ur.mi.android.ting.app.IInjector;
 import de.ur.mi.android.ting.app.IMainInjector;
 import de.ur.mi.android.ting.app.TingApp;
 
-public abstract class BaseActivity extends FragmentActivity implements
-		IInjector {
+public abstract class BaseActivity extends ActionBarActivity implements
+		IInjector, IInjectable {
 	private IInjector activityInjector;
 
 	@Override
@@ -45,5 +47,10 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected void onPause() {
 		super.onPause();
 		TingApp.isVisibleChanged(false);
+	}
+	
+	@Override
+	public boolean skipInject() {
+		return false;
 	}
 }

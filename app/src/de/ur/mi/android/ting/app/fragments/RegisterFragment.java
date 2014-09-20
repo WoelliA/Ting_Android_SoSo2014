@@ -33,7 +33,7 @@ public class RegisterFragment extends LoginFragmentBase {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		controller.setContext(getActivity());
+		this.controller.setContext(this.getActivity());
 		Button registerButton = (Button) this
 				.findViewById(R.id.action_register);
 		registerButton.setOnClickListener(new OnClickListener() {
@@ -64,7 +64,7 @@ public class RegisterFragment extends LoginFragmentBase {
 				
 				if(!TextUtils.isEmpty(email)){
 					if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-						emailView.setError(getString(R.string.error_invalid_email));
+						RegisterFragment.this.emailView.setError(RegisterFragment.this.getString(R.string.error_invalid_email));
 						return;
 					}
 				}				

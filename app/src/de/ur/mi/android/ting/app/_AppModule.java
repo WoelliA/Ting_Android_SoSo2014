@@ -17,7 +17,11 @@ import de.ur.mi.android.ting.utilities.initialization.CompositeInitializeable;
 import de.ur.mi.android.ting.utilities.initialization.IInitializeable;
 import de.ur.mi.android.ting.utilities.initialization.InitializeableProvider;
 
-@Module(library = true, complete = false)
+@Module(
+		injects = { Tutorial.class },
+		library = true, 
+		complete = false)
+
 public class _AppModule {
 
 	@Provides
@@ -25,7 +29,7 @@ public class _AppModule {
 		return new IAppStart() {
 			@Override
 			public Class<?> getStartActivityClass(Intent intent) {
-				if(intent.getAction().equals(Intent.ACTION_SEND)){
+				if (intent.getAction().equals(Intent.ACTION_SEND)) {
 					return ShareActivity.class;
 				}
 				return MainActivity.class;

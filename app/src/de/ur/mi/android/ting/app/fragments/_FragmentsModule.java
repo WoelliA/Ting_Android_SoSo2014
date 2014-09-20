@@ -8,7 +8,8 @@ import dagger.Module;
 		EditPinDetailsFragment.class,
 		LoginFragment.class,
 		RegisterFragment.class,
-		ForgotPWFragment.class
+		ForgotPWFragment.class,
+		SelectCategoriesFragment.class
 		}, complete = false)
 public class _FragmentsModule {
 

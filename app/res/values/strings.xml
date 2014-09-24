@@ -19,9 +19,9 @@
     <string name="button_add_reminder">Add new Reminder</string>
     <string name="button_get_position">Get Position</string>
     <string name="button_save_reminder">Save Reminder</string>
-    <string name="edittext_name_reminder">Name your Reminder</string>
-    <string name="edittext_latitude">Latitude</string>
-    <string name="edittext_longitude">Longitude</string>
+    <string name="reminder_name">Set a Reminder for your Home</string>
+    <string name="reminder_latitude">Latitude:</string>
+    <string name="reminder_longitude">Longitude:</string>
     <string name="connection_error_title">No Internet Connection</string>
     <string name="connection_error_content">For Ting to work properly, please enable your Internet Connection.</string>
     <string name="login_error_title">Login Error</string>
@@ -83,5 +83,7 @@
     <string name="welcome_dialog_select_interests">You can personalize your experience with Ting by telling us what you are interested in.</string>
     <string name="success_share">successfully tinged this on your board</string>
     <string name="button_openlink">browser</string>
+    <string name="notificationContentTitle">Ting-Reminder</string>
+    <string name="notificationContentText">Time to check some-Ting!</string>
 
 </resources>

@@ -4,55 +4,70 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
+    <TextView
         android:id="@+id/name_reminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="@string/edittext_name_reminder">
-        
-    </EditText>
-
-    <EditText
-        android:id="@+id/latitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="@string/edittext_latitude">
-    </EditText>
-
-    <EditText
-        android:id="@+id/longitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="@string/edittext_longitude">
-    </EditText>
+        android:text="@string/reminder_name"
+        android:textColor="@color/pin_headline_text_color"
+        android:textSize="@dimen/reminder_header_size"
+        android:gravity="center"
+        android:layout_margin="@dimen/reminder_margin"></TextView>
     
-            <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+    <TextView
+       	android:id="@+id/reminder__divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pin_divider_height"
+        android:background="@color/pin_divider_background_color"/>
 
-            <Button
-                
-                    style="@style/ting_button_style"
-                android:id="@+id/button_get_position"
-                android:layout_width="match_parent"
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+            <TextView
+        		android:id="@+id/latitude"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="@string/reminder_latitude"/>
+    		
+            <TextView 
+                android:id="@+id/current_latitude"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/button_margin"
-                android:text="@string/button_get_position" />
+                android:text="0"
+                android:gravity="end"/>
+    </LinearLayout>
 
-            <Button
-                    style="@style/ting_button_style"
-                android:id="@+id/button_save_reminder"
-                android:layout_width="match_parent"
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    
+    		<TextView
+        		android:id="@+id/longitude"
+        		android:layout_width="wrap_content"
+       			android:layout_height="wrap_content"
+        		android:text="@string/reminder_longitude"/>
+    
+            <TextView 
+                android:id="@+id/current_longitude"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/button_margin"
-                android:text="@string/button_save_reminder"/>
-        </LinearLayout>
+                android:text="0"
+                android:gravity="end"/>
+    </LinearLayout>
+    
+
+
+  	<Button
+       		style="@style/ting_button_style"
+       	android:id="@+id/button_save_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_margin"
+        android:text="@string/button_save_reminder"/>
+   
     
 </LinearLayout>

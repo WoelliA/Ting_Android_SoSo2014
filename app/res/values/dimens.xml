@@ -16,4 +16,6 @@
 	<dimen name="button_margin">2dp</dimen>
 	<dimen name="pin_controls_textsize">12dp</dimen>
 	<dimen name="ting_button_margin_side">8dp</dimen>
+	<dimen name="reminder_header_size">21dp</dimen>
+	<dimen name="reminder_margin">2dp</dimen>
 </resources>

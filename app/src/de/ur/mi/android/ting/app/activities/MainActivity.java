@@ -178,7 +178,7 @@ public class MainActivity extends DrawerActivityBase implements
 			this.startActivity(intent);
 			return true;
 		case R.id.action_proximity:
-			intent = new Intent(this, ProximityAlertActivity.class);
+			intent = new Intent(this, ProximityAlertSetActivity.class);
 			this.startActivity(intent);
 			return true;
 		case R.id.action_profile:

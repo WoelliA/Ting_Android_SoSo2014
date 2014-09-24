@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -44,8 +46,6 @@ public class ProximityAlertSetActivity extends Activity{
 		this.initUI();
 		
 	}
-	
-	
 	
 	
 	private void initNumberFormat() {
@@ -141,6 +141,9 @@ public class ProximityAlertSetActivity extends Activity{
 				} else {
 					addProxAlert();
 					Toast.makeText(ProximityAlertSetActivity.this,"saved", Toast.LENGTH_SHORT).show();
+					
+					testAlert();	
+					
 				}
 				
 			}
@@ -164,5 +167,23 @@ public class ProximityAlertSetActivity extends Activity{
     	locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), 5, -1, proximityIntent);
     	
 }
+
+
+	private void testAlert() {
+		String contentTitle = getApplicationContext().getResources().getString(R.string.notificationContentTitle);
+		String contentText = getApplicationContext().getResources().getString(R.string.notificationContentText);
+		
+		Notification notification = new Notification.Builder(getApplicationContext())
+		 	.setContentTitle(contentTitle)
+		 	.setContentText(contentText)
+		 	.setSmallIcon(R.drawable.ic_launcher)
+		 	.build();
+
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.defaults |= Notification.DEFAULT_VIBRATE;
+		
+		NotificationManager notifManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		notifManager.notify(1, notification);
+	}
 	
 }

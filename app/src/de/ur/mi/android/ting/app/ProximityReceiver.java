@@ -17,8 +17,6 @@ public class ProximityReceiver extends BroadcastReceiver{
 	public void onReceive(Context context, Intent intent) {
 
 		String key = LocationManager.KEY_PROXIMITY_ENTERING;
-
-		
 		boolean entering = intent.getBooleanExtra(key, false);
 		
 		if(entering){

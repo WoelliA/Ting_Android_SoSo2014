@@ -92,6 +92,8 @@
         </activity>
         <activity android:name=".app.activities.tutorial.CreateBoardTutorialActivity" >
         </activity>
+        <activity android:name=".app.activities.InviteFriendsActivity" >
+        </activity>
     </application>
 
 </manifest>

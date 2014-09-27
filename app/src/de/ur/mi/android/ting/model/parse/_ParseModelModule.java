@@ -16,6 +16,7 @@ import de.ur.mi.android.ting.app.ForApplication;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ISocialService;
 import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.SpecialCategories;
 import de.ur.mi.android.ting.model._IModelModule;
@@ -25,7 +26,7 @@ import de.ur.mi.android.ting.model.IUserService;
 import de.ur.mi.android.ting.model.LocalUser;
 import de.ur.mi.android.ting.model.primitives.SearchType;
 
-@Module(complete = false, library = true)
+@Module(injects = { ParseSocialService.class }, complete = false, library = true)
 public class _ParseModelModule implements _IModelModule {
 
 	private static final String applicationId = "rnklQPqG2yqcKwmXfYqMSqQ2CoF6lGB56sofWiHt";
@@ -37,7 +38,8 @@ public class _ParseModelModule implements _IModelModule {
 		// Parse.enableLocalDatastore(context);
 		Parse.initialize(context, applicationId, clientKey);
 		ParseFacebookUtils.initialize("235547439794245");
-		ParseTwitterUtils.initialize("7lqEeDTEdYEW2U7mO7Psyg", "lE1SB6OjqBWyOzYFl0fMIhJxElZWNRDaNArjZeck");
+		ParseTwitterUtils.initialize("7lqEeDTEdYEW2U7mO7Psyg",
+				"lE1SB6OjqBWyOzYFl0fMIhJxElZWNRDaNArjZeck");
 	}
 
 	@Override
@@ -49,9 +51,10 @@ public class _ParseModelModule implements _IModelModule {
 	@Override
 	@Provides
 	@Singleton
-	public ICategoryProvider provideICategoryProvider(LocalUser user, IUserService userService) {
+	public ICategoryProvider provideICategoryProvider(LocalUser user,
+			IUserService userService) {
 		if (this.categoryProvider == null) {
-			this.categoryProvider = new ParseCategoryProvider(user,userService);
+			this.categoryProvider = new ParseCategoryProvider(user, userService);
 		}
 		return this.categoryProvider;
 	}
@@ -71,7 +74,7 @@ public class _ParseModelModule implements _IModelModule {
 	@Provides
 	public ISearchService provideISearchService(IUserService userService,
 			IPinService pinService, IBoardsService boardsService) {
-		
+
 		HashMap<SearchType, ITypedSearchService<?>> services = new HashMap<SearchType, ITypedSearchService<?>>();
 		services.put(SearchType.USER, userService);
 		services.put(SearchType.BOARD, boardsService);
@@ -94,6 +97,11 @@ public class _ParseModelModule implements _IModelModule {
 	public ISpecialCategories provideISpecialCategories(
 			@ForApplication Context context) {
 		return new SpecialCategories(context);
+	}
+
+	@Override
+	public ISocialService provideSocialService() {
+		return new ParseSocialService();
 	}
 
 }

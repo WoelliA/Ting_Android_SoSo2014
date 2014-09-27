@@ -53,9 +53,8 @@
                 android:orientation="horizontal" >
 
                 <Button
-                    
-                    style="@style/ting_button_style"
                     android:id="@+id/sign_in_button"
+                    style="@style/ting_button_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -65,9 +64,8 @@
                     android:text="@string/action_sign_in" />
 
                 <Button
-                    
-                    style="@style/ting_button_style"
                     android:id="@+id/action_register"
+                    style="@style/ting_button_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -84,27 +82,22 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:paddingLeft="32dp"
-                android:paddingRight="32dp"                
+                android:paddingRight="32dp"
                 android:text="@string/action_forgot_password" />
 
             <Button
                 android:id="@+id/action_facebook_login"
+                style="@style/button_style_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action_facebook_login"
-                android:background="@drawable/facebook_button_selector" 
-                android:textColor="#fff"
-                android:layout_margin="2dp"/>
+                android:text="@string/action_facebook_login" />
 
             <Button
                 android:id="@+id/action_twitter_login"
+                style="@style/button_style_twitter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action_twitter_login" 
-                android:background="@drawable/twitter_button_selector"
-                android:textColor="#fff"
-                android:layout_margin="2dp"/>
-
+                android:text="@string/action_twitter_login" />
         </LinearLayout>
     </ScrollView>
 

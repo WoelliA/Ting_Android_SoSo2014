@@ -3,7 +3,7 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
 
 
@@ -59,6 +59,18 @@
         <item name="android:paddingBottom">16dp</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="button_style_facebook" parent="ting_button_style">
+        <item name="android:background">@drawable/facebook_button_selector</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="button_style_twitter" parent="ting_button_style">
+        <item name="android:background">@drawable/twitter_button_selector</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textColor">#fff</item>
     </style>
 
 </resources>

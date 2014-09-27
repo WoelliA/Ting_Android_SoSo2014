@@ -10,4 +10,5 @@ public interface _IModelModule {
 	public IUserService provideIUserService(LocalUser user);
 	public LocalUser provideLocalUser();
 	ISpecialCategories provideISpecialCategories(Context context);
+	public ISocialService provideSocialService();
 }

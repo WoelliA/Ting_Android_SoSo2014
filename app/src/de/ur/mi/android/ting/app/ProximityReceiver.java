@@ -23,7 +23,6 @@ public class ProximityReceiver extends BroadcastReceiver{
 		
 		if(entering){
 			Toast.makeText(context.getApplicationContext(), "entering", Toast.LENGTH_LONG).show();
-			
 			makeNotification(context);
 
 		}

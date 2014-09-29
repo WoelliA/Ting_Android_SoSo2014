@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.ProximityReceiver;
 
 public class ProximityAlertSetActivity extends Activity{
 
@@ -42,11 +44,18 @@ public class ProximityAlertSetActivity extends Activity{
 	
 		this.initNumberFormat();
 		this.initLocationManager();
+		this.initProximityReceiver();
 		this.initUI();
 		
 	}
 	
 	
+	private void initProximityReceiver() {
+		IntentFilter filter = new IntentFilter(PROX_ALERT_URI);
+		registerReceiver(new ProximityReceiver(), filter);
+	}
+
+
 	private void initNumberFormat() {
 		nf = new DecimalFormat("##.########");		
 		DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -156,7 +165,7 @@ public class ProximityAlertSetActivity extends Activity{
     	
 		Location location = ProximityAlertSetActivity.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     	
-    	Intent locationReached = new Intent(this, MainActivity.class);
+    	Intent locationReached = new Intent();
     	locationReached.setAction(PROX_ALERT_URI);
     	PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, locationReached, 0);
 	         
@@ -178,7 +187,7 @@ public class ProximityAlertSetActivity extends Activity{
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notification.defaults |= Notification.DEFAULT_VIBRATE;
 		
-		Intent notificationIntent = new Intent(this, MainActivity.class);
+		Intent notificationIntent = new Intent();
 		PendingIntent nI = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 		notification.contentIntent = nI;
 		

@@ -19,7 +19,7 @@ public class TingApp extends Application implements IMainInjector {
 
 	private static boolean isVisible;
 
-	private boolean isReleaseApp = true;
+	private boolean isReleaseApp = false;
 
 	private ObjectGraph applicationGraph;
 

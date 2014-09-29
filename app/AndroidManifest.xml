@@ -96,6 +96,8 @@
         </activity>
         <receiver android:name="de.ur.mi.android.ting.app.ProximityReceiver">
         </receiver>
+        <activity android:name=".app.activities.InviteFriendsActivity" >
+        </activity>
     </application>
 
 </manifest>

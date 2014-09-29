@@ -9,6 +9,7 @@ import de.ur.mi.android.ting.app.ForApplication;
 import de.ur.mi.android.ting.model.IBoardsService;
 import de.ur.mi.android.ting.model.ICategoryProvider;
 import de.ur.mi.android.ting.model.ISearchService;
+import de.ur.mi.android.ting.model.ISocialService;
 import de.ur.mi.android.ting.model.ISpecialCategories;
 import de.ur.mi.android.ting.model.SpecialCategories;
 import de.ur.mi.android.ting.model._IModelModule;
@@ -65,5 +66,10 @@ public class _DummyModelModule implements _IModelModule {
 	@Provides
 	public ISpecialCategories provideISpecialCategories(@ForApplication Context context) {
 		return new SpecialCategories(context);
+	}
+
+	@Override
+	public ISocialService provideSocialService() {
+		return new DummySocialService();
 	}
 }

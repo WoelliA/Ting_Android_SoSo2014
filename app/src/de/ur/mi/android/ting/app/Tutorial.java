@@ -12,6 +12,7 @@ import de.ur.mi.android.ting.R;
 import de.ur.mi.android.ting.app.activities.BrowseBoardsActivity;
 import de.ur.mi.android.ting.app.activities.EditBoardActivity;
 import de.ur.mi.android.ting.app.activities.EditProfileActivity;
+import de.ur.mi.android.ting.app.activities.InviteFriendsActivity;
 import de.ur.mi.android.ting.app.activities.MainActivity;
 import de.ur.mi.android.ting.app.activities.tutorial.BrowseBoardsTutorialActivity;
 import de.ur.mi.android.ting.app.activities.tutorial.CreateBoardTutorialActivity;
@@ -61,6 +62,8 @@ public class Tutorial implements IChangeListener<Context> {
 		this.steps = new TutorialStep[] {
 				new TutorialStep(EditProfileTutorialActivity.class,
 						R.string.welcome_dialog_edit_profile),
+				new TutorialStep(InviteFriendsActivity.class,
+						R.string.welcome_dialog_invite_friends),
 				new TutorialStep(BrowseBoardsTutorialActivity.class,
 						R.string.welcome_dialog_follow_board),
 				new TutorialStep(CreateBoardTutorialActivity.class,
@@ -127,10 +130,10 @@ public class Tutorial implements IChangeListener<Context> {
 			TutorialStep step = steps[i];
 			if (step.getTargetClass().equals(context.getClass())) {
 				this.currentStep = step;
-				this.nextStepNum = i+1;
+				this.nextStepNum = i + 1;
 				return;
 			}
 		}
-		//endTutorial(context);
+		// endTutorial(context);
 	}
 }

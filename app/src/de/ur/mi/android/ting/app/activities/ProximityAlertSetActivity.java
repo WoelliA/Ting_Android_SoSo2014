@@ -9,18 +9,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewDebug.FlagToString;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.ProximityReceiver;
 
 public class ProximityAlertSetActivity extends Activity{
 
@@ -33,7 +32,7 @@ public class ProximityAlertSetActivity extends Activity{
 	private static DecimalFormat nf;
 	private static final long MIN_UPDATE_TIME = 6000;// millsec
 	private static final float MIN_UPDATE_DISTANCE = 1;// meter(s)
-	private static final String PROX_ALERT_INTENT = "de.ur.mi.android.intent.action.PROX_ALERT";
+	private static final String PROX_ALERT_URI = "de.ur.mi.android.intent.action.PROX_ALERT";
 
 	
 	@Override
@@ -154,15 +153,12 @@ public class ProximityAlertSetActivity extends Activity{
 	
 	
     private void addProxAlert() {
-	         
-    	IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT); 
-    	registerReceiver(new ProximityReceiver(), filter);
     	
 		Location location = ProximityAlertSetActivity.this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     	
-    	Intent locationReached = new Intent();
-    	locationReached.setAction(PROX_ALERT_INTENT);
-    	PendingIntent proximityIntent = PendingIntent.getBroadcast(this, -1, locationReached, 0);
+    	Intent locationReached = new Intent(this, MainActivity.class);
+    	locationReached.setAction(PROX_ALERT_URI);
+    	PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, locationReached, 0);
 	         
     	locationManager.addProximityAlert(location.getLatitude(), location.getLongitude(), 5, -1, proximityIntent);
     	
@@ -181,6 +177,10 @@ public class ProximityAlertSetActivity extends Activity{
 
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notification.defaults |= Notification.DEFAULT_VIBRATE;
+		
+		Intent notificationIntent = new Intent(this, MainActivity.class);
+		PendingIntent nI = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		notification.contentIntent = nI;
 		
 		NotificationManager notifManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		notifManager.notify(1, notification);

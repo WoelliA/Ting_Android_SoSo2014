@@ -94,6 +94,11 @@
         </activity>
         <activity android:name=".app.activities.tutorial.CreateBoardTutorialActivity" >
         </activity>
+        <receiver android:name=".app.ProximityReceiver">
+            <intent-filter>
+                <action android:name="de.ur.mi.android.intent.action.PROX_ALERT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -62,7 +62,7 @@ public class EditBoardActivity extends BaseActivity implements EditBoardView {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.menu.save:
+		case R.id.action_save:
 			this.saveBoard();
 			return true;
 		}

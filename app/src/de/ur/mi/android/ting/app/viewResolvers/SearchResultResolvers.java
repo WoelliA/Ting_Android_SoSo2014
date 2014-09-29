@@ -23,7 +23,7 @@ public class SearchResultResolvers {
 
 	public static class BoardResolver extends BoardViewResolver {
 		public BoardResolver(Context context) {
-			super(context, true);
+			super(context, null, true);
 		}		
 	}
 

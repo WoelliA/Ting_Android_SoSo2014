@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.activities.BoardDetailsActivity;
 import de.ur.mi.android.ting.app.controllers.BoardController;
 import de.ur.mi.android.ting.app.controllers.BoardController.IBoardView;
@@ -36,8 +37,11 @@ public class BoardViewResolver extends ViewResolver<Board> {
 
 	private boolean showControls;
 
-	public BoardViewResolver(Context activity, boolean showControls) {
+	private ISelectedListener<Board> selectedListener;
+
+	public BoardViewResolver(Context activity, ISelectedListener<Board> selectedListener, boolean showControls) {
 		super(R.layout.board_listitem_layout, activity);
+		this.selectedListener = selectedListener;
 		this.showControls = showControls;
 	}
 
@@ -47,6 +51,10 @@ public class BoardViewResolver extends ViewResolver<Board> {
 			
 			@Override
 			public void onClick(View v) {
+				if(selectedListener != null) {
+					selectedListener.onSelected(board);
+					return;
+				}
 				Intent intent = new Intent(getContext(), BoardDetailsActivity.class);
 				intent.putExtra(BoardDetailsActivity.BOARD_ID_KEY, board.getId());
 				getContext().startActivity(intent);

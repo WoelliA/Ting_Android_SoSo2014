@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
@@ -33,6 +35,7 @@ public class ShareController {
 	private IPinService pinService;
 	private String sharedPinId;
 
+	@Inject
 	public ShareController(PinDataParser pindataParser,
 			IImageLoader imageLoader, IPinService pinService) {
 		this.pindataParser = pindataParser;

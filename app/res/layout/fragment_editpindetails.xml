@@ -42,7 +42,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true" />
 
-                    <Button
+                   <!--   <Button
                         android:id="@+id/button_change_link"
                     style="@style/ting_button_style"
                     android:padding="4dp"
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/button_change_link_text" />
+                        android:text="@string/button_change_link_text" /> -->
                 </RelativeLayout>
 
                 <EditText

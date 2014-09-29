@@ -38,7 +38,7 @@ public class SelectBoardFragment extends ListFragment<Board> {
 
 	@Override
 	protected ArrayAdapter<Board> getListAdapter() {
-		ViewResolver<Board> viewResolver = new BoardViewResolver(this.getActivity(), false);
+		ViewResolver<Board> viewResolver = new BoardViewResolver(this.getActivity(), this.selectedListener, false);
 		return new ViewCreationDelegatingListAdapter<Board>(this.getActivity(),
 				viewResolver);
 	}

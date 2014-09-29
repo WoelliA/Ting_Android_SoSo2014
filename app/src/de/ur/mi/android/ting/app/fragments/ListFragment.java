@@ -16,7 +16,7 @@ public abstract class ListFragment<T> extends FragmentBase implements
 
 	private List<T> items;
 	private ArrayAdapter<T> adapter;
-	private ISelectedListener<T> selectedListener;
+	protected ISelectedListener<T> selectedListener;
 
 	public ListFragment() {
 		this.items = new ArrayList<T>();
@@ -37,7 +37,9 @@ public abstract class ListFragment<T> extends FragmentBase implements
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				if (ListFragment.this.selectedListener != null) {
-					ListFragment.this.selectedListener.onSelected(ListFragment.this.adapter.getItem(position));
+					ListFragment.this.selectedListener
+							.onSelected(ListFragment.this.adapter
+									.getItem(position));
 				}
 			}
 		});
@@ -63,13 +65,12 @@ public abstract class ListFragment<T> extends FragmentBase implements
 			this.add(object);
 		}
 	}
-	
+
 	@Override
 	public void set(Object[] items) {
 		this.adapter.clear();
-		this.addAll(items);	
+		this.addAll(items);
 	}
-	
 
 	protected abstract ListView getListView(View view);
 

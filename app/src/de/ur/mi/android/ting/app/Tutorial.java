@@ -62,8 +62,8 @@ public class Tutorial implements IChangeListener<Context> {
 		this.steps = new TutorialStep[] {
 				new TutorialStep(EditProfileTutorialActivity.class,
 						R.string.welcome_dialog_edit_profile),
-				new TutorialStep(InviteFriendsActivity.class,
-						R.string.welcome_dialog_invite_friends),
+				// new TutorialStep(InviteFriendsActivity.class,
+				// R.string.welcome_dialog_invite_friends),
 				new TutorialStep(BrowseBoardsTutorialActivity.class,
 						R.string.welcome_dialog_follow_board),
 				new TutorialStep(CreateBoardTutorialActivity.class,

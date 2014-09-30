@@ -62,8 +62,6 @@ public class EditPinDetailsFragment extends FragmentBase {
 		this.pinImageView = (ImageView) view.findViewById(R.id.editpin_image);
 		this.pinTitleView = (EditText) view.findViewById(R.id.editpin_title);
 		this.linkUrlView = (TextView) view.findViewById(R.id.textview_linktext);
-		this.changeLinkButton = (Button) view
-				.findViewById(R.id.button_change_link);
 
 		this.linkUrlView.setText(this.pinData.getLinkUrl());
 		this.pinDescriptionView = (EditText) view

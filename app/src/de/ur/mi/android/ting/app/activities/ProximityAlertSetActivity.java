@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.ur.mi.android.ting.R;
-import de.ur.mi.android.ting.app.ProximityReceiver;
+import de.ur.mi.android.ting.app.receiver.ProximityReceiver;
 
 public class ProximityAlertSetActivity extends Activity{
 

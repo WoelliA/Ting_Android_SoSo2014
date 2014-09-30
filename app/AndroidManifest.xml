@@ -94,10 +94,16 @@
         </activity>
         <activity android:name=".app.activities.tutorial.CreateBoardTutorialActivity" >
         </activity>
-        <receiver android:name="de.ur.mi.android.ting.app.ProximityReceiver">
+        <receiver android:name="de.ur.mi.android.ting.app.receiver.ProximityReceiver">
         </receiver>
         <activity android:name=".app.activities.InviteFriendsActivity" >
         </activity>
+        <receiver android:name=".app.receiver.WiFiReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            	<action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

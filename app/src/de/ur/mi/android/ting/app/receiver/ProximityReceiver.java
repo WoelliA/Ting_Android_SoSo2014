@@ -22,7 +22,6 @@ public class ProximityReceiver extends BroadcastReceiver{
 		boolean entering = intent.getBooleanExtra(key, false);
 		
 		if(entering){
-			Toast.makeText(context.getApplicationContext(), "entering", Toast.LENGTH_LONG).show();
 			makeNotification(context);
 
 		}

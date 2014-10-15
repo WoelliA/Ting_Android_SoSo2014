@@ -104,6 +104,12 @@
             	<action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
+        <receiver android:name=".app.receiver.ProximityReceiver">
+            <intent-filter>
+                <action android:name="de.ur.mi.android.intent.action.PROX_ALERT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

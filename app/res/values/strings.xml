@@ -86,6 +86,7 @@
     <string name="button_openlink">browser</string>
     <string name="notificationContentTitle">Ting-Reminder</string>
     <string name="notificationContentText">Time to check some-Ting!</string>
+    <string name="saved">saved</string>
 
     <string name="action_invite_facebook">invite facebook friends</string>
 </resources>

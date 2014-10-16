@@ -60,8 +60,8 @@ public class BoardDetailsController extends PagingController<Pin> implements
 				});
 	}
 
-	public void setFollowBoard(boolean follow) {
-		this.boardcontroller.setFollowBoard(this.board, follow);
+	public boolean setFollowBoard(boolean follow) {
+		return this.boardcontroller.setFollowBoard(this.board, follow);
 	}
 
 	@Override

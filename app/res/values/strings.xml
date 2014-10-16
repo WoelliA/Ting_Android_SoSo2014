@@ -89,4 +89,6 @@
     <string name="saved">saved</string>
 
     <string name="action_invite_facebook">invite facebook friends</string>
+
+    <string name="no_search_results">no results found to your search</string>
 </resources>

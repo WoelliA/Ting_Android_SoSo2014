@@ -66,6 +66,9 @@ public class BoardDetailsActivity extends BaseActivity implements
 		TextView titleText = (TextView) this.headerView
 				.findViewById(R.id.textview_board_title);
 		titleText.setText(board.getTitle());
+		
+		TextView descriptionText = (TextView) this.headerView.findViewById(R.id.textview_board_description);
+		descriptionText.setText(board.getDescription());
 
 		this.followToggle = (ToggleButton) this.headerView
 				.findViewById(R.id.togglebutton_follow_board);
@@ -95,7 +98,10 @@ public class BoardDetailsActivity extends BaseActivity implements
 			@Override
 			public void onClick(View v) {
 				boolean follow = ((CompoundButton) v).isChecked();
-				BoardDetailsActivity.this.controller.setFollowBoard(follow);
+				boolean followed = BoardDetailsActivity.this.controller.setFollowBoard(follow);
+				if(!followed){
+					((CompoundButton)v).setChecked(false);
+				}
 			}
 		});
 

@@ -4,9 +4,21 @@
     android:layout_height="match_parent"
     tools:context="de.ur.mi.android.ting.SearchActivity$PlaceholderFragment" >
 
+    
+    
     <ca.weixiao.widget.InfiniteScrollListView 
         android:id="@+id/search_result_list"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
+
+    <TextView
+        android:id="@+id/no_searchresults_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/no_search_results"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     
 </RelativeLayout>

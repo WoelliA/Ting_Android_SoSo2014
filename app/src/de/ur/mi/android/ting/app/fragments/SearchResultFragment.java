@@ -1,7 +1,10 @@
 package de.ur.mi.android.ting.app.fragments;
 
+import java.util.Collection;
+
 import ca.weixiao.widget.InfiniteScrollListView;
 import de.ur.mi.android.ting.R;
+import de.ur.mi.android.ting.app.IChangeListener;
 import de.ur.mi.android.ting.app.ISelectedListener;
 import de.ur.mi.android.ting.app.adapters.PagingListAdapterBase;
 import de.ur.mi.android.ting.app.adapters.ViewCreationDelegatingPagingListAdapter;
@@ -16,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SearchResultFragment<T> extends FragmentBase {
+public class SearchResultFragment<T> extends FragmentBase implements IChangeListener<Boolean> {
 
 	private String title;
 
@@ -63,6 +66,7 @@ public class SearchResultFragment<T> extends FragmentBase {
 
 		final PagingListAdapterBase<T> resultAdapter = new ViewCreationDelegatingPagingListAdapter<T>(
 				context, this.viewResolver, this.pagingController);
+		resultAdapter.setHasItemsListener(this);
 		InfiniteScrollListView listView = (InfiniteScrollListView) this.getView().findViewById(
 				R.id.search_result_list);
 		listView.setLoadingView(Loading.getView(this.getActivity(), "Searching..."));
@@ -80,5 +84,12 @@ public class SearchResultFragment<T> extends FragmentBase {
 			}
 		});
 		listView.setAdapter(resultAdapter);
+	}
+
+	@Override
+	public void onChange(Boolean changed) {
+		int visibility = changed ? View.INVISIBLE : View.VISIBLE;
+		this.findViewById(R.id.no_searchresults_textview).setVisibility(visibility);	
+		
 	}
 }
